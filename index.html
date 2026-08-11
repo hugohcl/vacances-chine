@@ -218,6 +218,19 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .grid-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:11px}
 .tile{height:196px}
 .tile .nm{font-size:16px}
+.daytrip{position:absolute;top:9px;left:9px;z-index:3;font-size:9.5px;font-weight:700;letter-spacing:.04em;
+  background:#ffffff2e;backdrop-filter:blur(6px);color:#fff;border-radius:100px;padding:3px 9px;max-width:calc(100% - 54px)}
+.links{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.linkrow{display:flex;gap:11px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--pap);border-radius:var(--rs);padding:11px 13px;transition:background .16s}
+.linkrow:hover{background:var(--line)}
+.ltag{flex:none;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  border-radius:100px;padding:3px 9px;margin-top:1px;white-space:nowrap}
+.ltag.jour{background:#2C8C7C;color:#fff}
+.ltag.route{background:#C4761F;color:#fff}
+.ltag.paire{background:var(--tx);color:var(--pap)}
+.linkrow b{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
+.linkrow span{display:block;font-size:13px;color:var(--tx2);line-height:1.45;margin-top:2px}
 </style>
 
 <div class="top">
@@ -564,6 +577,46 @@ var D={
   pl:["Une culture entièrement différente du reste du pays","5 à 15 °C en journée en novembre"],
   mn:["Extrêmement loin de tout le reste","Présence policière lourde et contrôles fréquents","Les températures chutent en décembre"]}
 };
+/* ══ liens entre destinations ══
+   jour  : on dort dans la base et on visite l'autre dans la journée, sans chambre
+   route : l'une est sur le chemin entre deux autres, presque aucun transport en plus
+   paire : deux villes voisines qu'on enchaîne naturellement                        */
+var LINKS=[
+ {b:"chengdu",x:"leshan",t:"jour",d:"1 h de train",p:"Le Grand Bouddha se fait très bien dans la journée. Inutile de dormir à Leshan."},
+ {b:"chengdu",x:"emeishan",t:"jour",d:"1 h 30 de train",p:"Faisable à la journée, mais une nuit au sommet pour le lever du jour vaut nettement mieux."},
+ {b:"shanghai",x:"suzhou",t:"jour",d:"25 min de train",p:"Les jardins se visitent en une journée. Dormir à Suzhou n'a de sens que si vous voulez la ville le soir."},
+ {b:"shanghai",x:"hangzhou",t:"jour",d:"45 min de train",p:"Le lac de l'Ouest tient dans une journée bien remplie. Une nuit sur place est plus reposante."},
+ {b:"lijiang",x:"tigerleaping",t:"jour",d:"2 h de route",p:"Le belvédère se voit à la journée. La haute randonnée, elle, demande une nuit en auberge dans les gorges."},
+ {b:"guilin",x:"longsheng",t:"jour",d:"2 h de route",p:"Les terrasses de Longji se font à la journée depuis Guilin ou Yangshuo."},
+ {b:"yangshuo",x:"longsheng",t:"jour",d:"2 h 30 de route",p:"Même chose depuis Yangshuo, un peu plus long."},
+ {b:"kunming",x:"jianshui",t:"jour",d:"2 h de train",p:"Possible à la journée, mais Jianshui mérite plutôt une halte sur la route de Yuanyang."},
+ {b:"canton",x:"hongkong",t:"paire",d:"2 h de train",p:"Deux villes très différentes à deux heures l'une de l'autre. Attention, Hong Kong est une juridiction distincte : formalités à chaque passage."},
+ {b:"chongqing",x:"chengdu",t:"paire",d:"1 h 30 de train",p:"Le trajet le plus court du pays entre deux grandes villes. On les enchaîne presque toujours."},
+ {b:"guilin",x:"yangshuo",t:"paire",d:"30 min de train",p:"Même paysage, mais on dort bien mieux à Yangshuo. Beaucoup ne font que passer par Guilin."},
+ {b:"datong",x:"pingyao",t:"paire",d:"2 à 3 h de train",p:"Les deux grands arrêts du Shanxi, sur la même ligne."},
+ {b:"zhangjiajie",x:"fenghuang",t:"paire",d:"4 h de route",p:"La suite naturelle de Zhangjiajie, dans la même province."},
+ {b:"lijiang",x:"shangrila",t:"paire",d:"1 à 2 h de train",p:"Ligne ouverte en 2023. Attention à la montée d'altitude, 2 400 puis 3 200 mètres."},
+ {b:"lijiang",x:"shaxi",t:"route",d:"2 h",p:"Shaxi est entre Lijiang et Dali : l'ajouter ne coûte quasiment aucun transport."},
+ {b:"dali",x:"shaxi",t:"route",d:"2 h",p:"Même chose dans l'autre sens."},
+ {b:"kunming",x:"yuanyang",t:"route",d:"4 h 30",p:"Cul-de-sac au sud de Kunming : il faut redescendre puis remonter."},
+ {b:"jianshui",x:"yuanyang",t:"route",d:"2 h 30",p:"Jianshui coupe utilement la longue route vers les rizières."},
+ {b:"dali",x:"kunming",t:"route",d:"2 h de train",p:"Sur la ligne à grande vitesse du Yunnan."},
+ {b:"xian",x:"chengdu",t:"route",d:"3 h de train",p:"Ligne rapide ouverte, c'est le passage naturel du Nord vers le Sichuan."}
+];
+function linksOf(id){
+  var out=[];
+  LINKS.forEach(function(l){
+    if(l.b===id) out.push({id:l.x,t:l.t,d:l.d,p:l.p,base:true});
+    else if(l.x===id) out.push({id:l.b,t:l.t,d:l.d,p:l.p,base:false});
+  });
+  return out;
+}
+/* destinations qui se visitent depuis une base, sans y dormir */
+function dayTripBases(id){
+  return LINKS.filter(function(l){return l.x===id&&l.t==="jour";}).map(function(l){return l.b;});
+}
+var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner"};
+
 var AIR=["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong","kunming","hangzhou","guilin"];
 
 /* ══ inspirations ══ */
@@ -672,6 +725,8 @@ function tileOf(id){
   ab.setAttribute("aria-label",(sel.indexOf(id)>=0?"Retirer ":"Ajouter ")+d.fr);
   ab.addEventListener("click",function(e){e.stopPropagation();toggle(id);});
   t.appendChild(ab);
+  var bases=dayTripBases(id);
+  if(bases.length){ t.appendChild(el("div","daytrip","à la journée depuis "+bases.map(function(b){return D[b].fr;}).join(" ou "))); }
   var tx=el("div","txt");
   tx.appendChild(el("div","nm",d.fr));
   tx.appendChild(el("div","rg",d.t+" · "+d.n+" nuits conseillées"));
@@ -729,6 +784,23 @@ function openSheet(id){
   c2.appendChild(el("h5",null,"Ce qui plaide contre"));
   var u2=el("ul","mn"); d.mn.forEach(function(x){u2.appendChild(el("li",null,x));}); c2.appendChild(u2);
   co.appendChild(c1); co.appendChild(c2); bd.appendChild(co);
+  var lk=linksOf(id);
+  if(lk.length){
+    bd.appendChild(el("h5",null,"Liens avec d'autres destinations"));
+    var lw=el("div","links");
+    lk.forEach(function(l){
+      var row=el("button","linkrow");
+      var tag=el("span","ltag "+l.t, l.t==="jour"?(l.base?"excursion":"depuis "+D[l.id].fr):LT[l.t]);
+      row.appendChild(tag);
+      var tt=el("div");
+      tt.appendChild(el("b",null,D[l.id].fr+"  ·  "+l.d));
+      tt.appendChild(el("span",null,l.p));
+      row.appendChild(tt);
+      row.addEventListener("click",function(){openSheet(l.id);});
+      lw.appendChild(row);
+    });
+    bd.appendChild(lw);
+  }
   var act=el("div","sheet-act");
   var add=el("button","btn",sel.indexOf(id)>=0?"Retirer de ma route":"Ajouter à ma route");
   add.addEventListener("click",function(){toggle(id);closeSheet();}); act.appendChild(add);
@@ -820,6 +892,14 @@ function drawSum(){
   if(longs) alert("warn",longs+" trajet"+(longs>1?"s":"")+" de sept heures ou plus. Envisagez de prendre l'avion, ou de couper avec une étape intermédiaire.");
   var gris=sel.filter(function(id){return D[id].sun===0;});
   if(gris.length>=3) alert("warn","Trois destinations ou plus sont souvent grises à cette période : "+gris.map(function(i){return D[i].fr;}).join(", ")+". Ce n'est gênant que si vous y comptiez sur des panoramas.");
+  sel.forEach(function(id){
+    var bases=dayTripBases(id);
+    var b=bases.filter(function(x){return sel.indexOf(x)>=0;});
+    if(b.length&&(nights[id]||0)>0){
+      var L2=LINKS.filter(function(l){return l.x===id&&l.b===b[0];})[0];
+      alert("warn","Vous dormez à "+D[id].fr+" alors que "+D[b[0]].fr+" est dans votre route, à "+L2.d+". "+L2.p+" Passer "+D[id].fr+" à zéro nuit vous épargne un changement d hôtel.");
+    }
+  });
   var ain=document.getElementById("ain").value;
   if(sel.length&&sel[0]!==ain) alert("warn","Votre route commence par "+D[sel[0]].fr+" mais vous arrivez à "+D[ain].fr+". Ajoutez la ville d'arrivée, ou changez le paramètre.");
 }
