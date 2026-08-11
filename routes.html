@@ -1,0 +1,867 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+<meta name="robots" content="noindex, nofollow">
+<title>Chine · novembre-décembre 2026</title>
+
+<style>
+/* ─────────────────────────────────────────────
+   La photographie porte la page.
+   Hero plein cadre, cartes-destinations verticales,
+   voile vert-encre, accent cinabre.
+   ───────────────────────────────────────────── */
+:root{
+  --deep:#0D2422;       /* vert encre, le voile des photos */
+  --deep2:#123331;
+  --zhu:#E24A3C;        /* 朱 cinabre, l'unique accent */
+  --pap:#F7F5F0;
+  --card:#FFFFFF;
+  --tx:#14201F; --tx2:#63706E; --line:#14201f1a;
+  --onDark:#F1F5F4; --onDark2:#B9C6C4;
+  --r:18px; --rs:12px;
+  --ff:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --han:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --pap:#0B1817; --card:#132524; --tx:#EDF2F1; --tx2:#8FA09E; --line:#edf2f114; }
+}
+:root[data-theme="light"]{ --pap:#F7F5F0; --card:#FFFFFF; --tx:#14201F; --tx2:#63706E; --line:#14201f1a; }
+:root[data-theme="dark"]{ --pap:#0B1817; --card:#132524; --tx:#EDF2F1; --tx2:#8FA09E; --line:#edf2f114; }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--tx);font-family:var(--ff);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--zhu);outline-offset:3px}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1.06}
+img{max-width:100%;display:block}
+.pg{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3.4vw,40px)}
+.lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--tx2);font-weight:700}
+
+/* ── hero plein cadre ── */
+.top{position:relative;min-height:clamp(290px,44vh,430px);display:flex;align-items:flex-end;
+  background:var(--deep);overflow:hidden;isolation:isolate}
+#heroimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.top::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,#0d2422b3 0%,#0d242259 34%,#0d2422e6 100%),
+             linear-gradient(90deg,#0d2422cc 0%,#0d242226 62%)}
+#inkband{display:none}
+.top .pg{position:relative;z-index:2;padding:clamp(18px,2.6vw,32px) clamp(16px,3.4vw,40px);width:100%;color:var(--onDark)}
+.top .lbl{color:var(--onDark2)}
+.top h1{font-size:clamp(34px,6vw,72px);margin-top:8px;letter-spacing:-.045em;text-transform:uppercase;font-weight:900;text-shadow:0 2px 24px #0d24224d}
+.top .sub{font-size:15px;margin:10px 0 0;max-width:52ch;color:var(--onDark2);line-height:1.6}
+.facts{display:flex;gap:clamp(14px,2.2vw,30px);margin-top:clamp(14px,1.8vw,20px);flex-wrap:wrap;border-top:1px solid #f1f5f42e;padding-top:13px}
+.facts b{display:block;font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.03em}
+.facts span{display:block;margin-top:6px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--onDark2);font-weight:700}
+
+/* ── navigation ── */
+.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:30;background:var(--pap);
+  padding:10px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{padding:8px 16px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:100px;
+  color:var(--tx2);transition:background .18s,color .18s}
+.tabs button:hover{background:var(--line);color:var(--tx)}
+.tabs button[aria-current="true"]{background:var(--zhu);color:#fff}
+
+.panel{padding:clamp(20px,2.4vw,32px) 0;scroll-margin-top:60px}
+.panel + .panel{border-top:1px solid var(--line)}
+.bh{margin-bottom:clamp(16px,2vw,24px);max-width:64ch}
+.bh h2{font-size:clamp(22px,2.7vw,31px);margin-top:6px;text-transform:uppercase;font-weight:900;letter-spacing:-.03em}
+.bh p{margin:10px 0 0;color:var(--tx2);font-size:15.5px;max-width:58ch}
+
+/* ── choisir ── */
+.set{display:grid;grid-template-columns:1.3fr .7fr;gap:clamp(18px,2.6vw,32px);align-items:start}
+@media (max-width:860px){.set{grid-template-columns:1fr}}
+.rlist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.rlist button{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:var(--rs);
+  background:var(--card);border:1px solid var(--line);transition:border-color .18s,transform .18s,box-shadow .18s}
+.rlist button:hover{transform:translateY(-2px);box-shadow:0 8px 24px #14201f14}
+.rlist button[aria-pressed="true"]{border-color:var(--zhu);box-shadow:inset 3px 0 0 var(--zhu)}
+.rlist .n{font-size:16.5px;font-weight:700;letter-spacing:-.02em}
+.rlist .s{display:block;font-size:13.5px;color:var(--tx2);margin-top:3px;line-height:1.45}
+.sub-lbl{display:block;margin:24px 0 0}
+
+#dialbox{padding:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+#dialbox .lbl{color:var(--tx2)}
+.dial-n{display:flex;align-items:baseline;gap:10px;margin-top:8px}
+.dial-n b{font-size:clamp(40px,5vw,56px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.04em}
+.dial-n span{font-size:15px;color:var(--tx2)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;margin:18px 0 0;height:22px;display:block}
+input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--line);border-radius:100px}
+input[type=range]::-moz-range-track{height:3px;background:var(--line);border-radius:100px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--zhu);border:0;border-radius:50%;margin-top:-7.5px}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--zhu);border:0;border-radius:50%}
+.ticks{display:flex;justify-content:space-between;font-size:10.5px;color:var(--tx2);margin-top:6px;letter-spacing:.1em}
+.dropped{margin-top:16px;font-size:14px;color:var(--zhu);line-height:1.5;min-height:1.5em}
+.readout{margin-top:8px;font-size:14px;color:var(--tx2);line-height:1.55}
+.readout b{font-weight:700;color:var(--tx)}
+.dis{opacity:.4;pointer-events:none}
+
+/* ── carte ── */
+.mapwrap{position:relative;border-radius:var(--r);background:var(--card);border:1px solid var(--line);overflow:hidden;touch-action:none}
+#carte{display:block;width:100%;height:clamp(320px,48vh,500px);cursor:grab}
+#carte.drag{cursor:grabbing}
+.zoom{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px}
+.zoom button{width:38px;height:38px;background:var(--pap);color:var(--tx);border:1px solid var(--line);
+  border-radius:10px;font-size:18px;font-weight:600;display:grid;place-items:center;transition:background .18s}
+.zoom button:hover{background:var(--card)}
+.zoom button.fit{font-size:10.5px;letter-spacing:.08em}
+.maphint{margin-top:14px;color:var(--tx2);font-size:14px}
+.cn-out{fill:var(--tx);fill-opacity:.05;stroke:var(--tx);stroke-opacity:.28;stroke-width:1.2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cn-leg{fill:none;stroke:var(--zhu);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cn-leg.air{stroke-dasharray:1.5 6}
+.cn-dot{fill:var(--card);stroke:var(--zhu);stroke-width:2.4;vector-effect:non-scaling-stroke}
+.cn-han{font-family:var(--han);font-weight:600;fill:var(--tx)}
+.cn-fr{font-weight:700;fill:var(--tx)}
+.cn-ghost{font-weight:500;fill:var(--tx2);opacity:.75}
+.cn-gdot{fill:var(--tx2);opacity:.5}
+
+/* ── étapes : cartes-destinations verticales ── */
+#steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(216px,1fr));gap:clamp(12px,1.6vw,18px);align-items:start}
+.st{border-radius:var(--r);overflow:hidden;background:var(--card);transition:transform .22s,box-shadow .22s}
+.st:not(.open):hover{transform:translateY(-4px);box-shadow:0 16px 38px #14201f24}
+.st.open{grid-column:1/-1;box-shadow:0 16px 44px #14201f1f}
+.st > button{display:block;width:100%;text-align:left;position:relative}
+.st:not(.open) > button{height:246px}
+.st.open > button{height:220px}
+.ph{position:absolute;inset:0;background:var(--deep2);overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);
+  filter:blur(2.5px) saturate(.88) brightness(.9);transition:filter .35s ease,transform .35s ease}
+.st:not(.open):hover .ph img,.st.open .ph img{filter:blur(0) saturate(1) brightness(1);transform:scale(1.02)}
+.ph svg{display:none;width:100%;height:100%;color:#F1F5F4;padding:26px}
+.ph.noimg img{display:none}
+.ph.noimg svg{display:block}
+.ph::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,#0d242233 0%,#0d242212 30%,#0d2422f2 100%)}
+.st-txt{position:absolute;left:0;right:0;bottom:0;padding:16px 17px 17px;color:var(--onDark);z-index:2}
+.st-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.st-i{position:absolute;top:-196px;left:0;width:28px;height:28px;border-radius:50%;background:#ffffff26;
+  backdrop-filter:blur(6px);display:grid;place-items:center;font-size:12.5px;font-weight:700}
+.st.open .st-i{top:-168px}
+.st-fr{font-size:21px;font-weight:900;letter-spacing:-.03em;text-transform:uppercase}
+.st-han{font-family:var(--han);font-weight:500;font-size:15px;color:var(--onDark2)}
+.st-n{margin-left:auto;font-size:12px;font-weight:700;background:var(--zhu);color:#fff;border-radius:100px;padding:3px 11px;white-space:nowrap}
+.st-m{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.st-m span{font-size:10px;font-weight:600;letter-spacing:.02em;background:#ffffff1f;backdrop-filter:blur(6px);
+  color:var(--onDark);border-radius:100px;padding:3px 9px}
+.st-m .src{background:var(--zhu);color:#fff}
+.st-body{padding:22px 22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.6vw,38px)}
+@media (max-width:760px){.st-body{grid-template-columns:1fr}}
+.bigph{display:none}
+.st-body h5{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);font-weight:700;margin:0 0 8px}
+.st-body p{margin:0 0 18px;font-size:15px;line-height:1.7;color:var(--tx)}
+.st-body ul{margin:0 0 18px;padding:0;list-style:none;font-size:15px}
+.st-body li{padding-left:17px;position:relative;margin-bottom:7px;line-height:1.55}
+.st-body li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--zhu)}
+.st-body .last{margin-bottom:0}
+.st-warn{background:var(--pap);border-left:2px solid var(--zhu);border-radius:0 var(--rs) var(--rs) 0;padding:13px 15px;font-size:14.5px;line-height:1.6;color:var(--tx)}
+.st-leg{background:var(--pap);border-radius:var(--rs);padding:13px 15px;font-size:14.5px;margin-bottom:18px;line-height:1.6;color:var(--tx)}
+.st-leg em{font-style:normal;font-weight:700}
+
+/* ── comparer ── */
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:clamp(12px,1.8vw,20px)}
+.cmp-c{padding:20px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);transition:border-color .18s}
+.cmp-c.on{border-color:var(--zhu);box-shadow:inset 3px 0 0 var(--zhu)}
+.cmp-c h4{font-size:19px;text-transform:uppercase;font-weight:900;letter-spacing:-.02em}
+.cmp-c .m{font-size:13.5px;margin:5px 0 15px;line-height:1.45;color:var(--tx2)}
+.cmp-c ul{list-style:none;margin:0 0 13px;padding:0;font-size:14px;line-height:1.55;color:var(--tx)}
+.cmp-c li{padding-left:17px;position:relative;margin-bottom:6px}
+.cmp-c .p li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:2px;background:var(--tx2)}
+.cmp-c .n li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:2px;background:var(--zhu)}
+.cmp-c button{font-size:13px;font-weight:700;color:var(--zhu)}
+.cmp-c button:hover{text-decoration:underline}
+
+/* ── pratique ── */
+.prat{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:clamp(14px,2vw,22px)}
+.prat section{padding:22px;border-radius:var(--r);background:var(--card);border:1px solid var(--line)}
+.prat h3{font-size:18px;margin-top:4px;text-transform:uppercase;font-weight:900;letter-spacing:-.02em}
+.prat ul{list-style:none;padding:0;margin:14px 0 0;font-size:14.5px}
+.prat li{padding-left:17px;position:relative;margin-bottom:10px;line-height:1.6;color:var(--tx)}
+.prat li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--zhu)}
+.prat b{font-weight:700}
+.prat .money{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:14.5px;border-bottom:1px solid var(--line);color:var(--tx2)}
+.prat .money span:last-child{font-variant-numeric:tabular-nums lining-nums;white-space:nowrap;font-weight:700;color:var(--tx)}
+.prat .money.tot{border-bottom:0;border-top:2px solid var(--tx);margin-top:6px;font-size:16px;font-weight:700;color:var(--tx)}
+.credits{margin-top:26px;font-size:12.5px;line-height:1.65;max-width:80ch;color:var(--tx2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+
+/* ── mise en page outil : commandes a gauche, toujours visibles ── */
+.pg{max-width:1760px;padding-left:clamp(16px,2.4vw,34px);padding-right:clamp(16px,2.4vw,34px)}
+body > .pg{display:grid;grid-template-columns:336px minmax(0,1fr);
+  column-gap:clamp(20px,2.4vw,36px);align-items:start}
+.tabs{grid-column:1/-1}
+#p-voyage{grid-column:1;position:sticky;top:58px;padding-top:18px;border:0;
+  max-height:calc(100vh - 76px);overflow-y:auto;scrollbar-width:thin}
+#p-voyage .bh{display:none}
+#p-voyage .set{display:block}
+#p-voyage #dialbox{margin-top:20px}
+#p-carte,#p-etapes,#p-comparer,#p-pratique{grid-column:2}
+.panel + .panel{border-top:0}
+#p-etapes,#p-comparer,#p-pratique{border-top:1px solid var(--line)}
+@media (max-width:1080px){
+  body > .pg{display:block}
+  #p-voyage{position:static;max-height:none;overflow:visible;padding-top:0}
+  #p-voyage .bh{display:block}
+  #p-voyage .set{display:grid}
+}
+.hero-han{font-family:var(--han);font-weight:300;font-size:clamp(56px,11vw,132px);line-height:.85;
+  letter-spacing:.08em;color:#fff;opacity:.17;position:absolute;right:clamp(16px,3.4vw,40px);
+  top:clamp(10px,2vw,22px);pointer-events:none;user-select:none;z-index:2}
+@media (max-width:640px){.hero-han{font-size:60px;opacity:.13}}
+.hero-gloss{position:absolute;right:clamp(16px,3.4vw,40px);bottom:clamp(14px,2vw,22px);
+  z-index:3;font-size:11px;letter-spacing:.14em;color:var(--onDark2);text-align:right;max-width:34ch}
+@media (max-width:640px){.hero-gloss{display:none}}
+</style>
+
+<div class="top">
+  <img id="heroimg" alt="" src="">
+  <svg id="inkband" viewBox="0 0 1200 180" preserveAspectRatio="none" aria-hidden="true"></svg>
+  <div class="pg">
+    <div class="hero-han" aria-hidden="true">中国</div>
+    <div class="hero-gloss" id="herogloss"></div>
+    <div class="lbl">Paris · départ le 13 novembre 2026</div>
+    <h1 id="herotitle">La complète</h1>
+    <p class="sub" id="herosub"></p>
+    <div class="facts" id="herofacts"></div>
+  </div>
+</div>
+
+<div class="pg">
+  <nav class="tabs" aria-label="Aller à une partie">
+    <button aria-current="true" data-t="voyage">Le voyage</button>
+    <button aria-current="false" data-t="carte">La carte</button>
+    <button aria-current="false" data-t="etapes">Les étapes</button>
+    <button aria-current="false" data-t="comparer">Comparer</button>
+    <button aria-current="false" data-t="pratique">Pratique</button>
+  </nav>
+
+  <div class="panel" id="p-voyage">
+    <div class="bh"><span class="lbl">Choisir</span><h2>La route et la durée</h2>
+      <p>Quatre routes possibles, plus les deux parcours qui ont donné envie du voyage. Le curseur recompose l'itinéraire : quand il n'y a plus assez de nuits, les étapes tombent une par une et on vous dit lesquelles.</p></div>
+    <div class="set">
+      <div>
+        <span class="lbl">Les quatre routes</span>
+        <div class="rlist" id="picks"></div>
+        <span class="lbl sub-lbl">Les parcours d'origine, pour comparaison</span>
+        <div class="rlist" id="picksrc"></div>
+      </div>
+      <div id="dialbox">
+        <span class="lbl">Nuits sur place</span>
+        <div class="dial-n"><b id="dialn">28</b><span id="dialu">nuits</span></div>
+        <input type="range" id="dial" min="16" max="30" value="28" aria-label="Nombre de nuits sur place">
+        <div class="ticks"><span>16</span><span>23</span><span>30</span></div>
+        <div class="dropped" id="dropped"></div>
+        <div class="readout" id="readout"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel alt" id="p-carte">
+    <div class="bh"><span class="lbl">Le trajet</span><h2>La carte</h2>
+      <p>La carte se recadre toute seule sur la route affichée. Faites glisser pour déplacer, molette ou boutons pour zoomer, et cliquez une ville pour ouvrir son étape.</p></div>
+    <div class="mapwrap">
+      <svg id="carte" role="img" aria-label="Carte de Chine et tracé du voyage"></svg>
+      <div class="zoom">
+        <button id="zin" aria-label="Zoomer">+</button>
+        <button id="zout" aria-label="Dézoomer">−</button>
+        <button id="zfit" class="fit" aria-label="Recadrer">FIT</button>
+      </div>
+    </div>
+    <p class="maphint" id="maphint"></p>
+  </div>
+
+  <div class="panel" id="p-etapes">
+    <div class="bh"><span class="lbl">Le détail</span><h2>Les étapes</h2>
+      <p>Cliquez une étape pour l'ouvrir : comment y aller, quoi y faire, ce qu'il faut savoir, où dormir.</p></div>
+    <div id="steps"></div>
+    <p class="credits" id="credits"></p>
+  </div>
+
+  <div class="panel alt" id="p-comparer">
+    <div class="bh"><span class="lbl">Arbitrer</span><h2>Comparer les quatre routes</h2>
+      <p>Ce que chacune apporte, et ce qu'elle coûte.</p></div>
+    <div class="cmp" id="cmp"></div>
+  </div>
+
+  <div class="panel" id="p-pratique">
+    <div class="bh"><span class="lbl">Préparer</span><h2>Pratique</h2>
+      <p>Ce qu'il faut savoir avant de partir, et dans quel ordre s'en occuper.</p></div>
+    <div class="prat">
+      <section>
+        <span class="lbl">Entrée</span><h3>Aucun visa nécessaire</h3>
+        <ul>
+          <li>Exemption de <b>30 jours</b> pour les passeports ordinaires français, en vigueur <b>jusqu'au 31 décembre 2026</b>.</li>
+          <li>Le compteur démarre à minuit le lendemain de l'entrée. Entrée le 14 novembre, <b>sortie au plus tard le 14 décembre</b>.</li>
+          <li><b>Passeport ordinaire</b> valide au-delà de six mois après le retour. Les passeports d'urgence sont exclus. À vérifier en priorité.</li>
+          <li><b>Carte d'arrivée numérique</b> obligatoire, à remplir dans les 72 h. <b>C'est gratuit</b> : des sites frauduleux la facturent.</li>
+          <li>Hong Kong et Macao sont des sorties de Chine continentale : le retour rouvre un compteur de 30 jours.</li>
+        </ul>
+      </section>
+      <section>
+        <span class="lbl">Se déplacer</span><h3>Trains et vols</h3>
+        <ul>
+          <li><b>La fenêtre de vente des trains est de 15 jours</b>, pas 30. Rien ne se réserve depuis la France.</li>
+          <li><b>Le passeport tient lieu de billet</b>, à poser sur le lecteur du portique. Arriver 30 à 45 minutes avant.</li>
+          <li>La <b>seconde classe</b> suffit largement. La première se justifie au-delà de cinq heures.</li>
+          <li>Réserver sur <b>12306</b>, l'application officielle en anglais, ou <b>Trip.com</b> en secours.</li>
+          <li>L'avion ne gagne qu'au-delà de <b>800 km ou 5 h</b> de train porte à porte. Soute souvent limitée à 20 kg en intérieur.</li>
+        </ul>
+      </section>
+      <section>
+        <span class="lbl">Sur place</span><h3>Payer, se connecter</h3>
+        <ul>
+          <li><b>Alipay</b> accepte les cartes Visa et Mastercard étrangères, 3 % de frais au-dessus de 200 yuans. En faire l'outil principal.</li>
+          <li>Le <b>QR Alipay ouvre le métro</b> dans plus de 200 villes.</li>
+          <li>Les cartes physiques ne servent presque à rien au comptoir. Le cash est un filet, pas un moyen de paiement.</li>
+          <li><b>Le VPN n'est plus fiable en 2026.</b> La bonne solution est une <b>eSIM voyage en roaming</b> : le trafic sort par un opérateur étranger.</li>
+          <li>À installer avant de partir : Alipay, WeChat, Amap, DiDi, 12306 ou Trip.com, et une traduction avec appareil photo.</li>
+          <li>Réserver via <b>Trip.com</b> ou Booking. Airbnb est à considérer comme indisponible. Tous les hôtels n'acceptent pas les étrangers.</li>
+        </ul>
+      </section>
+      <section>
+        <span class="lbl">Budget</span><h3>Pour deux, tout compris</h3>
+        <div id="budget"></div>
+        <ul><li>Le plafond fixé était de 3 000 à 5 000 € par personne. On reste dessous.</li></ul>
+      </section>
+      <section>
+        <span class="lbl">Calendrier</span><h3>Dans quel ordre s'y prendre</h3>
+        <ul>
+          <li><b>Cette semaine.</b> Vérifier les deux passeports. Un renouvellement prend plusieurs semaines en mairie.</li>
+          <li><b>Août-septembre.</b> Réserver les vols internationaux : on est dans la zone optimale, 60 à 110 jours avant. Comparer en prix final, deux personnes, deux bagages en soute.</li>
+          <li><b>Septembre.</b> Assurance voyage avec rapatriement, vaccins recommandés.</li>
+          <li><b>Octobre.</b> Installer et tester les applications, commander l'eSIM, prévenir la banque.</li>
+          <li><b>Début novembre.</b> Réserver les trains au fur et à mesure, et les quotas des sites à réservation nominative.</li>
+        </ul>
+      </section>
+      <section>
+        <span class="lbl">Météo</span><h3>Ce que dit la saison</h3>
+        <ul>
+          <li><b>Aucun jour férié chinois</b> entre le 13 novembre et le 14 décembre : le creux touristique de l'année.</li>
+          <li><b>Le chauffage au charbon démarre le 15 novembre</b> dans tout le nord. Pékin est à faire tout de suite.</li>
+          <li>Trois choses n'existent qu'à cette période : les <b>rizières de Yuanyang en eau</b>, les <b>mouettes de Sibérie à Kunming</b>, et le <b>feuillage du delta</b>.</li>
+          <li>Le <b>Yunnan est la meilleure région du pays</b> sur cette fenêtre : 8 à 19 °C, sec, ensoleillé.</li>
+          <li>Chongqing et Chengdu sont gris, mais ce qu'on y fait ne dépend pas du soleil. Zhangjiajie, si.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function mk(t,a,txt){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e;}
+function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;}
+var U="https://upload.wikimedia.org/wikipedia/commons/";
+
+var A=17.7,C=0.8192;
+function px(lon){return 45+(lon-73)*A*C;} function py(lat){return 45+(54-lat)*A;}
+var OUTLINE=[[73.5,39.5],[75,40.5],[76.5,43],[80.5,45],[82.5,45.2],[85,47],[87,49],[90,47.9],[95,44],[97,42.8],
+[100,42.6],[105,41.8],[110,42.5],[111.5,43.5],[115,45],[117,46.5],[119.5,46.7],[120,48],[122,50],[124,53.3],
+[127,50.3],[130.7,48.9],[134.7,48.4],[133,45.2],[131.3,43],[130.6,42.4],[128,42],[126,41],[124.4,40],[122,39.5],
+[121.5,38.7],[119,39.2],[117.5,38.5],[119,37.5],[122.7,37.4],[120.2,36],[119.2,34.5],[121.8,32],[121.9,30.9],
+[120.5,30],[121.6,28.3],[119.8,26.5],[118.2,24.5],[116.5,23.2],[113.5,22.2],[110.5,21.2],[109.7,21.5],[108.5,21.6],
+[106.7,22.2],[105.3,23.3],[103.5,22.6],[101.8,21.2],[100.1,21.4],[99.2,22.1],[97.5,23.9],[97.7,25.5],[98.7,27.5],
+[96.2,29.1],[94.7,29.1],[92.1,27.8],[89.1,27.3],[85.8,28.2],[83.6,29.2],[81.2,30.4],[79,32.5],[78.7,34.5],[76.5,35.5],[74.9,37]];
+
+/* photos : Wikimedia Commons, licences libres. Repli sur vignette dessinée si le réseau les bloque. */
+var PH={
+ pekin:{d:"f/fa",f:"Great_Wall_of_China_July_2006.JPG",w:2288,c:"Velatrix, CC0"},
+ shanghai:{d:"d/df",f:"Pudong_Shanghai_November_2017_panorama.jpg",w:10200,c:"King of Hearts, CC BY-SA 4.0"},
+ suzhou:{d:"f/f5",f:"Humble_Administrator%27s_Garden_Suzhou_November_2017_005.jpg",w:6016,c:"King of Hearts, CC BY-SA 4.0"},
+ zhangjiajie:{d:"4/47",f:"Zhangjiajie_National_Forest_Park.jpg",w:3648,c:"Kuruman, CC BY 2.0"},
+ chongqing:{d:"0/0e",f:"Hongyadong_in_Chongqing.jpg",w:3264,c:"Youyiy33, CC BY-SA 4.0"},
+ chengdu:{d:"f/fe",f:"Panda_in_Chengdu_Research_Base_of_Giant_Panda_Breeding_-_7708872342.jpg",w:4769,c:"George Lu, CC BY 2.0"},
+ lijiang:{d:"7/74",f:"1_lijiang_old_town_night.jpg",w:7360,c:"chensiyuan, CC BY-SA 4.0"},
+ shaxi:{d:"a/a3",f:"Shaxi%2C_Yunnan%2C_China.jpg",w:10360,c:"Matthieu Lelievre, CC BY-SA 2.0"},
+ dali:{d:"5/5e",f:"Dali_Yunnan_China_Chongsheng-Temple-03.jpg",w:3500,c:"CEphoto Uwe Aranas, CC BY-SA 3.0"},
+ kunming:{d:"f/fc",f:"Black_Headed_Gull_In_Kunming_China_%28102446461%29.jpeg",w:2048,c:"Charrine Liu, CC BY-SA 3.0"},
+ yuanyang:{d:"8/82",f:"1_yuanyang_rice_terrace_duoyishu_sunrise_2012.jpg",w:7360,c:"chensiyuan, CC BY-SA 4.0"},
+ shilin:{d:"f/fe",f:"Shilin_Yunnan_China_Shilin-Stone-Forest-01.jpg",w:3547,c:"CEphoto Uwe Aranas, CC BY-SA 3.0"},
+ shangrila:{d:"9/90",f:"1_songzanlin_2018a.jpg",w:8256,c:"Chensiyuan, CC BY-SA 4.0"}
+};
+/* Wikimedia ne genere que certaines largeurs de vignette. Au-dela, on sert le fichier d'origine. */
+var BUCKETS=[330,960,1280,1920];
+function imgurl(id,want){
+  var p=PH[id]; if(!p) return "";
+  for(var i=0;i<BUCKETS.length;i++){
+    if(BUCKETS[i]>=want && BUCKETS[i]<p.w) return U+"thumb/"+p.d+"/"+p.f+"/"+BUCKETS[i]+"px-"+p.f;
+  }
+  return U+p.d+"/"+p.f;
+}
+var V={
+ pekin:{fr:"Pékin",han:"北京",lat:39.90,lon:116.41,alt:44,an:"start",vig:"muraille"},
+ shanghai:{fr:"Shanghai",han:"上海",lat:31.23,lon:121.47,alt:4,an:"start",vig:"tours"},
+ suzhou:{fr:"Suzhou",han:"苏州",lat:31.30,lon:120.58,alt:5,an:"end",dy:-9,vig:"pont"},
+ hefei:{fr:"Hefei",han:"合肥",lat:31.82,lon:117.23,alt:30,an:"end",vig:"usine"},
+ zhangjiajie:{fr:"Zhangjiajie",han:"张家界",lat:29.35,lon:110.48,alt:400,an:"start",vig:"pitons"},
+ chongqing:{fr:"Chongqing",han:"重庆",lat:29.56,lon:106.55,alt:244,an:"middle",dy:-15,vig:"tours"},
+ chengdu:{fr:"Chengdu",han:"成都",lat:30.57,lon:104.07,alt:500,an:"end",vig:"bambous"},
+ leshan:{fr:"Leshan",han:"乐山",lat:29.55,lon:103.77,alt:400,an:"end",dy:15,vig:"falaise"},
+ lijiang:{fr:"Lijiang",han:"丽江",lat:26.87,lon:100.23,alt:2400,an:"end",dy:-7,vig:"neige"},
+ shangrila:{fr:"Shangri-La",han:"香格里拉",lat:27.83,lon:99.71,alt:3200,an:"end",dy:-7,vig:"stupa"},
+ shaxi:{fr:"Shaxi",han:"沙溪",lat:26.32,lon:99.86,alt:2100,an:"end",dy:9,vig:"village"},
+ shangguan:{fr:"Shangguan",han:"上关",lat:25.95,lon:100.18,alt:1970,an:"end",dy:21,vig:"lac"},
+ dali:{fr:"Dali",han:"大理",lat:25.61,lon:100.27,alt:1970,an:"end",dy:23,vig:"pagodes"},
+ kunming:{fr:"Kunming",han:"昆明",lat:25.04,lon:102.72,alt:1890,an:"start",dy:6,vig:"oiseaux"},
+ shilin:{fr:"Shilin",han:"石林",lat:24.77,lon:103.27,alt:1750,an:"start",dy:18,vig:"karst"},
+ yuxi:{fr:"Yuxi",han:"玉溪",lat:24.35,lon:102.55,alt:1630,an:"end",dy:16,vig:"village"},
+ yuanyang:{fr:"Yuanyang",han:"元阳",lat:23.11,lon:102.75,alt:1600,an:"start",dy:14,vig:"terrasses"}
+};
+var GH=[{n:"Xi'an",lat:34.34,lon:108.94},{n:"Canton",lat:23.13,lon:113.26,an:"end"},{n:"Lhassa",lat:29.65,lon:91.14},
+{n:"Harbin",lat:45.80,lon:126.53},{n:"Urumqi",lat:43.83,lon:87.62},{n:"Hong Kong",lat:22.32,lon:114.17,an:"start",dy:12},
+{n:"Guilin",lat:25.27,lon:110.29,an:"start"},{n:"Hangzhou",lat:30.27,lon:120.15,an:"start",dy:11}];
+
+var LEG={
+ "pekin>shanghai":{air:0,d:"4 h 18 de train",t:"Pékin Sud vers Shanghai Hongqiao, environ 498 yuans en seconde classe. L'avion ne gagne rien de porte à porte."},
+ "shanghai>zhangjiajie":{air:1,d:"2 h 30 de vol",t:"Puis cinquante minutes de route jusqu'à Wulingyuan. En train ce serait neuf heures par Changsha."},
+ "shanghai>lijiang":{air:1,d:"4 h de vol",t:"À vérifier en saison hiver. À défaut, Shanghai vers Kunming, puis le train jusqu'à Lijiang en trois à quatre heures."},
+ "shanghai>chongqing":{air:1,d:"2 h 30 de vol",t:"Chongqing est aussi desservie en direct depuis Paris, deux fois par semaine."},
+ "zhangjiajie>chongqing":{air:0,d:"2 h à 3 h 30 de train",t:"Précédé d'une heure de route depuis Wulingyuan : la gare à grande vitesse n'est pas au parc."},
+ "chongqing>chengdu":{air:0,d:"1 h à 1 h 30 de train",t:"Le trajet le plus court du voyage."},
+ "chengdu>lijiang":{air:1,d:"1 h 30 à 2 h de vol",t:"Puis quarante minutes jusqu'à la vieille ville. La soute des vols intérieurs est souvent limitée à vingt kilos."},
+ "lijiang>shaxi":{air:0,d:"2 h",t:"Train jusqu'à Jianchuan, puis quarante minutes de route sur trente kilomètres."},
+ "shaxi>dali":{air:0,d:"2 h",t:"Quarante minutes de route, puis une heure de train. La gare de Dali est à dix kilomètres de la vieille ville."},
+ "dali>kunming":{air:0,d:"2 h de train",t:"Environ 150 à 200 yuans en seconde classe."},
+ "kunming>yuanyang":{air:0,d:"4 h 30",t:"Trois heures de train jusqu'à Nansha, puis une heure et demie de route de montagne. Les terrasses sont mille mètres au-dessus de la vallée."},
+ "yuanyang>kunming":{air:0,d:"4 h 30",t:"Le trajet le plus exposé aux imprévus : route de montagne et brume du matin. Partir tôt."},
+ "dali>yuanyang":{air:0,d:"7 h",t:"Dali vers Kunming puis Kunming vers Yuanyang dans la même journée. C'est le prix de cette route."},
+ "lijiang>shangrila":{air:0,d:"1 à 2 h de train",t:"Ligne ouverte en novembre 2023. On monte à 3 200 mètres."},
+ "shangrila>shaxi":{air:0,d:"4 h de route",t:"Redescente vers la vallée."},
+ "shaxi>shangguan":{air:0,d:"1 h 30 de route",t:"Rive nord du lac Erhai."},
+ "shangguan>dali":{air:0,d:"45 min",t:"Le long du lac."},
+ "kunming>shilin":{air:0,d:"1 h",t:"Train ou route, en excursion depuis Kunming."},
+ "shilin>yuxi":{air:0,d:"2 h de route",t:"Dernière étape chinoise de l'émission."},
+ "shanghai>suzhou":{air:0,d:"25 min de train",t:"Plusieurs trains par heure."},
+ "suzhou>hefei":{air:0,d:"2 h de train",t:"Les trains partent de Suzhou Nord, à quinze kilomètres du centre."},
+ "hefei>zhangjiajie":{air:1,d:"vol, ou 8 h de train",t:"La liaison la plus pénible du parcours de Kevin Tran."},
+ "chengdu>leshan":{air:0,d:"1 h de train",t:"En excursion à la journée depuis Chengdu."}
+};
+
+var S={
+ pekin:{sky:"sec, souvent dégagé",temp:"−1 à 10 °C",src:"",
+  why:"Premier voyage en Chine. La Muraille, la Cité Interdite et le Temple du Ciel ne se ratent pas.",
+  ok:["Cité Interdite, puis la colline de Jingshan pour la vue au couchant","Grande Muraille à Mutianyu, journée entière, section restaurée et bien moins fréquentée que Badaling","Temple du Ciel au petit matin, à l'heure du tai-chi","Hutongs de Nanluoguxiang le jour de l'arrivée, rien d'ambitieux"],
+  warn:"Le chauffage collectif au charbon démarre le 15 novembre dans tout le nord. Ces journées sont la seule fenêtre où l'air reste correct. Mutianyu passe en horaires d'hiver le 16 novembre. La première journée est mangée par les sept heures de décalage.",
+  stay:"Un hutong de Dongcheng, 50 à 110 € la nuit."},
+ shanghai:{sky:"7 h de soleil par jour",temp:"17 à 23 °C",src:"vu chez Kevin Tran",
+  why:"Le point de départ de la vidéo, et le choc de modernité qui a donné envie du voyage.",
+  ok:["Le Bund, Yu Garden et la vieille ville","L'ancienne concession française, à pied","Pop Mart, les centres commerciaux, Nanjing Road de nuit","Le marché aux célibataires de People's Park, le week-end","Suzhou en excursion : vingt-cinq minutes de train"],
+  warn:"En dessous de quatre nuits, l'excursion à Suzhou saute. C'est le premier endroit où reprendre une nuit.",
+  stay:"Concession française ou Jing'an, 60 à 110 €."},
+ zhangjiajie:{sky:"brouillard fréquent",temp:"10 à 20 °C",src:"vu chez Kevin Tran",
+  why:"Les pitons de grès qui ont inspiré Avatar, et le spectacle sur la minorité Tujia.",
+  ok:["Parc national de Wulingyuan. Il reste ouvert quoi qu'il arrive","Tianmen Shan : téléphérique, route aux quatre-vingt-dix-neuf virages, passerelle de verre","Le spectacle Tujia, en salle, indépendant du temps","Exosquelettes de marche en location pour les escaliers"],
+  warn:"C'est le pari météo du voyage, assumé. Par brouillard givrant, les téléphériques A et B et la passerelle de verre ferment. La ligne C tient mieux. Le premier givre est tombé le 17 novembre en 2025. Trois nuits, c'est trois chances.",
+  stay:"À Wulingyuan, la porte du parc, 40 à 90 €."},
+ chongqing:{sky:"quasi jamais de soleil",temp:"11 à 17 °C",src:"vu chez Kevin Tran",
+  why:"La ville cyberpunk, l'étape la plus longue de la vidéo. Et elle est pile sur la route.",
+  ok:["Le métro de Liziba, qui traverse un immeuble d'habitation","Les abris anti-aériens reconvertis en galeries de boutiques","Hongyadong et Jiefangbei de nuit, le téléphérique du Yangtsé, la croisière","Le hotpot à marmite compartimentée, côté rouge et côté doux","Les sneakers Li-Ning et Anta, sans commune mesure avec les prix français"],
+  warn:"Mille heures de soleil par an, et presque aucune de novembre à février. Mais tout cela est nocturne ou souterrain, et la brume sert la ville de nuit. Ce qui saute, ce sont les panoramas de jour.",
+  stay:"Vue sur Jiefangbei, 50 à 110 €."},
+ chengdu:{sky:"3 à 5 h de soleil par jour",temp:"8 à 15 °C",src:"vu chez Kevin Tran",
+  why:"Les pandas. Et le Grand Bouddha de Leshan.",
+  ok:["La base de recherche sur le panda géant, tôt le matin, quand ils bougent","Leshan en excursion : trois cent quatre-vingts mètres d'escaliers taillés dans la falaise","L'opéra du Sichuan et son changement de masques, en salle","Les maisons de thé et le parc du Peuple"],
+  warn:"Trois à cinq heures de soleil par jour et brouillard du matin, mais sans conséquence ici : les pandas sont en enclos et Leshan est une falaise. Prévoir la réservation par quota, passeport requis.",
+  stay:"Chunxi Road ou le parc du Peuple, 50 à 110 €."},
+ lijiang:{sky:"sec et ensoleillé",temp:"0 à 19 °C",src:"vu dans Pékin Express",
+  why:"Le point d'entrée du segment chinois de l'émission, et la plus belle vieille ville du sud-ouest.",
+  ok:["La vieille ville de Dayan, le Palais Mu, l'Étang du Dragon noir : les trois lieux exacts du sprint","Le Yulong Xue Shan, téléphérique jusqu'à 4 506 mètres","Les Gorges du Saut du Tigre, à la journée ou avec une nuit sur place","Baisha, plus calme que Lijiang"],
+  warn:"Le téléphérique monte à 4 506 mètres : risque réel de mal aigu des montagnes, oxygène vendu sur place. Et une précision d'honnêteté : ni le Saut du Tigre ni le Yulong ne sont confirmés dans l'émission, contrairement à ce qu'on lit partout.",
+  stay:"Une cour naxi dans la vieille ville, 40 à 100 €."},
+ shaxi:{sky:"sec et ensoleillé",temp:"2 à 18 °C",src:"vu dans Pékin Express",
+  why:"La seule vraie campagne du voyage. Ancien relais de la route du thé et des chevaux, presque personne.",
+  ok:["La place de Sideng et son théâtre","Les temples de Shibaoshan, à flanc de montagne","Marche ou vélo dans la vallée","Le marché du vendredi, si la date se confirme"],
+  warn:"Tous les hébergements de village n'acceptent pas les étrangers, il faut filtrer explicitement. Chauffage souvent sommaire, et les nuits sont froides.",
+  stay:"Une maison d'hôtes au village, 35 à 80 €."},
+ dali:{sky:"sec et ensoleillé",temp:"5 à 19 °C",src:"vu dans Pékin Express",
+  why:"Le lac Erhai, le Cangshan, la culture bai. Le cœur de la septième étape.",
+  ok:["Les Trois Pagodes, lieu confirmé de l'épreuve des planchettes","Le tour du lac Erhai à vélo, par Xizhou et Shuanglang","Le téléphérique du Cangshan et le sentier des nuages","La vieille ville"],
+  warn:"",stay:"Vieille ville ou bord d'Erhai, 40 à 110 €. C'est ici qu'un bel hôtel à cent euros se justifie le plus."},
+ kunming:{sky:"sec et ensoleillé",temp:"5 à 19 °C",src:"vu dans Pékin Express",
+  why:"Deux lieux de l'émission, un spectacle qui n'existe qu'en hiver, et la porte de sortie.",
+  ok:["Les mouettes rieuses de Sibérie, jusqu'à quarante mille oiseaux, au barrage de Haigeng et au parc du Lac Vert","Le marché aux fleurs de Dounan, le plus grand d'Asie, en soirée","La Forêt de pierre de Shilin en excursion"],
+  warn:"À deux nuits, il faut choisir entre Shilin et le reste.",stay:"Près du parc du Lac Vert, 40 à 80 €."},
+ yuanyang:{sky:"brume le matin, dégagé ensuite",temp:"10 à 22 °C",src:"",
+  why:"Le meilleur argument de saison de toute la Chine à ces dates. Les rizières hani sont en eau de novembre à mars et renvoient le ciel.",
+  ok:["Le lever du jour à Duoyishu","Le couchant à Laohuzui","Les terrasses de Bada, les villages et les marchés hani"],
+  warn:"Deux levers avant l'aube, la seule contrainte physique du voyage. Et c'est un cul-de-sac : quatre heures et demie pour descendre, autant pour remonter. Loger en haut, pas dans la vallée.",
+  stay:"Duoyishu ou Pugaolao, 30 à 70 €."},
+ suzhou:{sky:"7 h de soleil par jour",temp:"14 à 20 °C",src:"vu chez Kevin Tran",why:"La ville natale de sa grand-mère, qu'il n'avait jamais visitée.",
+  ok:["Les jardins classés, dont l'Humble Administrateur","Les canaux de Pingjiang Road","Le musée de I. M. Pei"],warn:"",stay:"Centre historique, 40 à 90 €."},
+ hefei:{sky:"souvent gris",temp:"8 à 15 °C",src:"vu chez Kevin Tran",why:"L'usine NIO : soixante voitures par heure, échange de batterie en trois minutes.",
+  ok:["Rien d'autre. C'était un accès privé obtenu par ses contacts"],
+  warn:"L'usine n'est pas visitable. Sans elle la ville n'a aucun intérêt touristique : c'est pour ça qu'elle ne figure dans aucune des quatre routes.",stay:"—"},
+ leshan:{sky:"3 à 5 h de soleil par jour",temp:"8 à 15 °C",src:"vu chez Kevin Tran",why:"Le Grand Bouddha sculpté dans la falaise entre 713 et 803.",
+  ok:["Les trois cent quatre-vingts mètres d'escaliers taillés dans le grès","La descente par le fleuve"],warn:"",stay:"En excursion depuis Chengdu."},
+ shangrila:{sky:"sec, gel toutes les nuits",temp:"−5 à 12 °C",src:"vu dans Pékin Express",why:"Étape de la sixième manche. Culture tibétaine, 3 200 mètres.",
+  ok:["Le monastère de Songzanlin","La vieille ville","Le lac Napa"],
+  warn:"Gel nocturne systématique et prairies jaunies à cette saison. C'est aussi une étape que seule Wikipédia documente : elle n'a jamais pu être recoupée.",stay:"40 à 90 €."},
+ shangguan:{sky:"sec et ensoleillé",temp:"5 à 19 °C",src:"vu dans Pékin Express",why:"Arrivée de la sixième manche, rive nord du lac Erhai. S'appelait autrefois Jiangwei.",
+  ok:["Le lac, les villages bai de la rive nord"],warn:"Lieu identifié seulement par le tableau de Wikipédia, jamais recoupé.",stay:"—"},
+ shilin:{sky:"sec et ensoleillé",temp:"5 à 19 °C",src:"vu dans Pékin Express",why:"La Forêt de pierre, karst de 270 millions d'années, site emblématique de la huitième manche.",
+  ok:["Le labyrinthe de pitons calcaires","Le village yi voisin"],warn:"",stay:"En excursion depuis Kunming."},
+ yuxi:{sky:"sec et ensoleillé",temp:"7 à 20 °C",src:"vu dans Pékin Express",why:"Arrivée de la dernière manche chinoise, à l'école de musique de l'université normale.",
+  ok:["Rien de touristique"],warn:"Ville sans intérêt pour un voyageur, retenue sur une seule ligne de Wikipédia. C'est pour ça qu'elle ne figure dans aucune route.",stay:"—"}
+};
+
+var R=[
+ {k:"A",name:"La traversée",sub:"d'est en ouest, de la Grande Muraille au plateau du Yunnan",
+  seq:[["pekin",4,3,1],["shanghai",3,2,3],["zhangjiajie",3,2,5],["chongqing",3,2,6],["chengdu",3,2,4],["lijiang",4,3,1],["shaxi",3,2,7],["dali",3,2,2],["kunming",2,2,1]],
+  p:["Tout ce qui fait envie : la Muraille, Avatar, les pandas, le hotpot, le spectacle Tujia","Dix des douze lieux du parcours de l'émission","Une ligne droite d'est en ouest : six trajets sur huit en train, tous sous quatre heures trente","Shaxi garde une respiration rurale au milieu des villes"],
+  n:["Neuf bases, c'est dense","Yuanyang sacrifié, et c'était le plus bel argument de saison","Deux jours de marge seulement sur le visa","Zhangjiajie peut être noyé dans le brouillard"]},
+ {k:"B",name:"Le Yunnan",sub:"deux fois moins de villes, deux fois plus de campagne",
+  seq:[["pekin",4,3,1],["shanghai",4,2,2],["lijiang",4,3,1],["shaxi",3,2,5],["dali",3,2,2],["kunming",2,2,1],["yuanyang",3,3,3],["kunming",1,1,4]],
+  p:["Un rythme tenu : trois à quatre nuits partout","Yuanyang et ses rizières en eau","Un seul vol intérieur","La meilleure météo du pays sur les deux tiers du séjour","Six jours de marge sur le visa, la plus confortable"],
+  n:["Pas de pandas","Ni Zhangjiajie ni Chongqing","Trois vieilles villes du Yunnan à la suite, ça peut se ressembler","Il ne reste presque rien du parcours de Kevin Tran"]},
+ {k:"C",name:"La valeur sûre",sub:"rien au programme qui puisse être annulé par le brouillard",
+  seq:[["pekin",4,3,1],["shanghai",3,2,3],["chongqing",3,2,5],["chengdu",3,2,4],["lijiang",4,3,1],["shaxi",3,2,6],["dali",3,2,2],["kunming",2,2,1]],
+  p:["Les pandas et Chongqing, sans le risque de tout trouver fermé","Tout ce qui reste est soit ensoleillé, soit insensible au temps","Cinq jours de marge sur le visa","Une base de moins que la route A"],
+  n:["Pas les pitons d'Avatar, le paysage le plus fort des deux parcours","Pas de spectacle Tujia non plus","Yuanyang toujours absent"]},
+ {k:"D",name:"L'intégrale",sub:"tout, jusqu'au dernier jour autorisé par le visa",
+  seq:[["pekin",4,3,1],["shanghai",3,2,4],["zhangjiajie",3,2,6],["chongqing",3,2,7],["chengdu",3,2,5],["lijiang",3,3,1],["shaxi",3,2,8],["dali",3,2,2],["yuanyang",3,3,3],["kunming",2,2,1]],
+  p:["Littéralement tout, rien n'est sacrifié","Les rizières en eau, les pandas et les pitons dans le même voyage"],
+  n:["Aucune marge sur le visa : un vol retardé au retour devient une amende","Dix bases, neuf trajets, c'est un marathon","Sept heures de trajet entre Dali et Yuanyang","Contredit tout ce qui avait été demandé au départ"]}
+];
+var SRC=[
+ {name:"Pékin Express",sub:"saison 22, le segment chinois, tourné à l'automne 2025",
+  seq:["lijiang","shangrila","shaxi","shangguan","dali","kunming","shilin","yuxi"],
+  note:"Le parcours réel des candidats. Tout tient dans le Yunnan. Attention : cinq lieux seulement sont solidement sourcés. Shangri-La, Shaxi et Shangguan ne viennent que de Wikipédia, et le replay a expiré."},
+ {name:"Kevin Tran",sub:"un mois, du 4 novembre au 5 décembre 2025",
+  seq:["shanghai","suzhou","hefei","zhangjiajie","chongqing","chengdu","leshan"],
+  note:"Son trajet, fait exactement à vos dates à un an près. Neuf vidéos, transcription extraite, source solide. Hefei était une usine NIO en accès privé, non visitable."}
+];
+var BUDGET=[["Vols internationaux, open-jaw","1 200 – 1 800 €"],["Visa","0 €"],["Vols intérieurs","150 – 400 €"],
+["Trains","200 – 350 €"],["Transferts locaux","150 – 300 €"],["Hébergement","950 – 1 700 €"],["Nourriture","620 – 1 150 €"],
+["Visites et téléphériques","300 – 550 €"],["Assurance","80 – 150 €"],["Marge 10 %","365 – 650 €"]];
+
+var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+var START=new Date(Date.UTC(2026,10,14)),VISA=new Date(Date.UTC(2026,11,14));
+function addD(d,n){var x=new Date(d.getTime());x.setUTCDate(x.getUTCDate()+n);return x;}
+function fmt(d){return d.getUTCDate()+" "+MOIS[d.getUTCMonth()];}
+
+var cur=0,mode="route",sel=null,target=28,vb=null,curIds=[];
+var HERO=["zhangjiajie","yuanyang","lijiang","zhangjiajie"],HEROSRC=["lijiang","zhangjiajie"];
+/* un caractere par route, choisi pour son sens */
+var HAN=[
+ {c:"穿越",p:"chuānyuè",m:"traverser"},
+ {c:"云南",p:"Yúnnán",m:"le Yunnan, au sud des nuages"},
+ {c:"晴天",p:"qíngtiān",m:"ciel dégagé"},
+ {c:"全程",p:"quánchéng",m:"le parcours entier"}];
+var HANSRC=[
+ {c:"龙",p:"lóng",m:"dragon, d'après le titre de la saison"},
+ {c:"陈科伟",p:"Chén Kēwěi",m:"le nom chinois de Kevin Tran"}];
+
+function plan(route,tgt){
+  var s=route.seq.map(function(x){return {id:x[0],n:x[1],ideal:x[1],min:x[2],prio:x[3]};});
+  var sum=function(){return s.reduce(function(a,x){return a+x.n;},0);};
+  var dropped=[],g=0;
+  while(sum()>tgt&&g++<500){
+    var c=null; s.forEach(function(x){if(x.n>x.min&&(!c||x.prio>c.prio))c=x;});
+    if(c){c.n--;continue;}
+    var k=null; s.forEach(function(x,i){if(i===0||i===s.length-1||x.prio<=1)return;if(!k||x.prio>k.prio)k=x;});
+    if(!k)break; dropped.push(V[k.id].fr); s=s.filter(function(x){return x!==k;});
+  }
+  g=0;
+  while(sum()<tgt&&g++<500){
+    var a=null; s.forEach(function(x){if(x.n<x.ideal+2&&(!a||x.prio<a.prio))a=x;});
+    if(!a){s[0].n++;continue;} a.n++;
+  }
+  for(var i=s.length-1;i>0;i--) if(s[i].id===s[i-1].id){s[i-1].n+=s[i].n;s.splice(i,1);}
+  return {s:s,dropped:dropped};
+}
+
+/* bandeau d'encre décoratif en tête */
+(function(){
+  var svg=document.getElementById("inkband");
+  var pts=[],n=9;
+  for(var i=0;i<n;i++) pts.push({x:i*(1200/(n-1)),y:120-Math.sin(i*.9)*46-i*3});
+  function cr(p0,p1,p2,p3,t){var t2=t*t,t3=t2*t;return{
+    x:.5*((2*p1.x)+(-p0.x+p2.x)*t+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3),
+    y:.5*((2*p1.y)+(-p0.y+p2.y)*t+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3)};}
+  var mid=[];
+  for(var i2=0;i2<pts.length-1;i2++){var p0=pts[i2-1]||pts[i2],p1=pts[i2],p2=pts[i2+1],p3=pts[i2+2]||pts[i2+1];
+    for(var k=0;k<26;k++) mid.push(cr(p0,p1,p2,p3,k/26));}
+  mid.push(pts[pts.length-1]);
+  var up=[],dn=[];
+  for(var j=0;j<mid.length;j++){
+    var a=mid[Math.max(0,j-1)],b=mid[Math.min(mid.length-1,j+1)];
+    var dx=b.x-a.x,dy=b.y-a.y,L=Math.sqrt(dx*dx+dy*dy)||1,t=j/(mid.length-1);
+    var w=(2+30*Math.pow(Math.sin(Math.PI*Math.min(t*1.05,1)),.5)*(1-.45*Math.pow(t,3)))/2;
+    up.push([mid[j].x-dy/L*w,mid[j].y+dx/L*w]); dn.push([mid[j].x+dy/L*w,mid[j].y-dx/L*w]);
+  }
+  svg.appendChild(mk("path",{d:"M"+up.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1);}).join("L")
+    +"L"+dn.reverse().map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1);}).join("L")+"Z",fill:"currentColor"}));
+})();
+
+/* vignettes de repli */
+function vignette(kind){
+  var W=120,H=62,g=mk("g");
+  function add(t,a){g.appendChild(mk(t,a));}
+  function hill(cx,w,h,op){add("path",{d:"M"+(cx-w)+","+H+"Q"+cx+","+(H-h*1.5)+" "+(cx+w)+","+H+"Z",fill:"currentColor",opacity:op});}
+  function peak(cx,w,h,op){add("path",{d:"M"+(cx-w)+","+H+"L"+cx+","+(H-h)+"L"+(cx+w)+","+H+"Z",fill:"currentColor",opacity:op});}
+  add("line",{x1:0,y1:H-.5,x2:W,y2:H-.5,stroke:"currentColor","stroke-width":.8,opacity:.5});
+  if(kind==="muraille"){ hill(26,34,26,.16); hill(92,36,22,.12);
+    var d="M4,44"; for(var i=0;i<9;i++){var nx=4+i*14,ny=44-Math.sin(i*.8)*11; d+="L"+nx+","+ny+"L"+(nx+7)+","+(ny-5)+"L"+(nx+7)+","+ny;}
+    add("path",{d:d,fill:"none",stroke:"currentColor","stroke-width":1.7,opacity:.85}); }
+  else if(kind==="tours"){ [[16,30],[27,44],[39,22],[50,52],[62,34],[73,46],[85,26],[96,38],[107,30]].forEach(function(t,i){
+    add("rect",{x:t[0],y:H-t[1],width:8,height:t[1],fill:"currentColor",opacity:i%2?.55:.8});}); }
+  else if(kind==="pitons"){ [[14,44,7],[30,54,6],[44,38,5],[58,58,8],[74,46,6],[88,52,7],[102,40,5]].forEach(function(p,i){
+    add("path",{d:"M"+(p[0]-p[2])+","+H+"L"+(p[0]-p[2]*.6)+","+(H-p[1])+"Q"+p[0]+","+(H-p[1]-6)+" "+(p[0]+p[2]*.6)+","+(H-p[1])+"L"+(p[0]+p[2])+","+H+"Z",fill:"currentColor",opacity:i%2?.6:.85});}); }
+  else if(kind==="neige"){ peak(58,46,50,.85); add("path",{d:"M42,26L58,12L74,26L66,25L58,21L50,25Z",fill:"var(--pap2)"}); peak(16,26,26,.3); peak(102,26,22,.25); }
+  else if(kind==="pagodes"){ hill(70,52,30,.16); [[26,34,1],[46,26,.8],[13,26,.8]].forEach(function(p){
+    for(var k=0;k<5;k++){var w=8-k*1.2; add("rect",{x:p[0]-w/2,y:H-p[1]+k*(p[1]/5.6),width:w,height:1.6,fill:"currentColor",opacity:p[2]});}
+    add("line",{x1:p[0],y1:H-p[1]-4,x2:p[0],y2:H,stroke:"currentColor","stroke-width":1.1,opacity:p[2]});}); }
+  else if(kind==="terrasses"){ for(var t2=0;t2<7;t2++){var yy=H-6-t2*6.5,amp=5-t2*.4;
+    add("path",{d:"M0,"+yy+"Q30,"+(yy-amp)+" 60,"+yy+"T120,"+yy,fill:"none",stroke:"currentColor","stroke-width":1.3,opacity:.28+t2*.09});} }
+  else if(kind==="oiseaux"){ add("path",{d:"M0,52Q30,48 60,52T120,50",fill:"none",stroke:"currentColor","stroke-width":1,opacity:.35}); hill(96,34,20,.14);
+    [[22,18],[38,26],[54,14],[70,24],[30,34],[62,32]].forEach(function(b,i){add("path",{d:"M"+b[0]+","+b[1]+"q4,-4 8,0 q4,-4 8,0",fill:"none",stroke:"currentColor","stroke-width":1.2,opacity:i%2?.55:.85});}); }
+  else if(kind==="bambous"){ [18,32,48,66,84,100].forEach(function(x,i){
+    add("line",{x1:x,y1:H,x2:x+(i%2?3:-3),y2:8+i*2,stroke:"currentColor","stroke-width":1.6,opacity:.4+(i%3)*.2});
+    for(var k=1;k<4;k++) add("line",{x1:x-4,y1:H-k*13,x2:x+7,y2:H-k*13-5,stroke:"currentColor","stroke-width":1,opacity:.35});}); }
+  else if(kind==="karst"){ [[18,30,9],[40,44,7],[60,26,10],[80,40,8],[101,30,7]].forEach(function(p,i){
+    add("path",{d:"M"+(p[0]-p[2])+","+H+"L"+(p[0]-p[2]*.5)+","+(H-p[1])+"L"+p[0]+","+(H-p[1]-5)+"L"+(p[0]+p[2]*.5)+","+(H-p[1])+"L"+(p[0]+p[2])+","+H+"Z",fill:"currentColor",opacity:i%2?.55:.8});}); }
+  else if(kind==="lac"){ hill(34,40,28,.18); hill(88,36,22,.13);
+    [46,52,58].forEach(function(y,i){add("path",{d:"M6,"+y+"Q40,"+(y-3)+" 74,"+y+"T118,"+(y-1),fill:"none",stroke:"currentColor","stroke-width":1.1,opacity:.5-i*.12});}); }
+  else if(kind==="stupa"){ peak(24,30,34,.25); peak(98,28,30,.2);
+    add("path",{d:"M52,62L52,40Q60,22 68,40L68,62Z",fill:"currentColor",opacity:.8});
+    add("circle",{cx:60,cy:24,r:5,fill:"currentColor",opacity:.8});
+    add("line",{x1:60,y1:8,x2:60,y2:19,stroke:"currentColor","stroke-width":1.4,opacity:.8}); }
+  else if(kind==="falaise"){ add("path",{d:"M0,62L0,10L36,10L44,62Z",fill:"currentColor",opacity:.18});
+    add("path",{d:"M14,50L14,26Q14,18 22,18Q30,18 30,26L30,50Z",fill:"currentColor",opacity:.85});
+    add("circle",{cx:22,cy:20,r:5.4,fill:"currentColor",opacity:.85});
+    [58,72,86,100].forEach(function(y,i){add("path",{d:"M46,"+(y-6)+"Q80,"+(y-11)+" 118,"+(y-6),fill:"none",stroke:"currentColor","stroke-width":1,opacity:.42-i*.07});}); }
+  else if(kind==="pont"){ hill(100,32,20,.13);
+    add("path",{d:"M6,50Q40,26 74,50",fill:"none",stroke:"currentColor","stroke-width":2,opacity:.85});
+    [24,40,56].forEach(function(x,i){add("line",{x1:x,y1:50-[10,15,10][i],x2:x,y2:50,stroke:"currentColor","stroke-width":1,opacity:.5});}); }
+  else { [[14,26],[30,34],[46,28]].forEach(function(p){add("rect",{x:p[0],y:H-p[1],width:14,height:p[1],fill:"currentColor",opacity:.7});});
+    add("rect",{x:70,y:18,width:5,height:H-18,fill:"currentColor",opacity:.85});
+    add("rect",{x:86,y:26,width:5,height:H-26,fill:"currentColor",opacity:.6}); }
+  return g;
+}
+
+/* ── carte : recadrage auto + zoom + déplacement ── */
+function fitBox(ids,pad){
+  var xs=ids.map(function(i){return px(V[i].lon);}),ys=ids.map(function(i){return py(V[i].lat);});
+  var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+  var w=Math.max(x1-x0,60),h=Math.max(y1-y0,60),m=Math.max(w,h)*(pad||.46);
+  var svg=document.getElementById("carte"),r=svg.getBoundingClientRect(),ar=(r.width||900)/(r.height||560);
+  var bw=w+m*2,bh=h+m*2;
+  if(bw/bh<ar) bw=bh*ar; else bh=bw/ar;
+  return {x:(x0+x1)/2-bw/2,y:(y0+y1)/2-bh/2,w:bw,h:bh};
+}
+function applyVB(){ document.getElementById("carte").setAttribute("viewBox",vb.x.toFixed(1)+" "+vb.y.toFixed(1)+" "+vb.w.toFixed(1)+" "+vb.h.toFixed(1)); }
+function zoomBy(f,cx,cy){
+  var svg=document.getElementById("carte"),r=svg.getBoundingClientRect();
+  var ax=(cx==null?.5:(cx-r.left)/r.width),ay=(cy==null?.5:(cy-r.top)/r.height);
+  var nx=vb.x+vb.w*ax*(1-f),ny=vb.y+vb.h*ay*(1-f);
+  var nw=Math.min(Math.max(vb.w*f,26),1600);
+  var nh=nw*(vb.h/vb.w);
+  vb={x:nx,y:ny,w:nw,h:nh}; applyVB();
+}
+function drawCarte(ids,refit){
+  var svg=document.getElementById("carte");
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  if(refit||!vb) vb=fitBox(ids);
+  applyVB();
+  var sc=vb.w/900, fs=function(v){return (v*sc).toFixed(2);};
+  svg.appendChild(mk("path",{d:"M"+OUTLINE.map(function(p){return px(p[0]).toFixed(1)+","+py(p[1]).toFixed(1);}).join("L")+"Z",class:"cn-out"}));
+  var uniq=[]; ids.forEach(function(id){if(uniq[uniq.length-1]!==id)uniq.push(id);});
+  for(var i=0;i<uniq.length-1;i++){
+    var a=V[uniq[i]],b=V[uniq[i+1]],lg=LEG[uniq[i]+">"+uniq[i+1]];
+    var x1=px(a.lon),y1=py(a.lat),x2=px(b.lon),y2=py(b.lat);
+    var mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,L=Math.sqrt(dx*dx+dy*dy)||1,bow=Math.min(L*.11,26);
+    svg.appendChild(mk("path",{d:"M"+x1+","+y1+"Q"+(mx-dy/L*bow)+","+(my+dx/L*bow)+" "+x2+","+y2,
+      class:"cn-leg"+(lg&&lg.air?" air":"")}));
+  }
+  uniq.forEach(function(id){
+    var v=V[id],x=px(v.lon),y=py(v.lat);
+    var g=mk("g",{tabindex:"0",role:"button","aria-label":v.fr,style:"cursor:pointer"});
+    g.appendChild(mk("circle",{cx:x,cy:y,r:fs(11),fill:"transparent"}));
+    g.appendChild(mk("circle",{cx:x,cy:y,r:fs(sel===id?5:3.4),class:"cn-dot"}));
+    var an=v.an==="end"?"end":(v.an==="middle"?"middle":"start");
+    var ax=v.an==="end"?-fs(11):(v.an==="middle"?0:fs(11)),dy2=(v.dy||0)*sc;
+    svg.appendChild(mk("text",{x:x+ +ax,y:y+dy2-sc*1,class:"cn-han","font-size":fs(15),"text-anchor":an},v.han));
+    svg.appendChild(mk("text",{x:x+ +ax,y:y+dy2+sc*13,class:"cn-fr","font-size":fs(12),"text-anchor":an},v.fr));
+    function go(){ sel=(sel===id?null:id); render(false); if(sel) showTab("etapes",id); }
+    g.addEventListener("click",go);
+    g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
+    svg.appendChild(g);
+  });
+}
+(function(){
+  var svg=document.getElementById("carte"),drag=null;
+  svg.addEventListener("pointerdown",function(e){ drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y,r:svg.getBoundingClientRect()}; svg.classList.add("drag"); svg.setPointerCapture(e.pointerId); });
+  svg.addEventListener("pointermove",function(e){ if(!drag)return; vb.x=drag.vx-(e.clientX-drag.x)*vb.w/drag.r.width; vb.y=drag.vy-(e.clientY-drag.y)*vb.h/drag.r.height; applyVB(); });
+  ["pointerup","pointercancel"].forEach(function(ev){ svg.addEventListener(ev,function(){ drag=null; svg.classList.remove("drag"); }); });
+  svg.addEventListener("wheel",function(e){ e.preventDefault(); zoomBy(e.deltaY>0?1.16:.86,e.clientX,e.clientY); drawCarte(curIds,false); },{passive:false});
+  document.getElementById("zin").addEventListener("click",function(){ zoomBy(.75); drawCarte(curIds,false); });
+  document.getElementById("zout").addEventListener("click",function(){ zoomBy(1.33); drawCarte(curIds,false); });
+  document.getElementById("zfit").addEventListener("click",function(){ drawCarte(curIds,true); });
+})();
+
+/* ── étapes ── */
+function photo(id,big){
+  var p=PH[id],box=el("figure",big?"bigph":"ph");
+  box.style.margin="0";
+  if(p){
+    var img=document.createElement("img");
+    img.src=imgurl(id,960); img.srcset=imgurl(id,960)+" 1x, "+imgurl(id,1920)+" 2x"; img.alt=V[id].fr; img.loading="lazy";
+    img.onerror=function(){ box.classList.add("noimg"); };
+    box.appendChild(img);
+    if(big){ var cap=el("figcaption",null,V[id].fr+" — photo "+p.c+", via Wikimedia Commons"); box.appendChild(cap); }
+  } else box.classList.add("noimg");
+  if(!big){ var svg=document.createElementNS(NS,"svg"); svg.setAttribute("viewBox","0 0 120 62"); svg.appendChild(vignette(V[id].vig)); box.appendChild(svg); }
+  return box;
+}
+function drawSteps(list,isSrc){
+  var box=document.getElementById("steps"); box.innerHTML="";
+  var day=new Date(START.getTime());
+  list.forEach(function(item,idx){
+    var id=item.id,v=V[id],st=S[id],nights=item.n,from,to;
+    var wrap=el("div","st"+(sel===id?" open":"")); wrap.id="st-"+id;
+    var btn=el("button"); btn.setAttribute("aria-expanded",sel===id?"true":"false");
+    btn.appendChild(photo(id,false));
+    var tx=el("div","st-txt"),row=el("div","st-row");
+    row.appendChild(el("span","st-i",String(idx+1)));
+    row.appendChild(el("span","st-fr",v.fr));
+    row.appendChild(el("span","st-han",v.han));
+    if(!isSrc){ from=new Date(day.getTime()); to=addD(day,nights-1); day=addD(day,nights);
+      row.appendChild(el("span","st-n",nights+(nights>1?" nuits":" nuit"))); }
+    tx.appendChild(row);
+    var m=el("div","st-m");
+    if(!isSrc) m.appendChild(el("span",null,fmt(from)+(nights>1?" au "+fmt(to):"")));
+    m.appendChild(el("span",null,v.alt+" m"));
+    if(st){ m.appendChild(el("span",null,st.temp)); m.appendChild(el("span",null,st.sky)); if(st.src) m.appendChild(el("span","src",st.src)); }
+    tx.appendChild(m); btn.appendChild(tx);
+    btn.addEventListener("click",function(){ sel=(sel===id?null:id); render(false); });
+    wrap.appendChild(btn);
+    if(sel===id&&st){
+      var b=el("div","st-body"),c1=el("div"),c2=el("div");
+      if(PH[id]) b.appendChild(photo(id,true));
+      var prev=idx>0?list[idx-1].id:null,leg=prev&&prev!==id?LEG[prev+">"+id]:null;
+      if(idx===0&&!isSrc){ c1.appendChild(el("h5",null,"Y aller"));
+        var l0=el("div","st-leg"); l0.innerHTML="<em>Paris CDG vers Pékin, environ 11 h.</em> Vol direct, Air China ou Air France, dix-neuf par semaine. Air China inclut deux bagages de vingt-trois kilos, Air France un seul."; c1.appendChild(l0);
+      } else if(leg){ c1.appendChild(el("h5",null,"Y aller depuis "+V[prev].fr));
+        var lg=el("div","st-leg"); lg.innerHTML="<em>"+leg.d+".</em> "+leg.t; c1.appendChild(lg); }
+      c1.appendChild(el("h5",null,"Pourquoi ici")); c1.appendChild(el("p",null,st.why));
+      if(st.stay&&st.stay!=="—"){ c1.appendChild(el("h5",null,"Dormir")); c1.appendChild(el("p","last",st.stay)); }
+      c2.appendChild(el("h5",null,"Sur place"));
+      var ul=el("ul"); st.ok.forEach(function(x){ul.appendChild(el("li",null,x));}); c2.appendChild(ul);
+      if(st.warn){ c2.appendChild(el("h5",null,"À savoir")); c2.appendChild(el("div","st-warn",st.warn)); }
+      b.appendChild(c1); b.appendChild(c2); wrap.appendChild(b);
+    }
+    box.appendChild(wrap);
+  });
+  document.getElementById("credits").textContent=
+    "Photographies issues de Wikimedia Commons sous licences libres, créditées sous chaque image. Les étapes sans photographie affichent un dessin à l'encre. Si aucune image n'apparaît, c'est que la page est consultée dans un environnement qui bloque les ressources externes : ouvrez le fichier localement ou publiez-le pour les voir.";
+}
+
+function drawPicks(){
+  var a=document.getElementById("picks"); a.innerHTML="";
+  R.forEach(function(r,i){
+    var tot=r.seq.reduce(function(s,x){return s+x[1];},0);
+    var b=el("button"); b.setAttribute("aria-pressed",(mode==="route"&&i===cur)?"true":"false");
+    b.appendChild(el("span","n",r.name+" — "+tot+" nuits")); b.appendChild(el("span","s",r.sub));
+    b.addEventListener("click",function(){ mode="route"; cur=i; sel=null; target=tot; document.getElementById("dial").value=tot; render(true); });
+    a.appendChild(b);
+  });
+  var s=document.getElementById("picksrc"); s.innerHTML="";
+  SRC.forEach(function(r,i){
+    var b=el("button"); b.setAttribute("aria-pressed",(mode==="src"&&i===cur)?"true":"false");
+    b.appendChild(el("span","n",r.name)); b.appendChild(el("span","s",r.sub));
+    b.addEventListener("click",function(){ mode="src"; cur=i; sel=null; render(true); });
+    s.appendChild(b);
+  });
+}
+function drawCmp(){
+  var box=document.getElementById("cmp"); box.innerHTML="";
+  R.forEach(function(r,i){
+    var tot=r.seq.reduce(function(s,x){return s+x[1];},0);
+    var c=el("div","cmp-c"+(mode==="route"&&i===cur?" on":""));
+    c.appendChild(el("h4",null,r.name)); c.appendChild(el("div","m",tot+" nuits · "+r.sub));
+    var up=el("ul","p"); r.p.forEach(function(x){up.appendChild(el("li",null,x));}); c.appendChild(up);
+    var dn=el("ul","n"); r.n.forEach(function(x){dn.appendChild(el("li",null,x));}); c.appendChild(dn);
+    var bt=el("button",null,mode==="route"&&i===cur?"Route affichée":"Voir cette route");
+    bt.addEventListener("click",function(){ mode="route"; cur=i; sel=null; target=tot; document.getElementById("dial").value=tot; render(true); showTab("voyage"); });
+    c.appendChild(bt); box.appendChild(c);
+  });
+}
+(function(){ var b=document.getElementById("budget");
+  BUDGET.forEach(function(x){ var d=el("div","money"); d.appendChild(el("span",null,x[0])); d.appendChild(el("span",null,x[1])); b.appendChild(d); });
+  var t=el("div","money tot"); t.appendChild(el("span",null,"Total à deux")); t.appendChild(el("span",null,"4 000 – 7 000 €")); b.appendChild(t);
+})();
+
+/* la barre du haut fait défiler, elle ne masque rien : tout reste sur la page */
+function showTab(name,scrollTo){
+  var t=document.getElementById(scrollTo?("st-"+scrollTo):("p-"+name));
+  if(t) t.scrollIntoView({block:scrollTo?"center":"start",behavior:"smooth"});
+}
+document.querySelectorAll(".tabs button").forEach(function(b){
+  b.addEventListener("click",function(){ showTab(b.dataset.t); });
+});
+/* surlignage de la partie en cours de lecture */
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var id=e.target.id.replace("p-","");
+      document.querySelectorAll(".tabs button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.t===id?"true":"false"); });
+    });
+  },{rootMargin:"-56px 0px -70% 0px"});
+  document.querySelectorAll(".panel").forEach(function(p){ io.observe(p); });
+}
+
+function render(refit){
+  drawPicks(); drawCmp();
+  var ids,list,isSrc=(mode==="src"),facts=document.getElementById("herofacts");
+  facts.innerHTML="";
+  var hn=isSrc?HANSRC[cur]:HAN[cur], hel=document.querySelector(".hero-han");
+  if(hel&&hn){ hel.textContent=hn.c; hel.setAttribute("title",hn.c+" "+hn.p+" — "+hn.m); }
+  document.getElementById("dialbox").className=isSrc?"dis":"";
+  document.getElementById("dial").disabled=isSrc;
+  function fact(v,l){ var d=el("div"); d.appendChild(el("b",null,String(v))); d.appendChild(el("span",null,l)); facts.appendChild(d); }
+  if(isSrc){
+    var r=SRC[cur]; ids=r.seq; list=r.seq.map(function(id){return {id:id,n:0};});
+    document.getElementById("herotitle").textContent=r.name;
+    document.getElementById("herosub").textContent=r.note;
+    document.getElementById("herogloss").textContent=hn?hn.c+"  "+hn.p+"  ·  "+hn.m:"";
+    fact(r.seq.length,"étapes"); fact("—","nuits"); fact("—","retour");
+    document.getElementById("dropped").textContent="";
+    document.getElementById("readout").textContent="Parcours de référence : ni durée ni dates, ce n'est pas une option de voyage.";
+    document.getElementById("maphint").textContent="Parcours de "+r.name+", affiché en référence.";
+  } else {
+    var rt=R[cur],p=plan(rt,target); list=p.s; ids=p.s.map(function(x){return x.id;});
+    var nights=p.s.reduce(function(a,x){return a+x.n;},0);
+    var dep=addD(START,nights),marge=Math.round((VISA-dep)/86400000),vols=0;
+    for(var i=0;i<ids.length-1;i++){ var lg=LEG[ids[i]+">"+ids[i+1]]; if(lg&&lg.air) vols++; }
+    document.getElementById("herotitle").textContent=rt.name;
+    document.getElementById("herosub").textContent=rt.sub.charAt(0).toUpperCase()+rt.sub.slice(1)+". Départ de Paris le 13 novembre, retour le "+fmt(dep)+" 2026.";
+    document.getElementById("herogloss").textContent=hn?hn.c+"  "+hn.p+"  ·  "+hn.m:"";
+    fact(nights,"nuits"); fact(p.s.length,"étapes"); fact(vols,vols>1?"vols intérieurs":"vol intérieur"); fact(marge,"jours de marge visa");
+    document.getElementById("dialn").textContent=nights;
+    document.getElementById("dialu").textContent=nights>1?"nuits":"nuit";
+    document.getElementById("dropped").textContent=p.dropped.length?("À cette durée, on abandonne : "+p.dropped.join(", ")+"."):"";
+    document.getElementById("readout").innerHTML="Retour le <b>"+fmt(dep)+"</b>, soit <b>"+marge+"</b> jour"+(Math.abs(marge)>1?"s":"")+" avant la date limite du visa, le 14 décembre.";
+    document.getElementById("maphint").textContent="Trait plein : train ou route. Pointillé : vol. Cliquez une ville pour ouvrir son étape.";
+  }
+  curIds=ids;
+  var hid=isSrc?HEROSRC[cur]:HERO[cur], hp=PH[hid];
+  var him=document.getElementById("heroimg");
+  if(hp){ him.src=imgurl(hid,1920); him.removeAttribute("srcset"); him.alt="Photographie de "+V[hid].fr; him.onerror=function(){him.style.display="none";}; }
+  drawCarte(ids,refit!==false);
+  drawSteps(list,isSrc);
+}
+document.getElementById("dial").addEventListener("input",function(e){ target=+e.target.value; sel=null; render(true); });
+render(true);
+})();
+</script>
+
+</body>
+</html>
