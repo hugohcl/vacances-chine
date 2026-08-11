@@ -294,6 +294,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .vdt.warn{background:#C4761Fe6}
 .vdt.bad{background:#E24A3Ce6}
 .tile .dt{top:auto;bottom:54px}
+.tile .dt{background:#17161Bcc;color:#fff}
+.tile .dt.jour{background:#2C8C7Ce6}
 </style>
 
 <div class="top">
@@ -650,47 +652,8 @@ var D={
   why:"La ville la plus à l'ouest de Chine, ouïghoure, plus proche de Bagdad que de Pékin.",
   ok:["La vieille ville","Le marché aux bestiaux du dimanche","La mosquée Id Kah","La route du Karakoram"],
   pl:["Une culture entièrement différente du reste du pays","5 à 15 °C en journée en novembre"],
-  mn:["Extrêmement loin de tout le reste","Présence policière lourde et contrôles fréquents","Les températures chutent en décembre"]}
-};
-/* ══ liens entre destinations ══
-   jour  : on dort dans la base et on visite l'autre dans la journée, sans chambre
-   route : l'une est sur le chemin entre deux autres, presque aucun transport en plus
-   paire : deux villes voisines qu'on enchaîne naturellement                        */
-var LINKS=[
- {b:"chengdu",x:"leshan",t:"jour",d:"1 h de train",p:"Le Grand Bouddha se fait très bien dans la journée. Inutile de dormir à Leshan."},
- {b:"chengdu",x:"emeishan",t:"jour",d:"1 h 30 de train",p:"Faisable à la journée, mais une nuit au sommet pour le lever du jour vaut nettement mieux."},
- {b:"shanghai",x:"suzhou",t:"jour",d:"25 min de train",p:"Les jardins se visitent en une journée. Dormir à Suzhou n'a de sens que si vous voulez la ville le soir."},
- {b:"shanghai",x:"hangzhou",t:"jour",d:"45 min de train",p:"Le lac de l'Ouest tient dans une journée bien remplie. Une nuit sur place est plus reposante."},
- {b:"lijiang",x:"tigerleaping",t:"jour",d:"2 h de route",p:"Le belvédère se voit à la journée. La haute randonnée, elle, demande une nuit en auberge dans les gorges."},
- {b:"guilin",x:"longsheng",t:"jour",d:"2 h de route",p:"Les terrasses de Longji se font à la journée depuis Guilin ou Yangshuo."},
- {b:"yangshuo",x:"longsheng",t:"jour",d:"2 h 30 de route",p:"Même chose depuis Yangshuo, un peu plus long."},
- {b:"kunming",x:"jianshui",t:"jour",d:"2 h de train",p:"Possible à la journée, mais Jianshui mérite plutôt une halte sur la route de Yuanyang."},
- {b:"canton",x:"hongkong",t:"paire",d:"2 h de train",p:"Deux villes très différentes à deux heures l'une de l'autre. Attention, Hong Kong est une juridiction distincte : formalités à chaque passage."},
- {b:"chongqing",x:"chengdu",t:"paire",d:"1 h 30 de train",p:"Le trajet le plus court du pays entre deux grandes villes. On les enchaîne presque toujours."},
- {b:"guilin",x:"yangshuo",t:"paire",d:"30 min de train",p:"Même paysage, mais on dort bien mieux à Yangshuo. Beaucoup ne font que passer par Guilin."},
- {b:"datong",x:"pingyao",t:"paire",d:"2 à 3 h de train",p:"Les deux grands arrêts du Shanxi, sur la même ligne."},
- {b:"zhangjiajie",x:"fenghuang",t:"paire",d:"4 h de route",p:"La suite naturelle de Zhangjiajie, dans la même province."},
- {b:"lijiang",x:"shangrila",t:"paire",d:"1 à 2 h de train",p:"Ligne ouverte en 2023. Attention à la montée d'altitude, 2 400 puis 3 200 mètres."},
- {b:"lijiang",x:"shaxi",t:"route",d:"2 h",p:"Shaxi est entre Lijiang et Dali : l'ajouter ne coûte quasiment aucun transport."},
- {b:"dali",x:"shaxi",t:"route",d:"2 h",p:"Même chose dans l'autre sens."},
- {b:"kunming",x:"yuanyang",t:"route",d:"4 h 30",p:"Cul-de-sac au sud de Kunming : il faut redescendre puis remonter."},
- {b:"jianshui",x:"yuanyang",t:"route",d:"2 h 30",p:"Jianshui coupe utilement la longue route vers les rizières."},
- {b:"dali",x:"kunming",t:"route",d:"2 h de train",p:"Sur la ligne à grande vitesse du Yunnan."},
- {b:"xian",x:"chengdu",t:"route",d:"3 h de train",p:"Ligne rapide ouverte, c'est le passage naturel du Nord vers le Sichuan."}
-];
-function linksOf(id){
-  var out=[];
-  LINKS.forEach(function(l){
-    if(l.b===id) out.push({id:l.x,t:l.t,d:l.d,p:l.p,base:true});
-    else if(l.x===id) out.push({id:l.b,t:l.t,d:l.d,p:l.p,base:false});
-  });
-  return out;
-}
-/* destinations qui se visitent depuis une base, sans y dormir */
-function dayTripBases(id){
-  return LINKS.filter(function(l){return l.x===id&&l.t==="jour";}).map(function(l){return l.b;});
-}
-var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner",
+  mn:["Extrêmement loin de tout le reste","Présence policière lourde et contrôles fréquents","Les températures chutent en décembre"]},
+
  tengchong:{fr:"Tengchong",han:"腾冲",reg:"Yunnan",lat:25.02,lon:98.49,alt:1650,n:3,mx:18.6,tmin:6.0,rain:3,sun:10.0,vd:"ok",
   why:"Volcans, sources chaudes et le village Ming de Heshun. Et une avenue de ginkgos dorés dont le pic tombe en novembre.",
   ok:["L'avenue des ginkgos de Jiangdongcun, à son maximum en novembre","Le village Ming de Heshun, un des mieux conservés du Yunnan","Les champs volcaniques et les sources chaudes de Rehai","Le musée de la route de Birmanie"],
@@ -740,8 +703,47 @@ var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner",
   why:"Karst spectaculaire, trois ponts naturels et le gouffre de Houping. Classé UNESCO.",
   ok:["Les trois ponts naturels","Le gouffre-doline de Qingkou","La grotte de Furong"],
   pl:["Un paysage rare, moins couru que Zhangjiajie"],
-  mn:["Dix jours de pluie et 7,2 h de soleil","Même problème de grisaille que tout le bassin du Sichuan"]},
+  mn:["Dix jours de pluie et 7,2 h de soleil","Même problème de grisaille que tout le bassin du Sichuan"]}
 };
+/* ══ liens entre destinations ══
+   jour  : on dort dans la base et on visite l'autre dans la journée, sans chambre
+   route : l'une est sur le chemin entre deux autres, presque aucun transport en plus
+   paire : deux villes voisines qu'on enchaîne naturellement                        */
+var LINKS=[
+ {b:"chengdu",x:"leshan",t:"jour",d:"1 h de train",p:"Le Grand Bouddha se fait très bien dans la journée. Inutile de dormir à Leshan."},
+ {b:"chengdu",x:"emeishan",t:"jour",d:"1 h 30 de train",p:"Faisable à la journée, mais une nuit au sommet pour le lever du jour vaut nettement mieux."},
+ {b:"shanghai",x:"suzhou",t:"jour",d:"25 min de train",p:"Les jardins se visitent en une journée. Dormir à Suzhou n'a de sens que si vous voulez la ville le soir."},
+ {b:"shanghai",x:"hangzhou",t:"jour",d:"45 min de train",p:"Le lac de l'Ouest tient dans une journée bien remplie. Une nuit sur place est plus reposante."},
+ {b:"lijiang",x:"tigerleaping",t:"jour",d:"2 h de route",p:"Le belvédère se voit à la journée. La haute randonnée, elle, demande une nuit en auberge dans les gorges."},
+ {b:"guilin",x:"longsheng",t:"jour",d:"2 h de route",p:"Les terrasses de Longji se font à la journée depuis Guilin ou Yangshuo."},
+ {b:"yangshuo",x:"longsheng",t:"jour",d:"2 h 30 de route",p:"Même chose depuis Yangshuo, un peu plus long."},
+ {b:"kunming",x:"jianshui",t:"jour",d:"2 h de train",p:"Possible à la journée, mais Jianshui mérite plutôt une halte sur la route de Yuanyang."},
+ {b:"canton",x:"hongkong",t:"paire",d:"2 h de train",p:"Deux villes très différentes à deux heures l'une de l'autre. Attention, Hong Kong est une juridiction distincte : formalités à chaque passage."},
+ {b:"chongqing",x:"chengdu",t:"paire",d:"1 h 30 de train",p:"Le trajet le plus court du pays entre deux grandes villes. On les enchaîne presque toujours."},
+ {b:"guilin",x:"yangshuo",t:"paire",d:"30 min de train",p:"Même paysage, mais on dort bien mieux à Yangshuo. Beaucoup ne font que passer par Guilin."},
+ {b:"datong",x:"pingyao",t:"paire",d:"2 à 3 h de train",p:"Les deux grands arrêts du Shanxi, sur la même ligne."},
+ {b:"zhangjiajie",x:"fenghuang",t:"paire",d:"4 h de route",p:"La suite naturelle de Zhangjiajie, dans la même province."},
+ {b:"lijiang",x:"shangrila",t:"paire",d:"1 à 2 h de train",p:"Ligne ouverte en 2023. Attention à la montée d'altitude, 2 400 puis 3 200 mètres."},
+ {b:"lijiang",x:"shaxi",t:"route",d:"2 h",p:"Shaxi est entre Lijiang et Dali : l'ajouter ne coûte quasiment aucun transport."},
+ {b:"dali",x:"shaxi",t:"route",d:"2 h",p:"Même chose dans l'autre sens."},
+ {b:"kunming",x:"yuanyang",t:"route",d:"4 h 30",p:"Cul-de-sac au sud de Kunming : il faut redescendre puis remonter."},
+ {b:"jianshui",x:"yuanyang",t:"route",d:"2 h 30",p:"Jianshui coupe utilement la longue route vers les rizières."},
+ {b:"dali",x:"kunming",t:"route",d:"2 h de train",p:"Sur la ligne à grande vitesse du Yunnan."},
+ {b:"xian",x:"chengdu",t:"route",d:"3 h de train",p:"Ligne rapide ouverte, c'est le passage naturel du Nord vers le Sichuan."}
+];
+function linksOf(id){
+  var out=[];
+  LINKS.forEach(function(l){
+    if(l.b===id) out.push({id:l.x,t:l.t,d:l.d,p:l.p,base:true});
+    else if(l.x===id) out.push({id:l.b,t:l.t,d:l.d,p:l.p,base:false});
+  });
+  return out;
+}
+/* destinations qui se visitent depuis une base, sans y dormir */
+function dayTripBases(id){
+  return LINKS.filter(function(l){return l.x===id&&l.t==="jour";}).map(function(l){return l.b;});
+}
+var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner"};
 
 var AIR=["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong","kunming","hangzhou","guilin"];
 
@@ -778,7 +780,21 @@ function legOf(a,b){var k=dist(a,b);
   if(k>420) return {m:"train",h:Math.max(2,Math.round(k/230)),air:0};
   return {m:"train ou route",h:Math.max(1,Math.round(k/150)),air:0};}
 function nb(x){return String(x).replace(".",",");}
-function temp(d){return nb(d.mx)+" / "+nb(d.tmin)+" °C";}
+/* une seule annee de releves : le dixieme de degre serait de la fausse precision */
+function rd(x){var v=Math.round(x); return v===0?0:v;}
+function temp(d){return rd(d.mx)+" / "+rd(d.tmin)+" °C";}
+/* le temps nécessaire ne s'exprime qu'une fois, et dans la bonne unité */
+function duree(id){
+  var d=D[id],b=dayTripBases(id).map(function(x){return D[x].fr;});
+  if(b.length) return "à la journée depuis "+b.join(" ou ");
+  return d.n+" nuits sur place";
+}
+function dureeLongue(id){
+  var d=D[id],b=dayTripBases(id).map(function(x){return D[x].fr;});
+  if(!b.length) return d.n+" nuits sur place";
+  return "à la journée depuis "+b.join(" ou ")+(d.n>=2?", ou "+d.n+" nuits si vous y dormez":"");
+}
+
 var VD={ok:{t:"saison favorable",c:"good"},warn:{t:"jouable avec réserve",c:"warn"},no:{t:"à éviter en novembre",c:"bad"}};
 function paceN(){return pace==="slow"?4:pace==="fast"?2:3;}
 
@@ -868,8 +884,7 @@ function tileOf(id){
   t.appendChild(ob);
 
   if(d.vd!=="ok") t.appendChild(el("div","vdt "+VD[d.vd].c,VD[d.vd].t));
-  var bases=dayTripBases(id);
-  if(bases.length) t.appendChild(el("div","dt","à la journée depuis "+bases.map(function(b){return D[b].fr;}).join(" ou ")));
+  t.appendChild(el("div","dt"+(dayTripBases(id).length?" jour":""),duree(id)));
 
   var ab=el("button","add",picked?"✓":"+");
   ab.setAttribute("aria-label",(picked?"Retirer ":"Ajouter ")+d.fr);
@@ -878,7 +893,7 @@ function tileOf(id){
 
   var tx=el("div","txt");
   tx.appendChild(el("div","nm",d.fr));
-  tx.appendChild(el("div","me",temp(d)+"  ·  "+d.rain+" j de pluie  ·  "+d.n+" nuits"));
+  tx.appendChild(el("div","me",temp(d)+"  ·  "+d.rain+" j de pluie"));
   t.appendChild(tx);
 
   t.addEventListener("mouseenter",function(){hoverCat(id,true);});
@@ -918,7 +933,7 @@ function openSheet(id){
   var wm=el("div","sheet-wm"); wm.textContent=d.han; wm.setAttribute("aria-hidden","true"); bd.appendChild(wm);
   bd.appendChild(el("h3",null,d.fr));
   var mt=el("div","sheet-meta");
-  [d.reg,temp(d),d.rain+" jours de pluie",nb(d.sun)+" h de soleil par jour",d.alt+" m d'altitude",d.n+" nuits conseillées"].forEach(function(x){mt.appendChild(el("span",null,x));});
+  [d.reg,temp(d),d.rain+" jours de pluie",rd(d.sun)+" h de soleil par jour",d.alt+" m d'altitude",dureeLongue(id)].forEach(function(x){mt.appendChild(el("span",null,x));});
   var vv=el("span","vd "+VD[d.vd].c,VD[d.vd].t); mt.insertBefore(vv,mt.firstChild);
   if(AIR.indexOf(id)>=0) mt.appendChild(el("span",null,"aéroport"));
   bd.appendChild(mt);
