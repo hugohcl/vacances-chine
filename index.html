@@ -435,10 +435,34 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   display:grid;place-items:center;border:2px solid #E8C36A;box-shadow:0 8px 26px #00000073}
 .chivid video{display:block;max-height:50vh;max-width:100%;width:auto;height:auto}
 
-.chiok{margin-top:16px;width:100%;padding:13px;border:2px solid #E8C36A;border-radius:3px;
+/* l'épreuve : remettre les quatre étapes dans l'ordre */
+.chigame{margin-top:18px;padding-top:16px;border-top:1px dashed #E8C36A66}
+.chiq{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F2D89A}
+.chiq b{display:block;margin-top:5px;font-size:13px;letter-spacing:0;text-transform:none;
+  font-weight:600;color:#FFDFA4}
+.chisteps{display:grid;gap:7px;margin-top:13px}
+.chistep{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;text-align:left;
+  border:1px solid #E8C36A73;border-radius:3px;background:#5C0B0966;color:#FFE9A8;
+  font-family:inherit;cursor:pointer;transition:background .16s,border-color .16s,transform .16s,opacity .16s}
+.chistep:hover:not(.pris){background:#5C0B09cc;border-color:#E8C36A;transform:translateX(3px)}
+.chistep .rk{flex:none;width:23px;height:23px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid #E8C36A73;font-size:11px;font-weight:800;color:#E8C36A}
+.chistep .nm{display:block;font-size:13.5px;font-weight:800;line-height:1.15}
+.chistep .ds{display:block;font-size:11px;color:#F2D89Ab3;margin-top:2px;line-height:1.3}
+.chistep.pris{background:#1E7F5533;border-color:#7FD6A8;cursor:default;opacity:.75}
+.chistep.pris .rk{background:#7FD6A8;color:#0C3B26;border-color:#7FD6A8}
+.chisecoue{animation:chiNon .38s}
+@keyframes chiNon{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}
+  40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.chimsg{margin-top:11px;min-height:17px;font-size:12.5px;font-weight:700;color:#FFDFA4}
+.chimsg.non{color:#FFC7A8}
+.chimsg.oui{color:#7FD6A8}
+
+.chiok{margin-top:14px;width:100%;padding:13px;border:2px solid #E8C36A;border-radius:3px;
   background:#5C0B0980;color:#FFE9A8;font-family:inherit;font-size:13.5px;font-weight:800;
-  letter-spacing:.02em;cursor:pointer;transition:background .18s,transform .18s}
-.chiok:hover{background:#E8C36A;color:#6E0F0D;transform:translateY(-2px)}
+  letter-spacing:.02em;cursor:pointer;transition:background .18s,transform .18s,opacity .18s}
+.chiok:hover:not(:disabled){background:#E8C36A;color:#6E0F0D;transform:translateY(-2px)}
+.chiok:disabled{opacity:.4;cursor:not-allowed;border-color:#E8C36A59}
 .chix{position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;z-index:2;
   background:#5C0B0999;color:#E8C36A;font-size:17px;line-height:1;display:grid;place-items:center;
   border:1px solid #E8C36A66;cursor:pointer;transition:background .16s}
@@ -502,7 +526,14 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <div class="chihan">掌握气</div>
     <p>Le visa, ça s'obtient. Ça, non.</p>
     <div class="chivid"><video id="chiv" src="chi.mp4" controls playsinline preload="none"></video></div>
-    <button class="chiok" id="chiok">J'ai maîtrisé mon chi 🐼</button>
+
+    <div class="chigame">
+      <div class="chiq">L'épreuve<b>Les quatre étapes se sont mélangées. Clique-les dans le bon ordre.</b></div>
+      <div class="chisteps" id="chisteps"></div>
+      <div class="chimsg" id="chimsg"></div>
+    </div>
+
+    <button class="chiok" id="chiok" disabled>Chi non maîtrisé</button>
   </div>
 </div>
   </div>
@@ -1683,7 +1714,59 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
   var bt=document.getElementById("chibtn");
   if(bt) bt.addEventListener("click",ouvrir);
   document.getElementById("chix").addEventListener("click",fermer);
-  document.getElementById("chiok").addEventListener("click",function(){
+
+  /* ── l'épreuve : sans elle, le chi n'est pas maîtrisé ── */
+  var ETAPES=[
+    {n:"Respirer",           d:"lentement, par le nez"},
+    {n:"Les mains tournent", d:"paumes face à face, en cercle"},
+    {n:"S'accepter",         d:"telle qu'on est, pas telle qu'on devrait être"},
+    {n:"Pousser",            d:"et tout libérer"}
+  ];
+  var RATES=["Le chi t'échappe. Reprends au début.",
+             "Presque. Mais Oogway n'est pas pressé, lui.",
+             "Non. Respire d'abord, on en reparle."];
+  var zone=document.getElementById("chisteps"), msg=document.getElementById("chimsg"),
+      ok=document.getElementById("chiok"), attendu=0, gagne=false;
+
+  function dessiner(){
+    zone.innerHTML="";
+    var melange=ETAPES.map(function(e,i){return {e:e,i:i};});
+    for(var k=melange.length-1;k>0;k--){                 /* mélange de Fisher-Yates */
+      var j=Math.floor(Math.random()*(k+1)), tmp=melange[k]; melange[k]=melange[j]; melange[j]=tmp;
+    }
+    melange.forEach(function(x){
+      var b=document.createElement("button");
+      b.className="chistep"; b.type="button"; b.dataset.i=x.i;
+      b.innerHTML='<span class="rk">?</span><span><span class="nm"></span><span class="ds"></span></span>';
+      b.querySelector(".nm").textContent=x.e.n;
+      b.querySelector(".ds").textContent=x.e.d;
+      b.addEventListener("click",function(){ jouer(b,x.i); });
+      zone.appendChild(b);
+    });
+  }
+  function jouer(b,i){
+    if(gagne||b.classList.contains("pris")) return;
+    if(i===attendu){
+      b.classList.add("pris");
+      b.querySelector(".rk").textContent=(++attendu);
+      if(attendu===ETAPES.length){
+        gagne=true;
+        msg.className="chimsg oui"; msg.textContent="Chi maîtrisé. La Chine peut t'accueillir.";
+        ok.disabled=false; ok.textContent="Partir en Chine 🐼";
+      }else{
+        msg.className="chimsg"; msg.textContent="";
+      }
+    }else{
+      msg.className="chimsg non"; msg.textContent=RATES[Math.floor(Math.random()*RATES.length)];
+      zone.classList.add("chisecoue");
+      setTimeout(function(){ zone.classList.remove("chisecoue"); },400);
+      attendu=0; dessiner();
+    }
+  }
+  dessiner();
+
+  ok.addEventListener("click",function(){
+    if(!gagne) return;
     fermer();
     if(!bt) return;
     bt.classList.add("fait");
