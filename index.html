@@ -405,15 +405,20 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 @keyframes chiIn{from{opacity:0}to{opacity:1}}
 
 /* la boîte, dorée et sans pudeur */
-.chibox{position:relative;width:min(430px,100%);max-height:94vh;overflow:auto;text-align:center;
-  padding:clamp(22px,4vw,32px) clamp(18px,3.4vw,28px);
+.chibox{position:relative;width:min(430px,100%);max-height:94vh;overflow:hidden;
+  display:flex;flex-direction:column;
   background:linear-gradient(168deg,#C42B22,#8E1512 62%,#6E0F0D);
   border:3px solid #E8C36A;border-radius:5px;
   box-shadow:0 0 0 1px #6E0F0D,0 0 0 5px #C9A24E,0 26px 70px #00000080,0 0 70px #E8C36A26;
   animation:chiPop .4s cubic-bezier(.2,.9,.3,1.1)}
 @keyframes chiPop{from{transform:scale(.9) rotate(-1.4deg);opacity:0}to{transform:none;opacity:1}}
 .chibox::before{content:"";position:absolute;inset:7px;border:1px dashed #E8C36A73;
-  border-radius:2px;pointer-events:none}
+  border-radius:2px;pointer-events:none;z-index:3}
+.chiscroll{overflow-y:auto;overscroll-behavior:contain;text-align:center;
+  padding:clamp(22px,4vw,32px) clamp(18px,3.4vw,28px)}
+.chiscroll::-webkit-scrollbar{width:7px}
+.chiscroll::-webkit-scrollbar-thumb{background:#E8C36A80;border-radius:100px}
+.chiscroll::-webkit-scrollbar-track{background:transparent}
 
 .chilants{font-size:26px;letter-spacing:14px;margin-left:14px;line-height:1;filter:drop-shadow(0 3px 8px #00000059)}
 .chilants span{display:inline-block;animation:chiSway 2.8s ease-in-out infinite}
@@ -520,6 +525,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 <div class="chi" id="chi" role="dialog" aria-modal="true" aria-labelledby="chit" hidden>
   <div class="chibox">
     <button class="chix" id="chix" aria-label="Fermer">×</button>
+    <div class="chiscroll">
     <div class="chilants"><span>🏮</span><span>🏮</span><span>🏮</span></div>
     <div class="chieb">Prérequis n° 0</div>
     <h2 id="chit">Maîtriser le chi</h2>
@@ -534,6 +540,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     </div>
 
     <button class="chiok" id="chiok" disabled>Chi non maîtrisé</button>
+    </div>
   </div>
 </div>
   </div>
@@ -723,7 +730,7 @@ var D={
   why:"Les grottes de Yungang, cinquante mille statues bouddhiques taillées au Ve siècle, et le Monastère suspendu accroché à la falaise.",
   ok:["Grottes de Yungang","Monastère suspendu de Hengshan","Les remparts reconstruits"],
   pl:["Un des grands sites bouddhiques de Chine, peu visité par les Occidentaux","Très peu de monde en novembre"],
-  mn:["La zone la plus froide de l'itinéraire hors Nord-Est, jusqu'à −20 °C","Le charbon du Shanxi donne la pire qualité d'air du pays","Le monastère est très exposé au vent"]},
+  mn:["La zone la plus froide de l'itinéraire hors Nord-Est, jusqu'à −14 °C","Le charbon du Shanxi donne la pire qualité d'air du pays","Le monastère est très exposé au vent"]},
  pingyao:{fr:"Pingyao",han:"平遥",reg:"Nord",lat:37.20,lon:112.17,alt:750,n:2,mx:8.3,tmin:-0.5,rain:4,sun:8.3,vd:"ok",
   why:"La seule ville Ming entièrement conservée, remparts compris. On dort dans une cour traditionnelle intra-muros.",
   ok:["Le tour des remparts","Les anciennes banques de la rue Ming-Qing","Les cours à kang"],
@@ -738,12 +745,12 @@ var D={
   why:"L'architecture russe de Zhongyang Dajie et le fleuve Songhua gelé.",
   ok:["Zhongyang Dajie","Cathédrale Sainte-Sophie","Le Songhua gelé"],
   pl:["Une Chine qui ne ressemble à aucune autre"],
-  mn:["Le festival de glace n'ouvre que vers le 20 décembre : trop tard pour vous","−20 °C sans l'attraction qui justifie le voyage","Trois jours de transport pour y aller et revenir"]},
+  mn:["Le festival de glace n'ouvre qu'en janvier : bien trop tard pour vous","Jusqu'à −20 °C certaines nuits, sans l'attraction qui justifie le voyage","Trois jours de transport pour y aller et revenir"]},
  shanghai:{fr:"Shanghai",han:"上海",reg:"Delta",lat:31.23,lon:121.47,alt:4,n:4,mx:15.9,tmin:9.6,rain:2,sun:8.5,vd:"ok",air:1,
   why:"Le choc de modernité. Gratte-ciels, malls futuristes, métro parfait, et une vieille ville juste à côté.",
   ok:["Le Bund et la skyline de Pudong","L'ancienne concession française à pied","Yu Garden et la vieille ville","Nanjing Road de nuit","Le marché aux célibataires de People's Park le week-end"],
-  pl:["17 à 23 °C et sept heures de soleil par jour en novembre","Desservie sans escale, dix-neuf vols par semaine, la route la moins chère","Suzhou et Hangzhou à moins d'une heure de train"],
-  mn:["Chute à 2-9 °C en décembre","C'est une mégapole : bruyante et fatigante à haute dose"]},
+  pl:["16 / 10 °C et huit heures et demie de soleil par jour","Desservie sans escale, dix-neuf vols par semaine, la route la moins chère","Suzhou et Hangzhou à moins d'une heure de train"],
+  mn:["Les nuits fraîchissent en fin de séjour, jusqu'à 3 °C","C'est une mégapole : bruyante et fatigante à haute dose"]},
  suzhou:{fr:"Suzhou",han:"苏州",reg:"Delta",lat:31.30,lon:120.58,alt:5,n:2,mx:16.4,tmin:9.3,rain:2,sun:8.6,vd:"ok",
   why:"Les jardins classiques les plus raffinés de Chine, et des canaux qui lui ont valu le surnom de Venise de l'Orient.",
   ok:["Jardin de l'Humble Administrateur","Jardin du Maître des Filets","Pingjiang Road et ses canaux","Le musée de I. M. Pei"],
@@ -778,7 +785,7 @@ var D={
   why:"Les pandas géants, et l'art sichuanais de ne rien faire dans une maison de thé.",
   ok:["Base de recherche sur le panda géant, tôt le matin","Maisons de thé du parc du Peuple","Opéra du Sichuan et changement de masques","Le quartier de Kuanzhai"],
   pl:["Les pandas sont en enclos : la météo n'a aucune importance","Desservie sans escale depuis Paris","Base idéale pour Leshan et Emeishan"],
-  mn:["Trois à cinq heures de soleil par jour, brouillard matinal","PM2.5 élevés en hiver","Réservation obligatoire par quota pour la base des pandas"]},
+  mn:["Ciel souvent gris et brouillard matinal","PM2.5 élevés en hiver","Réservation obligatoire par quota pour la base des pandas"]},
  leshan:{fr:"Leshan",han:"乐山",reg:"Sichuan",lat:29.55,lon:103.77,alt:400,n:1,mx:17.0,tmin:9.6,rain:9,sun:8.8,vd:"warn",
   why:"Le plus grand bouddha de pierre du monde, soixante-et-onze mètres taillés dans la falaise entre 713 et 803.",
   ok:["La descente des escaliers le long du bouddha","La vue depuis le fleuve"],
@@ -802,7 +809,7 @@ var D={
  dali:{fr:"Dali",han:"大理",reg:"Yunnan",lat:25.61,lon:100.27,alt:1970,n:3,mx:17.6,tmin:8.1,rain:1,sun:9.9,vd:"ok",
   why:"Un lac de montagne entre deux chaînes, la culture bai, et les Trois Pagodes du Xe siècle.",
   ok:["Les Trois Pagodes du temple Chongsheng","Le tour du lac Erhai à vélo ou en scooter","Les villages de Xizhou et Shuanglang","Téléphérique du Cangshan"],
-  pl:["Sec et ensoleillé, 5 à 19 °C","Le tour du lac est une des plus belles journées de vélo du pays","Beaucoup d'hôtels avec vue sur le lac autour de cent euros"],
+  pl:["La meilleure météo du parcours : 18 / 8 °C, un seul jour de pluie, dix heures de soleil","Le tour du lac est une des plus belles journées de vélo du pays","Beaucoup d'hôtels avec vue sur le lac autour de cent euros"],
   mn:["La gare est à dix kilomètres de la vieille ville","La vieille ville est très touristique"]},
  lijiang:{fr:"Lijiang",han:"丽江",reg:"Yunnan",lat:26.87,lon:100.23,alt:2400,n:4,mx:14.0,tmin:-1.0,rain:1,sun:9.9,vd:"ok",
   why:"La plus belle vieille ville du sud-ouest, culture naxi, canaux et toits de tuiles, avec une montagne enneigée en fond.",
@@ -818,7 +825,7 @@ var D={
   why:"Le premier goût du Tibet sans permis : monastère de Songzanlin, prairies d'altitude, maisons tibétaines.",
   ok:["Monastère de Songzanlin","La vieille ville reconstruite","Le lac Napa et ses grues à cou noir"],
   pl:["Une heure à deux de train depuis Lijiang, ligne ouverte en 2023","Ciel très clair en hiver"],
-  mn:["Gel systématique la nuit, jusqu'à −10 °C","Les prairies sont jaunies à cette saison","3 200 mètres : montée trop rapide depuis Lijiang"]},
+  mn:["Gel quasi toutes les nuits, −3 °C en moyenne et jusqu'à −6 °C","Les prairies sont jaunies à cette saison","3 200 mètres : montée trop rapide depuis Lijiang"]},
  yuanyang:{fr:"Yuanyang",han:"元阳",reg:"Yunnan",lat:23.11,lon:102.75,alt:1600,n:3,mx:16.9,tmin:9.5,rain:5,sun:8.1,vd:"ok",
   why:"Les rizières en terrasses hani, mille ans de travail à flanc de montagne, en eau de novembre à mars.",
   ok:["Lever du jour à Duoyishu","Coucher à Laohuzui","Les terrasses de Bada","Les marchés hani"],
@@ -887,13 +894,13 @@ var D={
  kashgar:{fr:"Kashgar",han:"喀什",reg:"Ouest",lat:39.47,lon:75.99,alt:1280,n:3,mx:8.9,tmin:-0.7,rain:2,sun:8.8,vd:"warn",
   why:"La ville la plus à l'ouest de Chine, ouïghoure, plus proche de Bagdad que de Pékin.",
   ok:["La vieille ville","Le marché aux bestiaux du dimanche","La mosquée Id Kah","La route du Karakoram"],
-  pl:["Une culture entièrement différente du reste du pays","5 à 15 °C en journée en novembre"],
+  pl:["Une culture entièrement différente du reste du pays","Très sec et lumineux : deux jours de pluie, près de neuf heures de soleil"],
   mn:["Extrêmement loin de tout le reste","Présence policière lourde et contrôles fréquents","Les températures chutent en décembre"]},
 
  tengchong:{fr:"Tengchong",han:"腾冲",reg:"Yunnan",lat:25.02,lon:98.49,alt:1650,n:3,mx:18.6,tmin:6.0,rain:3,sun:10.0,vd:"ok",
   why:"Volcans, sources chaudes et le village Ming de Heshun. Et une avenue de ginkgos dorés dont le pic tombe en novembre.",
   ok:["L'avenue des ginkgos de Jiangdongcun, à son maximum en novembre","Le village Ming de Heshun, un des mieux conservés du Yunnan","Les champs volcaniques et les sources chaudes de Rehai","Le musée de la route de Birmanie"],
-  pl:["Dix heures de soleil par jour et trois jours de pluie seulement : le meilleur duo du Yunnan","Les ginkgos sont un bonus strictement saisonnier, comme les rizières de Yuanyang","Presque aucun touriste étranger"],
+  pl:["Dix heures de soleil par jour et trois jours de pluie seulement","Les ginkgos sont un bonus strictement saisonnier, comme les rizières de Yuanyang","Presque aucun touriste étranger"],
   mn:["Très à l'ouest, loin de l'axe Kunming-Dali-Lijiang","Jamais évalué contre le reste du Yunnan, c'est un angle mort du dossier"]},
  xishuangbanna:{fr:"Xishuangbanna",han:"西双版纳",reg:"Yunnan",lat:22.01,lon:100.80,alt:550,n:3,mx:25.4,tmin:16.2,rain:6,sun:9.8,vd:"ok",
   why:"La Chine tropicale, culture dai, forêt primaire, à la frontière du Laos.",
