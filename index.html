@@ -235,17 +235,25 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .reghead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px;
   padding-bottom:7px;border-bottom:2px solid var(--tx)}
 .reght{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;min-width:0}
-.regnav{display:flex;gap:5px;flex:none}
-.regnav button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);font-size:15px;
-  font-weight:700;color:var(--tx2);display:grid;place-items:center;transition:background .15s,color .15s}
-.regnav button:hover:not(:disabled){background:var(--tx);color:var(--pap);border-color:var(--tx)}
-.regnav button:disabled{opacity:.28;cursor:default}
-.shelf{display:flex;gap:11px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;
-  scroll-snap-type:x proximity;scrollbar-width:thin}
-.shelf::-webkit-scrollbar{height:7px}
-.shelf::-webkit-scrollbar-thumb{background:var(--line);border-radius:100px}
-.shelf .tile{flex:0 0 186px;scroll-snap-align:start;height:198px}
-@media (max-width:600px){.shelf .tile{flex:0 0 158px;height:176px}}
+
+
+
+
+
+
+
+
+@media (max-width:600px){}
+.catside{margin-top:clamp(16px,2.2vw,26px)}
+#catmap{width:100%;height:clamp(300px,42vh,420px);border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
+.grid-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px}
+.grid-in .tile{height:224px}
+.filters{gap:6px;margin-bottom:18px}
+.filters button{padding:8px 15px;font-size:14px}
+.filters button[aria-pressed="true"]{background:var(--zhu);color:#fff;border-color:var(--zhu)}
+.reghead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--tx)}
+.regpick{font-size:12.5px;font-weight:700;color:var(--zhu);flex:none}
 </style>
 
 <div class="top">
@@ -296,11 +304,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
       <p>Trente-cinq destinations. Cliquez une tuile pour tout savoir, le bouton rond pour l'ajouter à votre route.
          La pastille en haut à gauche dit ce que vaut la météo à vos dates.</p></div>
     <div class="filters" id="filters"></div>
-    <div class="cat">
-      <div class="grid" id="grid"></div>
-      <aside class="catside"><div id="catmap"></div>
-        <p class="cathint">Survolez une destination pour la situer. Cliquez un point pour ouvrir sa fiche.</p></aside>
-    </div>
+    <div class="grid" id="grid"></div>
+    <div class="catside"><div id="catmap"></div>
+      <p class="cathint">Survolez une destination pour la situer sur la carte. Cliquez un point pour ouvrir sa fiche.</p></div>
   </div>
 
   <div class="panel" id="p-route">
@@ -656,7 +662,7 @@ var OUT=[[73.5,39.5],[75,40.5],[76.5,43],[80.5,45],[82.5,45.2],[85,47],[87,49],[
 [83.6,29.2],[81.2,30.4],[79,32.5],[78.7,34.5],[76.5,35.5],[74.9,37]];
 
 /* ══ état ══ */
-var sel=[], nights={}, target=24, pace="med", filt="Tous", vb=null;
+var sel=[], nights={}, target=24, pace="med", filt="Nord", vb=null;
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 var START=new Date(Date.UTC(2026,10,14)),VISA=new Date(Date.UTC(2026,11,14));
 function addD(d,n){var x=new Date(d.getTime());x.setUTCDate(x.getUTCDate()+n);return x;}
@@ -672,8 +678,9 @@ function paceN(){return pace==="slow"?4:pace==="fast"?2:3;}
 /* ══ catalogue ══ */
 function drawFilters(){
   var f=document.getElementById("filters"); f.innerHTML="";
-  ["Tous"].concat(REG).forEach(function(r){
-    var b=el("button",null,r+(r==="Tous"?" ("+Object.keys(D).length+")":""));
+  REG.forEach(function(r){
+    var n=Object.keys(D).filter(function(id){return D[id].reg===r;}).length;
+    var b=el("button",null,r+"  "+n);
     b.setAttribute("aria-pressed",filt===r?"true":"false");
     b.addEventListener("click",function(){filt=r;drawFilters();drawGrid();});
     f.appendChild(b);
@@ -752,39 +759,20 @@ function tileOf(id){
 }
 function drawGrid(){
   var g=document.getElementById("grid"); g.innerHTML="";
-  REG.forEach(function(r){
-    if(filt!=="Tous"&&r!==filt) return;
-    var ids=Object.keys(D).filter(function(id){return D[id].reg===r;});
-    if(!ids.length) return;
-    var sec=el("section","regsec");
-    var h=el("div","reghead");
-    var ht=el("div","reght");
-    ht.appendChild(el("h3",null,r));
-    ht.appendChild(el("span",null,ids.length+" destination"+(ids.length>1?"s":"")+" · "+REGD[r]));
-    h.appendChild(ht);
-    var nav=el("div","regnav");
-    var bl=el("button",null,"‹"); bl.setAttribute("aria-label","Précédent");
-    var br=el("button",null,"›"); br.setAttribute("aria-label","Suivant");
-    nav.appendChild(bl); nav.appendChild(br); h.appendChild(nav);
-    sec.appendChild(h);
-    var gr=el("div","shelf");
-    ids.forEach(function(id){gr.appendChild(tileOf(id));});
-    sec.appendChild(gr); g.appendChild(sec);
-    function go(dir){
-      var amt=Math.max(180,gr.clientWidth*.8);
-      var to=Math.max(0,Math.min(gr.scrollWidth-gr.clientWidth,gr.scrollLeft+dir*amt));
-      try{ gr.scrollTo({left:to,behavior:"smooth"}); }catch(e){ gr.scrollLeft=to; }
-      setTimeout(function(){ if(Math.abs(gr.scrollLeft-to)>4) gr.scrollLeft=to; upd(); },320);
-    }
-    bl.addEventListener("click",function(){go(-1);});
-    br.addEventListener("click",function(){go(1);});
-    function upd(){ var m=gr.scrollWidth-gr.clientWidth-2;
-      bl.disabled=gr.scrollLeft<=2; br.disabled=gr.scrollLeft>=m; }
-    gr.addEventListener("scroll",upd); setTimeout(upd,60);
-  });
+  var ids=Object.keys(D).filter(function(id){return D[id].reg===filt;});
+  var h=el("div","reghead");
+  var ht=el("div","reght");
+  ht.appendChild(el("h3",null,filt));
+  ht.appendChild(el("span",null,ids.length+" destination"+(ids.length>1?"s":"")+" · "+REGD[filt]));
+  h.appendChild(ht);
+  var n=ids.filter(function(id){return sel.indexOf(id)>=0;}).length;
+  if(n) h.appendChild(el("div","regpick",n+" retenue"+(n>1?"s":"")+" dans cette région"));
+  g.appendChild(h);
+  var gr=el("div","grid-in");
+  ids.forEach(function(id){gr.appendChild(tileOf(id));});
+  g.appendChild(gr);
   drawCatMap();
 }
-
 /* ══ fiche ══ */
 function openSheet(id){
   var d=D[id],s=document.getElementById("sheet"),b=document.getElementById("sheetin");
