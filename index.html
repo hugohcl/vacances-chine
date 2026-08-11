@@ -1259,9 +1259,10 @@ function drawRegions(){
     var rings=PROV[r]; if(!rings||!rings.length) return;
     var act=(r===filt);
     rings.forEach(function(ring){
+      /* pas de contour : les provinces d une meme region se touchent,
+         leurs aplats fusionnent donc en une seule silhouette */
       L.polygon(ring,{
-        color:act?"#E24A3C":"#7d8a88", weight:act?1.8:.8, opacity:act?.95:.4,
-        fillColor:act?"#E24A3C":"#7d8a88", fillOpacity:act?.12:.05,
+        stroke:false, fillColor:act?"#E24A3C":"#8B9997", fillOpacity:act?.20:.085,
         interactive:!act, className:"regzone"
       }).addTo(ZLAYER).on("click",function(){ filt=r; drawFilters(); drawGrid(); });
     });
