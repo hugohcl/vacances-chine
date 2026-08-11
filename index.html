@@ -285,6 +285,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   text-align:center;white-space:nowrap;text-shadow:0 1px 3px var(--pap),0 0 6px var(--pap);pointer-events:none}
 .zlbl.act{color:var(--zhu);font-size:11.5px;letter-spacing:.16em}
 .regzone{cursor:pointer}
+.vd{font-weight:800!important}
+.vd.good{background:#2C8C7C!important;color:#fff!important}
+.vd.warn{background:#C4761F!important;color:#fff!important}
+.vd.bad{background:#E24A3C!important;color:#fff!important}
+.vdt{position:absolute;top:9px;left:9px;z-index:4;font-size:9.5px;font-weight:800;letter-spacing:.04em;
+  border-radius:100px;padding:3px 9px;backdrop-filter:blur(6px);color:#fff}
+.vdt.warn{background:#C4761Fe6}
+.vdt.bad{background:#E24A3Ce6}
+.tile .dt{top:auto;bottom:54px}
 </style>
 
 <div class="top">
@@ -441,7 +450,17 @@ var PH={
  yangshuo:[{d:"8/86",f:"1_guilin_yangshuo_2017.jpg",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"8/86",f:"1_guilin_yangshuo_2017.jpg",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"b/bf",f:"Yangshuo-Landpartie-70-Hausbesuch-Gastgeber-2012-gje.jpg",w:5562,c:"Gerd Eichmann, CC BY-SA 4.0"},{d:"7/7b",f:"Yangshuo-Li-River-2019-Luka-Peternel.jpg",w:5472,c:"Luka Peternel, CC BY-SA 4.0"}],
  yuanyang:[{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"},{d:"2/2b",f:"1_yuanyang_county_rice_terrace_bada_view_2012.jpg",w:4986,c:"chensiyuan, CC BY-SA 4.0"},{d:"d/d6",f:"Subsistent_Farming_Southern_China.jpg",w:3356,c:"JialiangGao www.peace-on-earth.org, CC BY-SA 3.0"},{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"}],
  zhangjiajie:[{d:"7/77",f:"1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",w:8841,c:"chensiyuan, CC BY-SA 4.0"},{d:"7/77",f:"1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",w:8841,c:"chensiyuan, CC BY-SA 4.0"},{d:"3/30",f:"Zhangjiajie%2C_National_park_-_panoramio_%281%29.jpg",w:4272,c:"Kovacs Bela-Hungary, CC BY 3.0"}],
- zhangye:[{d:"7/74",f:"Zhangye_National_Geopark_5.jpg",w:4000,c:"H2v5o68z, CC0"},{d:"4/4b",f:"Flickr_image_29851221553.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"2/22",f:"Flickr_image_30483606125.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"1/17",f:"Striated_rocks_in_Zhangye_National_Geopark.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"}]
+ zhangye:[{d:"7/74",f:"Zhangye_National_Geopark_5.jpg",w:4000,c:"H2v5o68z, CC0"},{d:"4/4b",f:"Flickr_image_29851221553.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"2/22",f:"Flickr_image_30483606125.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"1/17",f:"Striated_rocks_in_Zhangye_National_Geopark.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"}],
+ tengchong:[{d:"8/85",f:"%E5%92%8C%E9%A1%BA%E5%8F%A4%E9%95%87_-_%E6%99%AF%E5%8C%BA%E5%85%A8%E6%99%AF%E5%9B%BE_-_2023-08-02.jpg",w:4032,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"9/90",f:"Tengchong_Volcano_Cluster_01.jpg",w:4320,c:"STW932, CC BY-SA 4.0"}],
+ quanzhou:[{d:"b/bd",f:"Kaiyuan_Temple%2C_Quanzhou_13.jpg",w:4000,c:"H2v5o68z, CC0"},{d:"1/1b",f:"Tianhou_Palace_architecture%EF%BC%8CQuanzhou%EF%BC%8CFujian%EF%BC%8CChina.jpg",w:8192,c:"阿今今的艺术札记, Public domain"}],
+ tulou:[{d:"e/e3",f:"Tulou_from_Fujian_-_Aug_2022.jpg",w:2448,c:"HGShg, CC BY-SA 4.0"},{d:"8/8b",f:"Hakka_village_-_panoramio.jpg",w:4253,c:"Raffaele Nicolussi, CC BY 3.0"}],
+ hongcun:[{d:"d/d7",f:"Ancient_Villages_in_Southern_Anhui_%E2%80%93_Xidi_and_Hongcun-127239.jpg",w:2048,c:"Francesco Bandarin, CC BY-SA 3.0 igo"}],
+ zhaoxing:[{d:"f/f4",f:"Drum_Tower_Square%2C_Xinhuang_Dong_Autonomous_County%2C_14_March_2020a.jpg",w:4000,c:"Huangdan2060, CC BY 3.0"}],
+ xishuangbanna:[{d:"0/0e",f:"Xishuangbanna%2C_March_2000_03.jpg",w:5184,c:"Calistemon, CC BY-SA 4.0"}],
+ nanjing:[{d:"a/ab",f:"China-Nanjing_%282024%29_Ming_Xiaoling_-_Bao_Ding_Mound_%E5%AE%9D%E9%A1%B6_-_img_02.jpg",w:4032,c:"Chainwit., CC BY 4.0"},{d:"8/84",f:"2024Apr_-_Nanjing_City_Wall_%28south_section%29_-_img_10.jpg",w:4032,c:"Chainwit., CC BY 4.0"}],
+ luoyang:[{d:"c/cc",f:"Longmen_Grottoes_20240810_010.jpg",w:3904,c:"沈澄心, CC0"}],
+ chengde:[{d:"5/51",f:"Chengde_Mountain_Resort_22686-Chengde_%2843552720970%29.jpg",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"b/b1",f:"Chengde_Putuo_Zongcheng_Temple_201208.JPG",w:2560,c:"颐园新居, CC BY-SA 3.0"}],
+ wulong:[{d:"a/ad",f:"Bus_Area_at_the_end_of_Wulong_Karst_visit.jpg",w:6000,c:"Hugo LUC, CC BY-SA 4.0"}]
 };
 var BUCK=[330,960,1280,1920];
 function img(id,i,want){
@@ -457,177 +476,177 @@ var REGD={Nord:"Pékin et la Chine du Nord",Delta:"Shanghai et le bas Yangtsé",
  Sichuan:"le bassin du Sichuan et Chongqing",Yunnan:"le plateau du Sud-Ouest",Karst:"Guangxi et Guizhou",
  Sud:"la côte et le delta de la rivière des Perles",Ouest:"Tibet, Gansu, Xinjiang"};
 var D={
- pekin:{fr:"Pékin",han:"北京",reg:"Nord",lat:39.90,lon:116.41,alt:44,n:4,t:"−1 à 10 °C",sun:1,air:1,
+ pekin:{fr:"Pékin",han:"北京",reg:"Nord",lat:39.90,lon:116.41,alt:44,n:4,mx:9.9,tmin:2.1,rain:1,sun:8.1,vd:"ok",air:1,
   why:"La capitale impériale. Muraille, Cité Interdite, Temple du Ciel : pour un premier voyage en Chine, ça ne se rate pas.",
   ok:["Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling","Cité Interdite, puis la colline de Jingshan au couchant","Temple du Ciel au petit matin, à l'heure du tai-chi","Les hutongs de Dongcheng, à pied"],
   pl:["Sec et souvent dégagé à cette saison","Desservie sans escale depuis Paris, dix-neuf vols par semaine","La Muraille sous la neige est un des plus beaux moments de l'année"],
   mn:["Le chauffage au charbon démarre le 15 novembre : l'air se dégrade ensuite","Gel nocturne, vent du nord mordant","Les feuillages d'automne sont déjà terminés"]},
- datong:{fr:"Datong",han:"大同",reg:"Nord",lat:40.09,lon:113.30,alt:1050,n:2,t:"−7 à 6 °C",sun:0,
+ datong:{fr:"Datong",han:"大同",reg:"Nord",lat:40.09,lon:113.30,alt:1050,n:2,mx:3.1,tmin:-4.8,rain:4,sun:8.8,vd:"warn",
   why:"Les grottes de Yungang, cinquante mille statues bouddhiques taillées au Ve siècle, et le Monastère suspendu accroché à la falaise.",
   ok:["Grottes de Yungang","Monastère suspendu de Hengshan","Les remparts reconstruits"],
   pl:["Un des grands sites bouddhiques de Chine, peu visité par les Occidentaux","Très peu de monde en novembre"],
   mn:["La zone la plus froide de l'itinéraire hors Nord-Est, jusqu'à −20 °C","Le charbon du Shanxi donne la pire qualité d'air du pays","Le monastère est très exposé au vent"]},
- pingyao:{fr:"Pingyao",han:"平遥",reg:"Nord",lat:37.20,lon:112.17,alt:750,n:2,t:"−6 à 7 °C",sun:0,
+ pingyao:{fr:"Pingyao",han:"平遥",reg:"Nord",lat:37.20,lon:112.17,alt:750,n:2,mx:8.3,tmin:-0.5,rain:4,sun:8.3,vd:"ok",
   why:"La seule ville Ming entièrement conservée, remparts compris. On dort dans une cour traditionnelle intra-muros.",
   ok:["Le tour des remparts","Les anciennes banques de la rue Ming-Qing","Les cours à kang"],
   pl:["Aucune autre ville chinoise n'a gardé ce tissu urbain","Les toits enneigés sont photogéniques"],
   mn:["Froid sec et venteux","Les auberges traditionnelles sont mal isolées","Très touristique côté chinois"]},
- xian:{fr:"Xi'an",han:"西安",reg:"Nord",lat:34.34,lon:108.94,alt:400,n:3,t:"3 à 12 °C",sun:0,air:1,
+ xian:{fr:"Xi'an",han:"西安",reg:"Nord",lat:34.34,lon:108.94,alt:400,n:3,mx:11.6,tmin:4.3,rain:5,sun:8.1,vd:"ok",air:1,
   why:"L'Armée de terre cuite, le départ de la route de la soie, et le meilleur quartier musulman de Chine pour manger.",
   ok:["Armée de terre cuite","Les remparts à vélo","Le quartier musulman le soir","La Grande Pagode de l'oie sauvage"],
   pl:["Tarif basse saison sur les grands sites","Desservie sans escale depuis Paris, un vol par semaine","Correct jusqu'à fin novembre"],
   mn:["À partir de décembre, brume épaisse et mauvaise qualité d'air la plupart des jours","Les hangars de l'Armée de terre cuite ne sont pas chauffés"]},
- harbin:{fr:"Harbin",han:"哈尔滨",reg:"Nord",lat:45.80,lon:126.53,alt:150,n:2,t:"−19 à −10 °C",sun:0,
+ harbin:{fr:"Harbin",han:"哈尔滨",reg:"Nord",lat:45.80,lon:126.53,alt:150,n:2,mx:-2.0,tmin:-9.5,rain:4,sun:8.2,vd:"no",
   why:"L'architecture russe de Zhongyang Dajie et le fleuve Songhua gelé.",
   ok:["Zhongyang Dajie","Cathédrale Sainte-Sophie","Le Songhua gelé"],
   pl:["Une Chine qui ne ressemble à aucune autre"],
   mn:["Le festival de glace n'ouvre que vers le 20 décembre : trop tard pour vous","−20 °C sans l'attraction qui justifie le voyage","Trois jours de transport pour y aller et revenir"]},
- shanghai:{fr:"Shanghai",han:"上海",reg:"Delta",lat:31.23,lon:121.47,alt:4,n:4,t:"17 à 23 °C",sun:2,air:1,
+ shanghai:{fr:"Shanghai",han:"上海",reg:"Delta",lat:31.23,lon:121.47,alt:4,n:4,mx:15.9,tmin:9.6,rain:2,sun:8.5,vd:"ok",air:1,
   why:"Le choc de modernité. Gratte-ciels, malls futuristes, métro parfait, et une vieille ville juste à côté.",
   ok:["Le Bund et la skyline de Pudong","L'ancienne concession française à pied","Yu Garden et la vieille ville","Nanjing Road de nuit","Le marché aux célibataires de People's Park le week-end"],
   pl:["17 à 23 °C et sept heures de soleil par jour en novembre","Desservie sans escale, dix-neuf vols par semaine, la route la moins chère","Suzhou et Hangzhou à moins d'une heure de train"],
   mn:["Chute à 2-9 °C en décembre","C'est une mégapole : bruyante et fatigante à haute dose"]},
- suzhou:{fr:"Suzhou",han:"苏州",reg:"Delta",lat:31.30,lon:120.58,alt:5,n:2,t:"14 à 20 °C",sun:2,
+ suzhou:{fr:"Suzhou",han:"苏州",reg:"Delta",lat:31.30,lon:120.58,alt:5,n:2,mx:16.4,tmin:9.3,rain:2,sun:8.6,vd:"ok",
   why:"Les jardins classiques les plus raffinés de Chine, et des canaux qui lui ont valu le surnom de Venise de l'Orient.",
   ok:["Jardin de l'Humble Administrateur","Jardin du Maître des Filets","Pingjiang Road et ses canaux","Le musée de I. M. Pei"],
   pl:["Vingt-cinq minutes de train depuis Shanghai","Le pic de feuillage tombe fin novembre","Se fait très bien à la journée"],
   mn:["La gare TGV Nord est à quinze kilomètres du centre","Les jardins sont petits et se remplissent vite"]},
- hangzhou:{fr:"Hangzhou",han:"杭州",reg:"Delta",lat:30.27,lon:120.15,alt:10,n:2,t:"12 à 20 °C",sun:2,
+ hangzhou:{fr:"Hangzhou",han:"杭州",reg:"Delta",lat:30.27,lon:120.15,alt:10,n:2,mx:17.1,tmin:10.0,rain:6,sun:8.5,vd:"ok",
   why:"Le lac de l'Ouest, le paysage le plus peint de Chine, et les plantations de thé Longjing sur les collines.",
   ok:["Le tour du lac de l'Ouest à vélo","Temple de Lingyin et ses ginkgos centenaires","Les plantations de Longjing","Jiuxi Shibajian pour les érables"],
   pl:["Le pic de feuillage tombe après la première gelée, fin novembre : c'est le seul de premier plan encore disponible","Quarante minutes de train depuis Shanghai"],
   mn:["Très fréquenté le week-end","Pas de vol direct depuis Paris"]},
- huangshan:{fr:"Huangshan",han:"黄山",reg:"Delta",lat:30.13,lon:118.16,alt:1860,n:3,t:"−2 à 8 °C",sun:1,
+ huangshan:{fr:"Huangshan",han:"黄山",reg:"Delta",lat:30.13,lon:118.16,alt:1860,n:3,mx:8.6,tmin:1.5,rain:5,sun:8.7,vd:"warn",
   why:"Les montagnes Jaunes, pins tordus et mers de nuages. Et les villages Ming de Hongcun et Xidi au pied.",
   ok:["Nuit au sommet pour le lever du jour","Mer de nuages et givre","Villages de Hongcun et Xidi"],
   pl:["Givre et mer de nuages sont à leur meilleur en hiver","Très peu de monde"],
   mn:["Le Grand Canyon de la Mer de l'Ouest ferme le 1er décembre","Les téléphériques ferment un mois chacun en maintenance entre novembre et janvier","Il gèle au sommet"]},
- zhangjiajie:{fr:"Zhangjiajie",han:"张家界",reg:"Centre",lat:29.35,lon:110.48,alt:400,n:3,t:"10 à 20 °C",sun:1,
+ zhangjiajie:{fr:"Zhangjiajie",han:"张家界",reg:"Centre",lat:29.35,lon:110.48,alt:400,n:3,mx:10.2,tmin:4.2,rain:7,sun:6.4,vd:"no",
   why:"Les pitons de grès qui ont inspiré les montagnes flottantes d'Avatar.",
   ok:["Parc national de Wulingyuan","Tianmen Shan, téléphérique et route aux 99 virages","La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
   pl:["Le paysage le plus spectaculaire de tout le pays","Wulingyuan reste ouvert quoi qu'il arrive","On peut louer des exosquelettes pour les escaliers"],
   mn:["Par brouillard givrant, les téléphériques et la passerelle de verre ferment","Le premier givre est tombé le 17 novembre en 2025","La gare TGV est à une heure de route du parc","C'est une loterie météo"]},
- fenghuang:{fr:"Fenghuang",han:"凤凰",reg:"Centre",lat:27.95,lon:109.60,alt:300,n:2,t:"6 à 14 °C",sun:0,
+ fenghuang:{fr:"Fenghuang",han:"凤凰",reg:"Centre",lat:27.95,lon:109.60,alt:300,n:2,mx:16.4,tmin:9.4,rain:6,sun:8.7,vd:"ok",
   why:"Une ville ancienne sur pilotis au bord de la Tuo, illuminée le soir. À deux heures de Zhangjiajie.",
   ok:["Les maisons sur pilotis au bord de l'eau","La vieille ville de nuit","Les ponts couverts"],
   pl:["Se combine naturellement avec Zhangjiajie","Très belle de nuit"],
   mn:["Devenue très commerciale","Souvent brumeux et humide à cette saison"]},
- chongqing:{fr:"Chongqing",han:"重庆",reg:"Sichuan",lat:29.56,lon:106.55,alt:244,n:3,t:"11 à 17 °C",sun:0,air:1,
+ chongqing:{fr:"Chongqing",han:"重庆",reg:"Sichuan",lat:29.56,lon:106.55,alt:244,n:3,mx:16.0,tmin:11.6,rain:12,sun:7.6,vd:"no",air:1,
   why:"La ville la plus verticale de Chine. Un métro qui traverse un immeuble, des abris anti-aériens devenus boutiques, et le hotpot le plus pimenté du pays.",
   ok:["Le métro de Liziba qui traverse un immeuble d'habitation","Hongyadong et Jiefangbei de nuit","Les abris anti-aériens reconvertis","Téléphérique du Yangtsé et croisière de nuit","Hotpot à marmite compartimentée"],
   pl:["Tout ce qu'on y fait est nocturne ou souterrain : la grisaille ne gêne pas","La brume met la ville de nuit en valeur","Desservie sans escale depuis Paris, deux vols par semaine","Températures douces"],
   mn:["Environ mille heures de soleil par an, presque aucune de novembre à février","Oubliez les panoramas de jour depuis les hauteurs"]},
- chengdu:{fr:"Chengdu",han:"成都",reg:"Sichuan",lat:30.57,lon:104.07,alt:500,n:3,t:"8 à 15 °C",sun:0,air:1,
+ chengdu:{fr:"Chengdu",han:"成都",reg:"Sichuan",lat:30.57,lon:104.07,alt:500,n:3,mx:14.6,tmin:8.8,rain:4,sun:7.2,vd:"warn",air:1,
   why:"Les pandas géants, et l'art sichuanais de ne rien faire dans une maison de thé.",
   ok:["Base de recherche sur le panda géant, tôt le matin","Maisons de thé du parc du Peuple","Opéra du Sichuan et changement de masques","Le quartier de Kuanzhai"],
   pl:["Les pandas sont en enclos : la météo n'a aucune importance","Desservie sans escale depuis Paris","Base idéale pour Leshan et Emeishan"],
   mn:["Trois à cinq heures de soleil par jour, brouillard matinal","PM2.5 élevés en hiver","Réservation obligatoire par quota pour la base des pandas"]},
- leshan:{fr:"Leshan",han:"乐山",reg:"Sichuan",lat:29.55,lon:103.77,alt:400,n:1,t:"8 à 15 °C",sun:0,
+ leshan:{fr:"Leshan",han:"乐山",reg:"Sichuan",lat:29.55,lon:103.77,alt:400,n:1,mx:17.0,tmin:9.6,rain:9,sun:8.8,vd:"warn",
   why:"Le plus grand bouddha de pierre du monde, soixante-et-onze mètres taillés dans la falaise entre 713 et 803.",
   ok:["La descente des escaliers le long du bouddha","La vue depuis le fleuve"],
   pl:["Une heure de train depuis Chengdu, se fait à la journée","C'est une falaise : la grisaille ne gâche rien"],
   mn:["Trois cent quatre-vingts mètres d'escaliers","File d'attente importante sur l'escalier étroit"]},
- emeishan:{fr:"Emeishan",han:"峨眉山",reg:"Sichuan",lat:29.52,lon:103.33,alt:3077,n:2,t:"−5 à 5 °C",sun:1,
+ emeishan:{fr:"Emeishan",han:"峨眉山",reg:"Sichuan",lat:29.52,lon:103.33,alt:3077,n:2,mx:3.6,tmin:-4.2,rain:18,sun:6.8,vd:"no",
   why:"Montagne sacrée du bouddhisme, Sommet d'Or à 3 077 mètres au-dessus de la mer de nuages.",
   ok:["Le Sommet d'Or au lever du jour","Les monastères sur le sentier","Les macaques, chapardeurs"],
   pl:["Un des rares endroits d'où on émerge au-dessus de la grisaille sichuanaise","Givre et mer de nuages proches de leur maximum"],
   mn:["Il gèle en permanence au sommet, crampons recommandés","Les sentiers deviennent très glissants","Les téléphériques ouvrent tard en hiver"]},
- jiuzhaigou:{fr:"Jiuzhaigou",han:"九寨沟",reg:"Sichuan",lat:33.26,lon:103.92,alt:2500,n:2,t:"4 à 14 °C",sun:1,
+ jiuzhaigou:{fr:"Jiuzhaigou",han:"九寨沟",reg:"Sichuan",lat:33.26,lon:103.92,alt:2500,n:2,mx:8.4,tmin:-3.0,rain:10,sun:8.1,vd:"no",
   why:"Des lacs turquoise étagés dans une vallée de haute montagne.",
   ok:["Le lac aux Cinq Fleurs","Les cascades de Nuorilang","La vallée Rize"],
   pl:["Bascule en basse saison le 16 novembre : billet à 80 yuans au lieu de 190","Moins de dix mille visiteurs par jour","Beaucoup de journées ensoleillées"],
   mn:["Dernière entrée à 14 h","La route depuis Chengdu passe des cols et peut être coupée par le verglas","Les vols vers Jiuzhai Huanglong sont souvent annulés pour météo"]},
- kunming:{fr:"Kunming",han:"昆明",reg:"Yunnan",lat:25.04,lon:102.72,alt:1890,n:2,t:"5 à 19 °C",sun:2,
+ kunming:{fr:"Kunming",han:"昆明",reg:"Yunnan",lat:25.04,lon:102.72,alt:1890,n:2,mx:18.0,tmin:7.6,rain:4,sun:8.9,vd:"ok",
   why:"La ville du printemps éternel, porte d'entrée du Yunnan, et la Forêt de pierre à une heure.",
   ok:["Forêt de pierre de Shilin, karst de 270 millions d'années","Les mouettes rieuses de Sibérie au lac Dianchi","Marché aux fleurs de Dounan, le plus grand d'Asie","Le parc du Lac Vert"],
   pl:["Quarante mille mouettes venues de Sibérie, uniquement en hiver","Climat doux toute l'année","Vol le moins cher depuis Paris vers la Chine"],
   mn:["Pas de vol direct depuis Paris","La ville elle-même a peu de charme, c'est une base"]},
- dali:{fr:"Dali",han:"大理",reg:"Yunnan",lat:25.61,lon:100.27,alt:1970,n:3,t:"5 à 19 °C",sun:2,
+ dali:{fr:"Dali",han:"大理",reg:"Yunnan",lat:25.61,lon:100.27,alt:1970,n:3,mx:17.6,tmin:8.1,rain:1,sun:9.9,vd:"ok",
   why:"Un lac de montagne entre deux chaînes, la culture bai, et les Trois Pagodes du Xe siècle.",
   ok:["Les Trois Pagodes du temple Chongsheng","Le tour du lac Erhai à vélo ou en scooter","Les villages de Xizhou et Shuanglang","Téléphérique du Cangshan"],
   pl:["Sec et ensoleillé, 5 à 19 °C","Le tour du lac est une des plus belles journées de vélo du pays","Beaucoup d'hôtels avec vue sur le lac autour de cent euros"],
   mn:["La gare est à dix kilomètres de la vieille ville","La vieille ville est très touristique"]},
- lijiang:{fr:"Lijiang",han:"丽江",reg:"Yunnan",lat:26.87,lon:100.23,alt:2400,n:4,t:"0 à 19 °C",sun:2,
+ lijiang:{fr:"Lijiang",han:"丽江",reg:"Yunnan",lat:26.87,lon:100.23,alt:2400,n:4,mx:14.0,tmin:-1.0,rain:1,sun:9.9,vd:"ok",
   why:"La plus belle vieille ville du sud-ouest, culture naxi, canaux et toits de tuiles, avec une montagne enneigée en fond.",
   ok:["La vieille ville de Dayan, classée","Le Palais Mu et le parc de l'Étang du Dragon noir","Montagne du Dragon de Jade, téléphérique à 4 506 mètres","Le village de Baisha, plus calme"],
   pl:["Sommet déjà bien enneigé début novembre","Sec et ensoleillé","Base pour le Saut du Tigre"],
   mn:["Le téléphérique monte à 4 506 mètres : risque réel de mal des montagnes","Réservation par quota","Gel la nuit, on est à 2 400 mètres","Très fréquentée par le tourisme intérieur"]},
- shaxi:{fr:"Shaxi",han:"沙溪",reg:"Yunnan",lat:26.32,lon:99.86,alt:2100,n:3,t:"2 à 18 °C",sun:2,
+ shaxi:{fr:"Shaxi",han:"沙溪",reg:"Yunnan",lat:26.32,lon:99.86,alt:2100,n:3,mx:17.0,tmin:6.0,rain:1,sun:9.5,vd:"ok",
   why:"Un relais de la route du thé et des chevaux resté intact, entre Lijiang et Dali. Presque personne.",
   ok:["La place de Sideng et son théâtre","Les temples de Shibaoshan à flanc de montagne","Marche ou vélo dans la vallée","Le marché du vendredi"],
   pl:["La vraie campagne, à l'opposé des villes","Sur la route entre Lijiang et Dali : ne coûte presque aucun transport","Sec et ensoleillé"],
   mn:["Tous les hébergements n'acceptent pas les étrangers","Chauffage sommaire et nuits froides","Il n'y a littéralement rien à faire, c'est le but"]},
- shangrila:{fr:"Shangri-La",han:"香格里拉",reg:"Yunnan",lat:27.83,lon:99.71,alt:3200,n:2,t:"−5 à 12 °C",sun:1,
+ shangrila:{fr:"Shangri-La",han:"香格里拉",reg:"Yunnan",lat:27.83,lon:99.71,alt:3200,n:2,mx:10.4,tmin:-3.0,rain:2,sun:9.9,vd:"ok",
   why:"Le premier goût du Tibet sans permis : monastère de Songzanlin, prairies d'altitude, maisons tibétaines.",
   ok:["Monastère de Songzanlin","La vieille ville reconstruite","Le lac Napa et ses grues à cou noir"],
   pl:["Une heure à deux de train depuis Lijiang, ligne ouverte en 2023","Ciel très clair en hiver"],
   mn:["Gel systématique la nuit, jusqu'à −10 °C","Les prairies sont jaunies à cette saison","3 200 mètres : montée trop rapide depuis Lijiang"]},
- yuanyang:{fr:"Yuanyang",han:"元阳",reg:"Yunnan",lat:23.11,lon:102.75,alt:1600,n:3,t:"10 à 22 °C",sun:1,
+ yuanyang:{fr:"Yuanyang",han:"元阳",reg:"Yunnan",lat:23.11,lon:102.75,alt:1600,n:3,mx:16.9,tmin:9.5,rain:5,sun:8.1,vd:"ok",
   why:"Les rizières en terrasses hani, mille ans de travail à flanc de montagne, en eau de novembre à mars.",
   ok:["Lever du jour à Duoyishu","Coucher à Laohuzui","Les terrasses de Bada","Les marchés hani"],
   pl:["C'est le meilleur argument de saison de toute la Chine à vos dates","Les terrasses en eau réfléchissent le ciel : hors saison ce sont des champs","La brume du matin donne les mers de nuages"],
   mn:["Cul-de-sac : quatre heures et demie de Kunming à l'aller comme au retour","Deux levers avant l'aube","Il faut loger en haut, pas dans la vallée"]},
- jianshui:{fr:"Jianshui",han:"建水",reg:"Yunnan",lat:23.63,lon:102.83,alt:1300,n:2,t:"9 à 22 °C",sun:2,
+ jianshui:{fr:"Jianshui",han:"建水",reg:"Yunnan",lat:23.63,lon:102.83,alt:1300,n:2,mx:23.5,tmin:10.9,rain:5,sun:9.5,vd:"ok",
   why:"Une ville ancienne sur la route de Yuanyang : temple de Confucius, ponts, et un petit train à vapeur.",
   ok:["Le temple de Confucius, le deuxième de Chine","Le pont Shuanglong à dix-sept arches","Le train touristique de la vallée","Les cours résidentielles"],
   pl:["Coupe naturellement la longue route vers Yuanyang","Très peu de touristes étrangers"],
   mn:["Petite, une journée suffit","Ajoute une base à l'itinéraire"]},
- tigerleaping:{fr:"Saut du Tigre",han:"虎跳峡",reg:"Yunnan",lat:27.19,lon:100.11,alt:2000,n:2,t:"3 à 17 °C",sun:2,
+ tigerleaping:{fr:"Saut du Tigre",han:"虎跳峡",reg:"Yunnan",lat:27.19,lon:100.11,alt:2000,n:2,mx:16.0,tmin:3.0,rain:1,sun:9.5,vd:"ok",
   why:"Une des plus profondes gorges du monde, le Yangtsé encaissé sous des sommets à 5 000 mètres.",
   ok:["La haute randonnée, deux jours avec une nuit en auberge","Le belvédère du milieu","La descente au bord du fleuve"],
   pl:["Praticable en novembre, ciel dégagé","Sur la route entre Lijiang et Shangri-La","La plus belle marche du nord Yunnan"],
   mn:["Attention : contrairement à ce qu'on lit partout, ce lieu n'apparaît pas dans Pékin Express","Deux jours de marche, dénivelé sérieux"]},
- guilin:{fr:"Guilin",han:"桂林",reg:"Karst",lat:25.27,lon:110.29,alt:150,n:2,t:"7 à 16 °C",sun:1,
+ guilin:{fr:"Guilin",han:"桂林",reg:"Karst",lat:25.27,lon:110.29,alt:150,n:2,mx:22.5,tmin:12.5,rain:4,sun:8.9,vd:"ok",
   why:"Les pitons karstiques le long de la rivière Li, le paysage des billets de vingt yuans.",
   ok:["Croisière sur la Li","Colline en Trompe d'Éléphant","Les collines de Yaoshan"],
   pl:["Un paysage unique au monde","Doux en novembre"],
   mn:["De novembre à mars la Li est en étiage : croisières raccourcies ou suspendues","Les trajets retour Yangshuo-Yangdi sont souvent indisponibles","La ville en elle-même est quelconque"]},
- yangshuo:{fr:"Yangshuo",han:"阳朔",reg:"Karst",lat:24.78,lon:110.49,alt:130,n:3,t:"7 à 16 °C",sun:1,
+ yangshuo:{fr:"Yangshuo",han:"阳朔",reg:"Karst",lat:24.78,lon:110.49,alt:130,n:3,mx:22.8,tmin:12.1,rain:5,sun:8.9,vd:"ok",
   why:"Le même karst que Guilin, mais on y dort au milieu, à vélo entre les pitons et les rizières.",
   ok:["Vélo dans la campagne de Yulong","Radeau de bambou sur la Yulong","Escalade","La colline de la Lune"],
   pl:["Les radeaux de la Yulong restent opérationnels même en étiage","Trente minutes de train depuis Guilin","Beaucoup plus agréable que Guilin pour dormir"],
   mn:["Très touristique sur West Street","Bruine fréquente en décembre"]},
- longsheng:{fr:"Longsheng",han:"龙胜",reg:"Karst",lat:25.80,lon:110.01,alt:900,n:2,t:"4 à 13 °C",sun:0,
+ longsheng:{fr:"Longsheng",han:"龙胜",reg:"Karst",lat:25.80,lon:110.01,alt:900,n:2,mx:16.7,tmin:8.5,rain:13,sun:8.6,vd:"warn",
   why:"Les rizières en terrasses de Longji, l'épine dorsale du dragon, et les villages zhuang et yao.",
   ok:["Terrasses de Ping'an et de Dazhai","Les villages yao aux cheveux longs"],
   pl:["Spectaculaire en saison"],
   mn:["De fin octobre à avril, les terrasses ne sont que des champs bruns et nus : c'est le pire moment de l'année","Ne pas confondre avec Yuanyang, qui est à son maximum au même moment"]},
- xijiang:{fr:"Xijiang",han:"西江",reg:"Karst",lat:26.50,lon:108.18,alt:850,n:2,t:"5 à 14 °C",sun:0,
+ xijiang:{fr:"Xijiang",han:"西江",reg:"Karst",lat:26.50,lon:108.18,alt:850,n:2,mx:15.3,tmin:7.2,rain:10,sun:9.0,vd:"warn",
   why:"Le plus grand village miao de Chine, mille maisons de bois à flanc de colline.",
   ok:["Le village vu depuis le belvédère à la tombée du jour","Les costumes et l'argenterie miao","Les marchés des environs"],
   pl:["Très peu de touristes étrangers","Une Chine ethnique authentique"],
   mn:["Le Guizhou est humide et froid à cette saison","Accès long depuis les grandes villes","Le village s'est beaucoup commercialisé"]},
- canton:{fr:"Canton",han:"广州",reg:"Sud",lat:23.13,lon:113.26,alt:20,n:2,t:"17 à 25 °C",sun:2,air:1,
+ canton:{fr:"Canton",han:"广州",reg:"Sud",lat:23.13,lon:113.26,alt:20,n:2,mx:23.9,tmin:16.8,rain:6,sun:8.5,vd:"ok",air:1,
   why:"La capitale de la cuisine cantonaise, et le meilleur climat de Chine à cette saison.",
   ok:["Dim sum le matin","L'île de Shamian, quartier colonial","La tour de Canton","Le marché de Qingping"],
   pl:["17 à 25 °C, faible humidité, ciel clair : le climat le plus confortable du pays à vos dates","Desservie sans escale depuis Paris","On y mange remarquablement bien"],
   mn:["Peu de sites monumentaux","Très étendue et dense"]},
- hongkong:{fr:"Hong Kong",han:"香港",reg:"Sud",lat:22.32,lon:114.17,alt:30,n:3,t:"18 à 23 °C",sun:2,air:1,
+ hongkong:{fr:"Hong Kong",han:"香港",reg:"Sud",lat:22.32,lon:114.17,alt:30,n:3,mx:22.9,tmin:15.8,rain:9,sun:7.4,vd:"warn",air:1,
   why:"Une ville verticale entre mer et montagne, et une bonne porte de sortie si le voyage descend au sud.",
   ok:["Le Peak au coucher du soleil","Le Star Ferry","Les sentiers de Dragon's Back","Lantau et le Grand Bouddha"],
   pl:["Octobre à début décembre est unanimement la meilleure période","Desservie sans escale, douze vols par semaine","Sortir de Chine continentale rouvre un compteur de trente jours de visa"],
   mn:["Cher comparé au continent","C'est une juridiction distincte : formalités à l'entrée et à la sortie"]},
- xiamen:{fr:"Xiamen",han:"厦门",reg:"Sud",lat:24.48,lon:118.09,alt:20,n:2,t:"15 à 22 °C",sun:2,air:1,
+ xiamen:{fr:"Xiamen",han:"厦门",reg:"Sud",lat:24.48,lon:118.09,alt:20,n:2,mx:24.8,tmin:16.4,rain:7,sun:8.3,vd:"ok",air:1,
   why:"Une ville balnéaire et l'île piétonne de Gulangyu, couverte de villas coloniales.",
   ok:["Gulangyu, sans voitures","Le sentier côtier","Les tulou hakka à quelques heures"],
   pl:["Doux et ensoleillé","Desservie sans escale depuis Paris, trois vols par semaine"],
   mn:["Très à l'écart des autres destinations","Gulangyu est bondée le week-end"]},
- lhassa:{fr:"Lhassa",han:"拉萨",reg:"Ouest",lat:29.65,lon:91.14,alt:3650,n:4,t:"−3 à 13 °C",sun:2,
+ lhassa:{fr:"Lhassa",han:"拉萨",reg:"Ouest",lat:29.65,lon:91.14,alt:3650,n:4,mx:11.2,tmin:0.2,rain:1,sun:10.3,vd:"warn",
   why:"Le Potala, le Jokhang, et les pèlerins qui tournent autour du Barkhor.",
   ok:["Palais du Potala","Temple du Jokhang et le Barkhor","Monastères de Drepung et Sera","Le lac Yamdrok"],
   pl:["Du 1er novembre au 15 mars, la plupart des sites classés A sont gratuits, Potala compris","Ciel presque toujours dégagé, meilleure visibilité de l'année sur l'Everest"],
   mn:["Permis obligatoire, deux à trois semaines de délai, et tour organisé imposé avec guide en permanence","3 650 mètres : acclimatation nécessaire","Mange six à huit jours du voyage"]},
- dunhuang:{fr:"Dunhuang",han:"敦煌",reg:"Ouest",lat:40.14,lon:94.66,alt:1140,n:2,t:"−9 à 4 °C",sun:2,
+ dunhuang:{fr:"Dunhuang",han:"敦煌",reg:"Ouest",lat:40.14,lon:94.66,alt:1140,n:2,mx:4.9,tmin:-4.1,rain:1,sun:8.5,vd:"warn",
   why:"Les grottes de Mogao, mille ans de peintures bouddhiques dans le désert, et les dunes de Mingsha.",
   ok:["Grottes de Mogao","Dunes de Mingsha et le lac du Croissant","Le col de Yumen"],
   pl:["Ciel très pur","Beaucoup moins de monde qu'en été"],
   mn:["Il gèle franchement","Très isolée : détour important","Nombre de grottes visitables limité"]},
- zhangye:{fr:"Zhangye",han:"张掖",reg:"Ouest",lat:38.93,lon:100.45,alt:1480,n:2,t:"−9 à 4 °C",sun:2,
+ zhangye:{fr:"Zhangye",han:"张掖",reg:"Ouest",lat:38.93,lon:100.45,alt:1480,n:2,mx:5.0,tmin:-5.5,rain:2,sun:7.3,vd:"warn",
   why:"Les reliefs Danxia, des collines rayées d'ocre, de rouge et de bleu.",
   ok:["Le parc géologique Danxia au couchant","Le Grand Bouddha couché"],
   pl:["Les couleurs ressortent mieux par lumière basse d'hiver","Peu de monde"],
   mn:["Il gèle","Sur le corridor du Hexi, très à l'écart","Les couleurs sont plus ternes sans pluie récente"]},
- kashgar:{fr:"Kashgar",han:"喀什",reg:"Ouest",lat:39.47,lon:75.99,alt:1280,n:3,t:"−8 à 5 °C",sun:2,
+ kashgar:{fr:"Kashgar",han:"喀什",reg:"Ouest",lat:39.47,lon:75.99,alt:1280,n:3,mx:8.9,tmin:-0.7,rain:2,sun:8.8,vd:"warn",
   why:"La ville la plus à l'ouest de Chine, ouïghoure, plus proche de Bagdad que de Pékin.",
   ok:["La vieille ville","Le marché aux bestiaux du dimanche","La mosquée Id Kah","La route du Karakoram"],
   pl:["Une culture entièrement différente du reste du pays","5 à 15 °C en journée en novembre"],
@@ -671,7 +690,58 @@ function linksOf(id){
 function dayTripBases(id){
   return LINKS.filter(function(l){return l.x===id&&l.t==="jour";}).map(function(l){return l.b;});
 }
-var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner"};
+var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner",
+ tengchong:{fr:"Tengchong",han:"腾冲",reg:"Yunnan",lat:25.02,lon:98.49,alt:1650,n:3,mx:18.6,tmin:6.0,rain:3,sun:10.0,vd:"ok",
+  why:"Volcans, sources chaudes et le village Ming de Heshun. Et une avenue de ginkgos dorés dont le pic tombe en novembre.",
+  ok:["L'avenue des ginkgos de Jiangdongcun, à son maximum en novembre","Le village Ming de Heshun, un des mieux conservés du Yunnan","Les champs volcaniques et les sources chaudes de Rehai","Le musée de la route de Birmanie"],
+  pl:["Dix heures de soleil par jour et trois jours de pluie seulement : le meilleur duo du Yunnan","Les ginkgos sont un bonus strictement saisonnier, comme les rizières de Yuanyang","Presque aucun touriste étranger"],
+  mn:["Très à l'ouest, loin de l'axe Kunming-Dali-Lijiang","Jamais évalué contre le reste du Yunnan, c'est un angle mort du dossier"]},
+ xishuangbanna:{fr:"Xishuangbanna",han:"西双版纳",reg:"Yunnan",lat:22.01,lon:100.80,alt:550,n:3,mx:25.4,tmin:16.2,rain:6,sun:9.8,vd:"ok",
+  why:"La Chine tropicale, culture dai, forêt primaire, à la frontière du Laos.",
+  ok:["Le jardin botanique de Menglun","Les villages dai et leurs temples theravada","Le marché de nuit de Jinghong"],
+  pl:["25 °C en décembre, la destination la plus chaude du catalogue hors Hainan","Une Chine qui ne ressemble à rien d'autre dans le pays"],
+  mn:["Six jours de pluie","Très au sud, c'est un cul-de-sac depuis Kunming"]},
+ quanzhou:{fr:"Quanzhou",han:"泉州",reg:"Sud",lat:24.87,lon:118.68,alt:20,n:2,mx:24.1,tmin:17.2,rain:3,sun:8.1,vd:"ok",
+  why:"Le port de départ de la route maritime de la soie, classé UNESCO en 2021. Temples bouddhistes, mosquée du Xe siècle, sanctuaires manichéens.",
+  ok:["Le temple Kaiyuan et ses deux pagodes de pierre","La mosquée Qingjing, une des plus anciennes de Chine","Le quartier de Xijie","Les statues de la colline de Qingyuan"],
+  pl:["24 °C et trois jours de pluie seulement","Classé UNESCO depuis 2021 et pratiquement aucun touriste étranger","Se combine avec Xiamen et les tulou"],
+  mn:["Très à l'écart de tout le reste de l'itinéraire","Angle mort du dossier, jamais évalué"]},
+ tulou:{fr:"Tulou du Fujian",han:"福建土楼",reg:"Sud",lat:24.68,lon:117.02,alt:400,n:2,mx:23.0,tmin:11.3,rain:7,sun:7.5,vd:"ok",
+  why:"Les maisons rondes fortifiées hakka, immeubles de terre habités depuis des siècles. Classées UNESCO.",
+  ok:["Les grappes de Tianluokeng et de Chuxi","Dormir dans un tulou","Les villages hakka alentour"],
+  pl:["De la ruralité bâtie et encore habitée, pas un décor","23 °C en décembre"],
+  mn:["Sept jours de pluie","Accès par la route depuis Xiamen, deux à trois heures"]},
+ hongcun:{fr:"Hongcun",han:"宏村",reg:"Delta",lat:29.99,lon:117.98,alt:200,n:2,mx:17.4,tmin:9.2,rain:6,sun:8.8,vd:"ok",
+  why:"Les villages huizhou des Ming et des Qing, murs blancs et toits gris au bord de l'eau. Classés UNESCO.",
+  ok:["Hongcun et son étang en croissant","Xidi, le village jumeau","Les ruelles à l'aube, avant les groupes"],
+  pl:["La meilleure ruralité bâtie du delta","Au pied de Huangshan, les deux se combinent"],
+  mn:["Six jours de pluie","Très fréquenté par les groupes chinois en journée"]},
+ zhaoxing:{fr:"Zhaoxing",han:"肇兴",reg:"Karst",lat:25.90,lon:109.19,alt:400,n:2,mx:18.5,tmin:10.7,rain:9,sun:8.9,vd:"warn",
+  why:"Le plus grand village dong de Chine, cinq tours du tambour et des ponts couverts dits ponts du vent et de la pluie.",
+  ok:["Les cinq tours du tambour","Les ponts couverts","Les chants polyphoniques dong, classés à l'UNESCO"],
+  pl:["Une culture minoritaire très vivante, loin du tourisme international"],
+  mn:["Neuf jours de pluie sur vingt-sept","Accès long depuis les grandes villes"]},
+ nanjing:{fr:"Nankin",han:"南京",reg:"Delta",lat:32.06,lon:118.80,alt:20,n:2,mx:15.2,tmin:8.4,rain:5,sun:8.2,vd:"ok",
+  why:"Ancienne capitale, remparts Ming les plus longs du monde, mausolée de Hongwu et mémorial du massacre.",
+  ok:["Le mausolée Ming Xiaoling","Les remparts et la porte Zhonghua","Le mémorial de Nankin","Le lac Xuanwu"],
+  pl:["Une heure quinze de Shanghai en train","Desservie en direct depuis Paris, un vol par semaine"],
+  mn:["Cinq jours de pluie","Moins spectaculaire que Pékin sur le registre impérial"]},
+ luoyang:{fr:"Luoyang",han:"洛阳",reg:"Nord",lat:34.62,lon:112.45,alt:150,n:2,mx:13.9,tmin:5.8,rain:5,sun:8.2,vd:"ok",
+  why:"Les grottes de Longmen, cent mille statues bouddhiques taillées dans la falaise, et le temple de Shaolin à côté.",
+  ok:["Les grottes de Longmen, classées UNESCO","Le temple du Cheval blanc","Shaolin et le mont Song à une heure"],
+  pl:["Un des trois grands ensembles rupestres de Chine avec Yungang et Mogao","Sur la ligne à grande vitesse Pékin-Xi'an"],
+  mn:["La ville elle-même n'a pas d'intérêt","Cinq jours de pluie"]},
+ chengde:{fr:"Chengde",han:"承德",reg:"Nord",lat:40.95,lon:117.94,alt:350,n:2,mx:8.4,tmin:-1.0,rain:4,sun:8.4,vd:"ok",
+  why:"La résidence d'été des empereurs Qing et ses temples tibétains, dont une réplique du Potala. Classé UNESCO.",
+  ok:["Le parc de la résidence de montagne","Le temple Putuo Zongcheng, le petit Potala","Le temple Puning et son bouddha de bois de vingt-deux mètres"],
+  pl:["Accessible depuis Pékin en train","Du tibétain sans permis ni altitude"],
+  mn:["Il gèle la nuit","Le parc est immense et se fait mal en une demi-journée"]},
+ wulong:{fr:"Wulong",han:"武隆",reg:"Sichuan",lat:29.32,lon:107.76,alt:250,n:2,mx:15.5,tmin:9.8,rain:10,sun:7.2,vd:"warn",
+  why:"Karst spectaculaire, trois ponts naturels et le gouffre de Houping. Classé UNESCO.",
+  ok:["Les trois ponts naturels","Le gouffre-doline de Qingkou","La grotte de Furong"],
+  pl:["Un paysage rare, moins couru que Zhangjiajie"],
+  mn:["Dix jours de pluie et 7,2 h de soleil","Même problème de grisaille que tout le bassin du Sichuan"]},
+};
 
 var AIR=["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong","kunming","hangzhou","guilin"];
 
@@ -707,7 +777,9 @@ function legOf(a,b){var k=dist(a,b);
   if(k>1100) return {m:"vol",h:Math.round(k/700+1.8),air:1};
   if(k>420) return {m:"train",h:Math.max(2,Math.round(k/230)),air:0};
   return {m:"train ou route",h:Math.max(1,Math.round(k/150)),air:0};}
-function sunLabel(s){return s===2?{t:"ensoleillé",c:"good"}:s===1?{t:"variable",c:""}:{t:"souvent gris",c:"bad"};}
+function nb(x){return String(x).replace(".",",");}
+function temp(d){return nb(d.mx)+" / "+nb(d.tmin)+" °C";}
+var VD={ok:{t:"saison favorable",c:"good"},warn:{t:"jouable avec réserve",c:"warn"},no:{t:"à éviter en novembre",c:"bad"}};
 function paceN(){return pace==="slow"?4:pace==="fast"?2:3;}
 
 /* ══ catalogue ══ */
@@ -795,6 +867,7 @@ function tileOf(id){
   ob.addEventListener("blur",function(){hoverCat(id,false);});
   t.appendChild(ob);
 
+  if(d.vd!=="ok") t.appendChild(el("div","vdt "+VD[d.vd].c,VD[d.vd].t));
   var bases=dayTripBases(id);
   if(bases.length) t.appendChild(el("div","dt","à la journée depuis "+bases.map(function(b){return D[b].fr;}).join(" ou ")));
 
@@ -805,7 +878,7 @@ function tileOf(id){
 
   var tx=el("div","txt");
   tx.appendChild(el("div","nm",d.fr));
-  tx.appendChild(el("div","me",d.t+"  ·  "+d.n+" nuits"));
+  tx.appendChild(el("div","me",temp(d)+"  ·  "+d.rain+" j de pluie  ·  "+d.n+" nuits"));
   t.appendChild(tx);
 
   t.addEventListener("mouseenter",function(){hoverCat(id,true);});
@@ -845,7 +918,8 @@ function openSheet(id){
   var wm=el("div","sheet-wm"); wm.textContent=d.han; wm.setAttribute("aria-hidden","true"); bd.appendChild(wm);
   bd.appendChild(el("h3",null,d.fr));
   var mt=el("div","sheet-meta");
-  [d.reg,d.t,sunLabel(d.sun).t,d.alt+" m d'altitude",d.n+" nuits conseillées"].forEach(function(x){mt.appendChild(el("span",null,x));});
+  [d.reg,temp(d),d.rain+" jours de pluie",nb(d.sun)+" h de soleil par jour",d.alt+" m d'altitude",d.n+" nuits conseillées"].forEach(function(x){mt.appendChild(el("span",null,x));});
+  var vv=el("span","vd "+VD[d.vd].c,VD[d.vd].t); mt.insertBefore(vv,mt.firstChild);
   if(AIR.indexOf(id)>=0) mt.appendChild(el("span",null,"aéroport"));
   bd.appendChild(mt);
   var co=el("div","sheet-cols"),c1=el("div"),c2=el("div");
@@ -907,6 +981,14 @@ function order(){
     cur=rest[best]; out.push(cur); rest.splice(best,1);
   }
   sel=out;
+  altitudeOrder();
+}
+/* Dali puis Lijiang puis Shangri-La : contrainte physiologique, pas de confort */
+function altitudeOrder(){
+  var chain=["dali","lijiang","shangrila"].filter(function(x){return sel.indexOf(x)>=0;});
+  if(chain.length<2) return;
+  var slots=chain.map(function(x){return sel.indexOf(x);}).sort(function(a,b){return a-b;});
+  chain.forEach(function(id,k){ sel[slots[k]]=id; });
 }
 
 /* ══ route ══ */
@@ -923,7 +1005,7 @@ function drawRoute(){
     if(im){var g=document.createElement("img");g.src=im.u;g.alt="";th.appendChild(g);} r.appendChild(th);
     var inb=el("div","in");
     inb.appendChild(el("div","nm",(i+1)+". "+d.fr));
-    inb.appendChild(el("div","dt",fmt(from)+(n>1?" au "+fmt(to):"")+" · "+d.t));
+    inb.appendChild(el("div","dt",fmt(from)+(n>1?" au "+fmt(to):"")+" · "+temp(d)));
     r.appendChild(inb);
     var nb=el("div","nights");
     var mi=el("button",null,"−"); mi.addEventListener("click",function(){if(nights[id]>1){nights[id]--;render();}});
@@ -946,6 +1028,73 @@ function drawRoute(){
     }
   });
 }
+/* ══ contraintes dures : elles ne relèvent pas du conseil, elles bloquent ══ */
+function hardRules(alert){
+  var i,pos={};
+  sel.forEach(function(id,k){pos[id]=k;});
+  var nightsBefore=function(id){var s=0;for(var k=0;k<(pos[id]||0);k++)s+=nights[sel[k]]||0;return s;};
+
+  /* 1. Cité Interdite : quota, réservation nominative, ouverture 7 jours avant */
+  if(pos.pekin!==undefined){
+    var arr=addD(START,nightsBefore("pekin"));
+    var ouv=addD(arr,-7);
+    alert("bad","Cité Interdite : quota d'environ 40 000 billets par jour, réservation nominative liée au passeport, "+
+      "aucune vente sur place. Les ventes ouvrent 7 jours avant la visite. Pour une arrivée le "+fmt(arr)+
+      ", posez une alarme au "+fmt(ouv)+". Une réservation par passeport, donc deux à faire. Tarif basse saison 40 ¥, environ 5 €.");
+  }
+
+  /* 2. Altitude : Shangri-La à 3 200 m impose un ordre et un plancher */
+  if(pos.shangrila!==undefined){
+    var av=[];
+    if(pos.dali!==undefined&&pos.dali<pos.shangrila) av.push("Dali");
+    if(pos.lijiang!==undefined&&pos.lijiang<pos.shangrila) av.push("Lijiang");
+    if(av.length<2) alert("bad","Shangri-La est à 3 200 mètres, soit 72 % d'oxygène. Il est déconseillé d'y monter depuis une ville basse. "+
+      "L'ordre recommandé est Dali, puis Lijiang, puis Shangri-La"+(av.length?" ; vous n'avez que "+av.join(" et ")+" avant.":", or aucune de ces deux étapes ne la précède."));
+    if((nights.shangrila||0)<3) alert("warn","Shangri-La : "+(nights.shangrila||0)+" nuit"+((nights.shangrila||0)>1?"s":"")+" seulement. "+
+      "L'acclimatation prend deux jours pleins, le troisième est le premier vraiment confortable. Trois nuits minimum, sinon la moitié du séjour passe à s'adapter.");
+  }
+
+  /* 3. Yuanyang : terrasses en eau à partir de fin novembre */
+  if(pos.yuanyang!==undefined){
+    var jour=addD(START,nightsBefore("yuanyang"));
+    var tot=totalNights();
+    if(jour.getTime()<Date.UTC(2026,10,28))
+      alert("warn","Yuanyang le "+fmt(jour)+" : les terrasses sont mises en eau après la récolte, à partir de fin novembre. "+
+        "Trop tôt, vous risquez des terrasses sèches. Déplacez cette étape vers la fin du voyage. [À VÉRIFIER] la date exacte varie chaque année.");
+    if((nights.yuanyang||0)<3)
+      alert("warn","Yuanyang vaut pour ses levers de soleil, et il y pleut cinq jours sur vingt-sept. Prévoyez au moins deux matins, donc trois nuits.");
+  }
+
+  /* 4. Hong Kong et Macao : sorties du territoire */
+  ["hongkong","macao"].forEach(function(x){
+    if(pos[x]!==undefined) alert("warn",D[x].fr+" est une juridiction distincte : y aller est une sortie de Chine continentale. "+
+      "Le retour relance un compteur de 30 jours d'exemption. Ce n'est pas une étape ordinaire dans le calcul de durée, et il y a des formalités à chaque passage.");
+  });
+
+  /* 5. Tibet : permis et circuit obligatoires */
+  if(pos.lhassa!==undefined) alert("bad","Lhassa : les étrangers ne peuvent pas circuler librement au Tibet. "+
+    "Permis obligatoire ET circuit organisé avec guide, délai de plusieurs semaines. Le voyage indépendant est exclu. "+
+    "La météo y est pourtant la meilleure du catalogue, 10,3 h de soleil et un jour de pluie : c'est l'administratif qui ferme, pas la saison.");
+
+  /* 6. Hébergement : licence pour accueillir des étrangers */
+  var ruraux=sel.filter(function(id){return ["shaxi","yuanyang","zhaoxing","tulou","hongcun","xijiang","tigerleaping"].indexOf(id)>=0;});
+  if(ruraux.length) alert("warn","Hébergement : seule une minorité d'hôtels a la licence pour accueillir des étrangers, et le problème se concentre "+
+    "sur les petites structures rurales. Concerné ici : "+ruraux.map(function(i){return D[i].fr;}).join(", ")+
+    ". Réservez via Trip.com avec le filtre « accepte les étrangers », étape par étape.");
+
+  /* 7. Météo : lieux déconseillés à cette saison */
+  var mauvais=sel.filter(function(id){return D[id].vd==="no";});
+  if(mauvais.length) alert("bad","À cette saison, les données déconseillent : "+
+    mauvais.map(function(i){return D[i].fr+" ("+D[i].rain+" j de pluie, "+nb(D[i].sun)+" h de soleil)";}).join(" · ")+".");
+
+  /* 8. Coût fixe d'un changement de base */
+  if(sel.length>1){
+    var ch=sel.length-1, perdu=ch/2;
+    alert(ch>=6?"warn":"good",ch+" changements de base, soit environ "+nb(perdu)+" journée"+(perdu>1?"s":"")+
+      " perdues en transferts, quelle que soit la durée des trajets. La ressource rare de ce voyage est la nuit, pas l'euro.");
+  }
+}
+
 function drawSum(){
   var s=document.getElementById("sum"); s.innerHTML="";
   var n=totalNights(),dep=addD(START,n),marge=Math.round((VISA-dep)/86400000);
@@ -965,10 +1114,9 @@ function drawSum(){
   else alert("good",marge+" jours de marge avant la limite du visa, le 14 décembre.");
   if(n>target) alert("warn","Vous êtes à "+n+" nuits alors que vous en visiez "+target+".");
   if(longs) alert("warn",longs+" trajet"+(longs>1?"s":"")+" de sept heures ou plus. Envisagez de prendre l'avion, ou de couper avec une étape intermédiaire.");
-  var gris=sel.filter(function(id){return D[id].sun===0;});
-  if(gris.length>=3) alert("warn","Trois destinations ou plus sont souvent grises à cette période : "+gris.map(function(i){return D[i].fr;}).join(", ")+". Ce n'est gênant que si vous y comptiez sur des panoramas.");
+  hardRules(alert);
   sel.forEach(function(id){
-    var bases=dayTripBases(id);
+      var bases=dayTripBases(id);
     var b=bases.filter(function(x){return sel.indexOf(x)>=0;});
     if(b.length&&(nights[id]||0)>0){
       var L2=LINKS.filter(function(l){return l.x===id&&l.b===b[0];})[0];
@@ -1158,7 +1306,7 @@ function drawLeaflet(){
     var ic=L.divIcon({className:"",html:'<div class="pin-n">'+(i+1)+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
     var m=L.marker([d.lat,d.lon],{icon:ic,title:d.fr}).addTo(LLAYER);
     var html='<b>'+d.fr+'</b><span class="h">'+d.reg+'</span>'
-            +'<div class="m">'+n+' nuit'+(n>1?'s':'')+' · '+d.t+' · '+d.alt+' m</div>';
+            +'<div class="m">'+n+' nuit'+(n>1?'s':'')+' · '+temp(d)+' · '+d.alt+' m</div>';
     m.bindTooltip(d.fr,{permanent:true,direction:"right",offset:[11,0],className:"lbl-fr"});
     m.bindPopup(html);
     m.on("click",function(){ openSheet(id); });
