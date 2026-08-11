@@ -37,7 +37,7 @@ img{max-width:100%;display:block}
 
 
 /* nav */
-.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:40;background:var(--pap);padding:9px 0;
+.tabs{display:flex;gap:6px;position:sticky;top:var(--hmini);z-index:40;background:var(--pap);padding:9px 0;
   overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:100px;color:var(--tx2)}
@@ -194,7 +194,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .lbl-fr::before{display:none}
 .cat{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(16px,2.4vw,28px);align-items:start}
 @media (max-width:1080px){.cat{grid-template-columns:1fr}.catside{position:static}}
-.catside{position:sticky;top:64px}
+.catside{position:sticky;top:calc(var(--hmini) + var(--tabsh) + 12px)}
 
 .cathint{font-size:12.5px;color:var(--tx2);margin:9px 2px 0;line-height:1.5}
 .regsec{margin-bottom:clamp(22px,3vw,34px)}
@@ -242,7 +242,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .regpick{font-size:12.5px;font-weight:700;color:var(--zhu);flex:none}
 .cat{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(16px,2.2vw,26px);align-items:start}
 
-.catside{position:sticky;top:62px}
+.catside{position:sticky;top:calc(var(--hmini) + var(--tabsh) + 10px)}
 #catmap{width:100%;height:520px;border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
 .cathint{font-size:12px;color:var(--tx2);margin:8px 2px 0;line-height:1.45}
 
@@ -289,7 +289,29 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .tile .dt{background:#17161Bcc;color:#fff}
 .tile .dt.jour{background:#2C8C7Ce6}
 /* ── en-tête ── */
-.top{position:relative;min-height:clamp(300px,46vh,440px);display:flex;align-items:stretch;background:var(--deep);isolation:isolate;margin-bottom:46px}
+/* l'en-tête reste visible : grande en haut de page, réduite dès qu'on descend */
+:root{--hfull:clamp(300px,46vh,440px);--hmini:88px;--tabsh:50px}
+.top{position:fixed;left:0;right:0;top:0;z-index:60;min-height:var(--hfull);display:flex;align-items:stretch;
+  background:var(--deep);isolation:isolate;will-change:min-height}
+/* la cale garde la place de l'en-tete pleine : le contenu ne passe jamais dessous */
+.topsp{height:var(--hfull);margin-bottom:46px}
+.top.reduit{box-shadow:0 10px 30px #0a1f1e2e}
+.top.reduit .pg{padding-top:0;padding-bottom:0;align-items:center;gap:clamp(10px,1.6vw,20px)}
+.top.reduit h1{font-size:clamp(16px,2.1vw,26px)}
+.top.reduit .cn{margin-top:0;font-size:clamp(11px,1.25vw,15px);opacity:.9}
+.top.reduit .cn span{margin-right:clamp(11px,1.4vw,20px)}
+.top.reduit .hero-left{width:clamp(58px,5.8vw,80px)}
+.top.reduit .hero-r{width:clamp(74px,7.4vw,104px)}
+.top.reduit #stick1{height:clamp(54px,5.4vw,68px);bottom:10px}
+.top.reduit #stick2{height:clamp(50px,5vw,64px);bottom:12px}
+.top.reduit #heroimg{filter:brightness(.7) saturate(.85)}
+.sticker{pointer-events:auto}
+.top h1,.top .cn,.hero-left,.hero-r,.sticker,.top .pg,#heroimg{
+  transition:font-size .36s cubic-bezier(.2,.7,.3,1),width .36s cubic-bezier(.2,.7,.3,1),
+             height .36s cubic-bezier(.2,.7,.3,1),bottom .36s cubic-bezier(.2,.7,.3,1),
+             padding .36s cubic-bezier(.2,.7,.3,1),margin .36s cubic-bezier(.2,.7,.3,1),filter .36s ease}
+@media (prefers-reduced-motion:reduce){.top,.top h1,.top .cn,.sticker{transition:none}}
+.panel{scroll-margin-top:calc(var(--hmini) + var(--tabsh) + 14px)}
 .top-bg{position:absolute;inset:0;overflow:hidden;z-index:0;border-radius:0}
 #heroimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.86) saturate(.92)}
 .top-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,#0a1f1ef2 0%,#0a1f1ec4 38%,#0a1f1e4d 66%,#0a1f1e26 100%),linear-gradient(180deg,#0a1f1e00 55%,#0a1f1eb3 100%)}
@@ -468,6 +490,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   </div>
   <div class="hero-rule"></div>
 </div>
+<div class="topsp" aria-hidden="true"></div>
 
 <!-- l'invite est en bas de page, à droite des sources -->
 <div class="chi" id="chi" role="dialog" aria-modal="true" aria-labelledby="chit" hidden>
@@ -1616,6 +1639,32 @@ function render(){
 drawFilters(); drawInsp();
 initLeaflet(); initCatMap();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
+/* ── l'en-tête se réduit au scroll, avec hystérésis pour ne pas clignoter ── */
+(function(){
+  var top=document.querySelector(".top"), sp=document.querySelector(".topsp");
+  if(!top||!sp) return;
+  var H0=0,HM=88,red=false;
+
+  function mesurer(){
+    /* la cale garde toujours la hauteur pleine : c'est la référence fiable */
+    H0=sp.getBoundingClientRect().height;
+    HM=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hmini"))||88;
+  }
+  function maj(){
+    var y=window.pageYOffset||document.documentElement.scrollTop||0;
+    var course=Math.max(1,H0-HM);
+    var p=Math.min(1,Math.max(0,y/course));          /* 0 = pleine, 1 = réduite */
+    top.style.minHeight=(H0-course*p)+"px";          /* suit le scroll au pixel */
+    if(p>.5&&!red){ red=true; top.classList.add("reduit"); }
+    else if(p<=.5&&red){ red=false; top.classList.remove("reduit"); }
+  }
+  /* mise à jour directe : requestAnimationFrame est throttlé dans certains contextes
+     et laissait l'en-tête désynchronisée du scroll */
+  window.addEventListener("scroll",maj,{passive:true});
+  window.addEventListener("resize",function(){ mesurer(); maj(); },{passive:true});
+  mesurer(); maj();
+})();
+
 /* ── l'easter egg : cliquer Po ouvre la leçon ── */
 (function(){
   var ov=document.getElementById("chi"), v=document.getElementById("chiv");
