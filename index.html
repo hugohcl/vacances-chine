@@ -334,6 +334,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   .hero-r{align-self:flex-start}
 }
 
+.miniwrap{position:absolute;right:9px;bottom:52px;z-index:4;width:46px;height:40px;
+  background:#0d2422a6;backdrop-filter:blur(5px);border-radius:7px;padding:2px;display:grid;place-items:center}
+.mini{width:100%;height:100%;display:block}
 </style>
 
 <div class="top">
@@ -355,9 +358,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 <div class="pg">
   <nav class="tabs" aria-label="Parties">
     <button aria-current="true" data-t="param">Paramètres</button>
+    <button data-t="inspirations">Inspirations</button>
     <button data-t="destinations">Destinations</button>
     <button data-t="route">Ma route<span class="cnt" id="cnt">0</span></button>
-    <button data-t="inspirations">Inspirations</button>
     <button data-t="pratique">Pratique</button>
   </nav>
 
@@ -383,6 +386,12 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         </select>
         <small id="pnote"></small></div>
     </div>
+  </div>
+
+  <div class="panel" id="p-inspirations">
+    <div class="bh"><span class="lbl">D'où vient l'envie</span><h2>Inspirations</h2>
+      <p>Les deux parcours qui ont donné envie du voyage. Vous pouvez les charger d'un clic, puis retirer ce qui ne vous parle pas.</p></div>
+    <div class="insp" id="insp"></div>
   </div>
 
   <div class="panel" id="p-destinations">
@@ -414,12 +423,6 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <div class="zoom"><button id="zin">+</button><button id="zout">−</button><button id="zfit" style="font-size:10px">FIT</button></div>
       </div>
     </div>
-  </div>
-
-  <div class="panel" id="p-inspirations">
-    <div class="bh"><span class="lbl">D'où vient l'envie</span><h2>Inspirations</h2>
-      <p>Les deux parcours qui ont donné envie du voyage. Vous pouvez les charger d'un clic, puis retirer ce qui ne vous parle pas.</p></div>
-    <div class="insp" id="insp"></div>
   </div>
 
   <div class="panel" id="p-pratique">
@@ -812,6 +815,31 @@ var OUT=[[73.5,39.5],[75,40.5],[76.5,43],[80.5,45],[82.5,45.2],[85,47],[87,49],[
 [100.1,21.4],[99.2,22.1],[97.5,23.9],[97.7,25.5],[98.7,27.5],[96.2,29.1],[94.7,29.1],[92.1,27.8],[89.1,27.3],[85.8,28.2],
 [83.6,29.2],[81.2,30.4],[79,32.5],[78.7,34.5],[76.5,35.5],[74.9,37]];
 
+/* ══ mini-carte de repérage, une par tuile ══
+   Contour simplifié (OUT), projeté une seule fois puis réutilisé.        */
+var MINI=(function(){
+  var W=46,H=40,pad=2.5;
+  var xs=OUT.map(function(p){return px(p[0]);}), ys=OUT.map(function(p){return py(p[1]);});
+  var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs);
+  var y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+  var s=Math.min((W-pad*2)/(x1-x0),(H-pad*2)/(y1-y0));
+  var ox=(W-(x1-x0)*s)/2-x0*s, oy=(H-(y1-y0)*s)/2-y0*s;
+  function mapx(lon){return px(lon)*s+ox;}
+  function mapy(lat){return py(lat)*s+oy;}
+  var d="M"+OUT.map(function(p){return mapx(p[0]).toFixed(1)+","+mapy(p[1]).toFixed(1);}).join("L")+"Z";
+  return {W:W,H:H,d:d,x:mapx,y:mapy};
+})();
+function miniMap(id){
+  var d=D[id];
+  var svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 "+MINI.W+" "+MINI.H);
+  svg.setAttribute("class","mini");
+  svg.setAttribute("aria-hidden","true");
+  svg.appendChild(mk("path",{d:MINI.d,fill:"#ffffff26",stroke:"#ffffff8c","stroke-width":.7,"stroke-linejoin":"round"}));
+  svg.appendChild(mk("circle",{cx:MINI.x(d.lon),cy:MINI.y(d.lat),r:3.4,fill:"#E24A3C",stroke:"#fff","stroke-width":1.1}));
+  return svg;
+}
+
 /* ══ état ══ */
 var sel=[], nights={}, target=24, pace="med", filt="Nord", vb=null;
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
@@ -929,6 +957,7 @@ function tileOf(id){
 
   if(d.vd!=="ok") t.appendChild(el("div","vdt "+VD[d.vd].c,VD[d.vd].t));
   t.appendChild(el("div","dt"+(dayTripBases(id).length?" jour":""),duree(id)));
+  var mw=el("div","miniwrap"); mw.appendChild(miniMap(id)); t.appendChild(mw);
 
   var ab=el("button","add",picked?"✓":"+");
   ab.setAttribute("aria-label",(picked?"Retirer ":"Ajouter ")+d.fr);
@@ -1400,9 +1429,9 @@ function render(){
   document.getElementById("nn").textContent=target;
   document.getElementById("nnote").textContent="Arrivée le 14 novembre, retour le "+fmt(addD(START,target))+". Le visa autorise 30 nuits, soit une sortie le 14 décembre au plus tard.";
   document.getElementById("pnote").textContent="Change les nuits attribuées quand vous ajoutez une destination. Vous pouvez toujours ajuster étape par étape.";
-  var hid=sel.length?sel[0]:"lijiang", im=img(hid,0,1920);
+  var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
-  if(im){h.src=im.u;h.onerror=function(){h.style.display="none";};}
+  if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
   drawGrid(); drawRoute(); drawSum();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
