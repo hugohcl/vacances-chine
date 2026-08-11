@@ -205,6 +205,19 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .lbl-fr{background:var(--card);color:var(--tx);border:0;border-radius:6px;box-shadow:0 1px 5px #0000002e;
   font-weight:700;font-size:12.5px;padding:2px 8px;white-space:nowrap}
 .lbl-fr::before{display:none}
+.cat{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(16px,2.4vw,28px);align-items:start}
+@media (max-width:1100px){.cat{grid-template-columns:1fr}.catside{position:static!important}}
+.catside{position:sticky;top:64px}
+#catmap{width:100%;height:clamp(340px,58vh,560px);border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
+.cathint{font-size:12.5px;color:var(--tx2);margin:9px 2px 0;line-height:1.5}
+.regsec{margin-bottom:clamp(22px,3vw,34px)}
+.reghead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px;
+  padding-bottom:8px;border-bottom:2px solid var(--tx)}
+.reghead h3{font-size:19px;text-transform:uppercase;font-weight:900;letter-spacing:-.02em}
+.reghead span{font-size:12.5px;color:var(--tx2)}
+.grid-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:11px}
+.tile{height:196px}
+.tile .nm{font-size:16px}
 </style>
 
 <div class="top">
@@ -255,7 +268,11 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
       <p>Trente-cinq destinations. Cliquez une tuile pour tout savoir, le bouton rond pour l'ajouter à votre route.
          La pastille en haut à gauche dit ce que vaut la météo à vos dates.</p></div>
     <div class="filters" id="filters"></div>
-    <div class="grid" id="grid"></div>
+    <div class="cat">
+      <div class="grid" id="grid"></div>
+      <aside class="catside"><div id="catmap"></div>
+        <p class="cathint">Survolez une destination pour la situer. Cliquez un point pour ouvrir sa fiche.</p></aside>
+    </div>
   </div>
 
   <div class="panel" id="p-route">
@@ -367,6 +384,9 @@ function img(id,i,want){
 
 /* ══ destinations ══ */
 var REG=["Nord","Delta","Centre","Sichuan","Yunnan","Karst","Sud","Ouest"];
+var REGD={Nord:"Pékin et la Chine du Nord",Delta:"Shanghai et le bas Yangtsé",Centre:"Hunan, les pitons",
+ Sichuan:"le bassin du Sichuan et Chongqing",Yunnan:"le plateau du Sud-Ouest",Karst:"Guangxi et Guizhou",
+ Sud:"la côte et le delta de la rivière des Perles",Ouest:"Tibet, Gansu, Xinjiang"};
 var D={
  pekin:{fr:"Pékin",han:"北京",reg:"Nord",lat:39.90,lon:116.41,alt:44,n:4,t:"−1 à 10 °C",sun:1,air:1,
   why:"La capitale impériale. Muraille, Cité Interdite, Temple du Ciel : pour un premier voyage en Chine, ça ne se rate pas.",
@@ -591,24 +611,91 @@ function drawFilters(){
     f.appendChild(b);
   });
 }
+/* ══ carte du catalogue : montre où se trouve chaque destination ══ */
+var CMAP=null,CLAYER=null,CMARK={};
+function initCatMap(){
+  if(typeof window.L==="undefined"||!window.L.map) return false;
+  if(CMAP) return true;
+  var box=document.getElementById("catmap"); if(!box) return false;
+  var dark=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;
+  var st=document.documentElement.getAttribute("data-theme");
+  if(st==="dark") dark=true; if(st==="light") dark=false;
+  CMAP=L.map("catmap",{scrollWheelZoom:false,zoomControl:true,attributionControl:false}).setView([33,104],3);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/"+(dark?"dark_nolabels":"light_nolabels")+"/{z}/{x}/{y}{r}.png",
+    {maxZoom:12,subdomains:"abcd"}).addTo(CMAP);
+  CLAYER=L.layerGroup().addTo(CMAP);
+  return true;
+}
+function drawCatMap(){
+  if(!CMAP) return;
+  CLAYER.clearLayers(); CMARK={};
+  var shown=Object.keys(D).filter(function(id){return filt==="Tous"||D[id].reg===filt;});
+  shown.forEach(function(id){
+    var d=D[id],on=sel.indexOf(id)>=0;
+    var m=L.circleMarker([d.lat,d.lon],{radius:on?7:5,weight:2,
+      color:on?"#E24A3C":"#7d8a88",fillColor:on?"#E24A3C":"#ffffff",fillOpacity:on?.95:.85});
+    m.bindTooltip(d.fr,{direction:"top",offset:[0,-6],className:"lbl-fr"});
+    m.on("click",function(){openSheet(id);});
+    m.addTo(CLAYER); CMARK[id]=m;
+  });
+  if(shown.length){
+    var b=L.latLngBounds(shown.map(function(id){return [D[id].lat,D[id].lon];}));
+    CMAP.fitBounds(b.pad(.28));
+  }
+  setTimeout(function(){CMAP.invalidateSize();},60);
+}
+function hoverCat(id,on){
+  var m=CMARK[id]; if(!m) return;
+  var picked=sel.indexOf(id)>=0;
+  if(on){
+    m.setStyle({radius:11,weight:3,color:"#E24A3C",fillColor:"#E24A3C",fillOpacity:1});
+    m.openTooltip(); m.bringToFront();
+    if(CMAP && !CMAP.getBounds().contains(m.getLatLng())) CMAP.panTo(m.getLatLng(),{animate:true});
+  } else {
+    m.setStyle({radius:picked?7:5,weight:2,color:picked?"#E24A3C":"#7d8a88",
+      fillColor:picked?"#E24A3C":"#ffffff",fillOpacity:picked?.95:.85});
+    m.closeTooltip();
+  }
+}
+
+function tileOf(id){
+  var d=D[id];
+  var t=el("div","tile"+(sel.indexOf(id)>=0?" on":""));
+  var im=img(id,0,960);
+  if(im){var i=document.createElement("img");i.src=im.u;i.alt=d.fr;i.loading="lazy";t.appendChild(i);}
+  var ob=el("button","open"); ob.setAttribute("aria-label","Voir "+d.fr);
+  ob.addEventListener("click",function(){openSheet(id);});
+  ob.addEventListener("focus",function(){hoverCat(id,true);});
+  ob.addEventListener("blur",function(){hoverCat(id,false);});
+  t.appendChild(ob);
+  var ab=el("button","add",sel.indexOf(id)>=0?"✓":"+");
+  ab.setAttribute("aria-label",(sel.indexOf(id)>=0?"Retirer ":"Ajouter ")+d.fr);
+  ab.addEventListener("click",function(e){e.stopPropagation();toggle(id);});
+  t.appendChild(ab);
+  var tx=el("div","txt");
+  tx.appendChild(el("div","nm",d.fr));
+  tx.appendChild(el("div","rg",d.t+" · "+d.n+" nuits conseillées"));
+  t.appendChild(tx);
+  t.addEventListener("mouseenter",function(){hoverCat(id,true);});
+  t.addEventListener("mouseleave",function(){hoverCat(id,false);});
+  return t;
+}
 function drawGrid(){
   var g=document.getElementById("grid"); g.innerHTML="";
-  Object.keys(D).forEach(function(id){
-    var d=D[id]; if(filt!=="Tous"&&d.reg!==filt) return;
-    var t=el("div","tile"+(sel.indexOf(id)>=0?" on":""));
-    var im=img(id,0,960);
-    if(im){var i=document.createElement("img");i.src=im.u;i.alt=d.fr;i.loading="lazy";t.appendChild(i);}
-    var ob=el("button","open"); ob.setAttribute("aria-label","Voir "+d.fr);
-    ob.addEventListener("click",function(){openSheet(id);}); t.appendChild(ob);
-    var ab=el("button","add",sel.indexOf(id)>=0?"✓":"+");
-    ab.setAttribute("aria-label",(sel.indexOf(id)>=0?"Retirer ":"Ajouter ")+d.fr);
-    ab.addEventListener("click",function(e){e.stopPropagation();toggle(id);});
-    t.appendChild(ab);
-    var tx=el("div","txt");
-    tx.appendChild(el("div","nm",d.fr));
-    tx.appendChild(el("div","rg",d.reg+" · "+d.t));
-    t.appendChild(tx); g.appendChild(t);
+  REG.forEach(function(r){
+    if(filt!=="Tous"&&r!==filt) return;
+    var ids=Object.keys(D).filter(function(id){return D[id].reg===r;});
+    if(!ids.length) return;
+    var sec=el("section","regsec");
+    var h=el("div","reghead");
+    h.appendChild(el("h3",null,r));
+    h.appendChild(el("span",null,ids.length+" destination"+(ids.length>1?"s":"")+" · "+REGD[r]));
+    sec.appendChild(h);
+    var gr=el("div","grid-in");
+    ids.forEach(function(id){gr.appendChild(tileOf(id));});
+    sec.appendChild(gr); g.appendChild(sec);
   });
+  drawCatMap();
 }
 
 /* ══ fiche ══ */
@@ -898,8 +985,8 @@ function render(){
     "Photographies : Wikimedia Commons, sous licences libres (CC BY, CC BY-SA, domaine public). "+list.length+" auteurs : "+list.join(" · ")+".";
 })();
 drawFilters(); drawInsp();
-initLeaflet();
-window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); });
+initLeaflet(); initCatMap();
+window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
 render();
 })();
 </script>
