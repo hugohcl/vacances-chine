@@ -7,6 +7,8 @@
 </head>
 <body>
 <title>Chine 2026 · construire notre voyage</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <meta name="robots" content="noindex, nofollow">
 
 <style>
@@ -192,6 +194,12 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .prat b{font-weight:700}
 .credits{margin-top:22px;font-size:12px;color:var(--tx2);line-height:1.6;max-width:80ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+#lmap{display:none;width:100%;height:clamp(330px,52vh,540px)}
+.leaflet-container{background:var(--pap);font-family:var(--ff)}
+.pin-n{background:var(--zhu);color:#fff;border:2px solid #fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px #0000004d}
+.leaflet-popup-content{margin:11px 13px;font-size:14px}
+.leaflet-popup-content .h{font-family:var(--han);color:var(--tx2);font-size:12.5px;display:block;margin-top:2px}
+.leaflet-popup-content .m{color:var(--tx2);font-size:12.5px;margin-top:5px}
 </style>
 
 <div class="top">
@@ -255,6 +263,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <div class="rl" id="rl" style="margin-top:12px"></div>
       </div>
       <div class="mapwrap">
+        <div id="lmap"></div>
         <svg id="carte" role="img" aria-label="Carte de la route"></svg>
         <div class="zoom"><button id="zin">+</button><button id="zout">−</button><button id="zfit" style="font-size:10px">FIT</button></div>
       </div>
@@ -818,6 +827,43 @@ if("IntersectionObserver" in window){
   document.querySelectorAll(".panel").forEach(function(p){io.observe(p);});
 }
 
+/* ══ vraie carte, si Leaflet a pu charger ══ */
+var LMAP=null,LLAYER=null;
+function initLeaflet(){
+  if(typeof window.L==="undefined"||!window.L.map) return false;
+  if(LMAP) return true;
+  document.getElementById("lmap").style.display="block";
+  document.getElementById("carte").style.display="none";
+  var z=document.querySelector(".zoom"); if(z) z.style.display="none";
+  LMAP=L.map("lmap",{scrollWheelZoom:true}).setView([32,105],4);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(LMAP);
+  LLAYER=L.layerGroup().addTo(LMAP);
+  return true;
+}
+function drawLeaflet(){
+  if(!LMAP) return;
+  LLAYER.clearLayers();
+  if(!sel.length){ LMAP.setView([32,105],4); return; }
+  var pts=sel.map(function(id){ return [D[id].lat,D[id].lon]; });
+  for(var i=0;i<sel.length-1;i++){
+    var lg=legOf(sel[i],sel[i+1]);
+    var o={color:"#E24A3C",weight:3,opacity:.92};
+    if(lg.air) o.dashArray="4 8";
+    L.polyline([pts[i],pts[i+1]],o).addTo(LLAYER);
+  }
+  sel.forEach(function(id,i){
+    var d=D[id],n=nights[id]||1;
+    var ic=L.divIcon({className:"",html:'<div class="pin-n">'+(i+1)+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
+    var m=L.marker([d.lat,d.lon],{icon:ic,title:d.fr}).addTo(LLAYER);
+    var html='<b>'+d.fr+'</b><span class="h">'+d.han+' · '+d.reg+'</span>'
+            +'<div class="m">'+n+' nuit'+(n>1?'s':'')+' · '+d.t+' · '+d.alt+' m</div>';
+    m.bindPopup(html);
+    m.on("click",function(){ openSheet(id); });
+  });
+  LMAP.fitBounds(L.latLngBounds(pts).pad(.22));
+}
+
 /* ══ rendu ══ */
 function render(){
   document.getElementById("cnt").textContent=sel.length;
@@ -830,10 +876,14 @@ function render(){
   document.getElementById("herosub").textContent=sel.length
     ? sel.length+" destinations retenues, "+totalNights()+" nuits. Ajustez, réordonnez, l'outil recalcule tout."
     : "Choisissez les destinations qui vous font envie, l'outil monte la route et vous dit si elle tient.";
-  drawGrid(); drawRoute(); drawSum(); drawCarte(true);
+  drawGrid(); drawRoute(); drawSum();
+  if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 document.getElementById("credits").textContent="Photographies : Wikimedia Commons, licences libres, créditées sous chaque image dans les fiches. Si aucune image n'apparaît, la page est consultée dans un environnement qui bloque les ressources externes.";
-drawFilters(); drawInsp(); render();
+drawFilters(); drawInsp();
+initLeaflet();
+window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); });
+render();
 })();
 </script>
 
