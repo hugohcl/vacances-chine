@@ -281,6 +281,10 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .tile .dt{position:absolute;top:9px;left:9px;z-index:4;font-size:9.5px;font-weight:800;letter-spacing:.04em;
   background:#2C8C7Ce6;backdrop-filter:blur(6px);color:#fff;border-radius:100px;padding:3px 9px;
   max-width:calc(100% - 52px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zlbl{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7d8a88;
+  text-align:center;white-space:nowrap;text-shadow:0 1px 3px var(--pap),0 0 6px var(--pap);pointer-events:none}
+.zlbl.act{color:var(--zhu);font-size:11.5px;letter-spacing:.16em}
+.regzone{cursor:pointer}
 </style>
 
 <div class="top">
@@ -729,6 +733,7 @@ function initCatMap(){
   CMAP=L.map("catmap",{scrollWheelZoom:false,zoomControl:true,attributionControl:false}).setView([33,104],3);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/"+(dark?"dark_nolabels":"light_nolabels")+"/{z}/{x}/{y}{r}.png",
     {maxZoom:12,subdomains:"abcd"}).addTo(CMAP);
+  addChinaMask(CMAP);
   CLAYER=L.layerGroup().addTo(CMAP);
   return true;
 }
@@ -743,6 +748,7 @@ function syncMapHeight(){
 window.addEventListener("resize",function(){syncMapHeight();});
 function drawCatMap(){
   if(!CMAP) return;
+  drawRegions();
   CLAYER.clearLayers(); CMARK={};
   var shown=Object.keys(D).filter(function(id){return filt==="Tous"||D[id].reg===filt;});
   shown.forEach(function(id){
@@ -757,7 +763,7 @@ function drawCatMap(){
   });
   if(shown.length){
     var b=L.latLngBounds(shown.map(function(id){return [D[id].lat,D[id].lon];}));
-    CMAP.fitBounds(b.pad(.28));
+    CMAP.fitBounds(b.pad(.55),{maxZoom:6});
   }
   setTimeout(function(){CMAP.invalidateSize();},60);
 }
@@ -1064,6 +1070,70 @@ if("IntersectionObserver" in window){
   document.querySelectorAll(".panel").forEach(function(p){io.observe(p);});
 }
 
+/* ══ met la Chine en avant : voile sur le reste du monde, frontière soulignée ══ */
+function chinaRing(){ return OUT.map(function(p){ return [p[1],p[0]]; }); }
+function themeDark(){
+  var st=document.documentElement.getAttribute("data-theme");
+  if(st==="dark") return true; if(st==="light") return false;
+  return !!(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches);
+}
+function addChinaMask(map){
+  var dark=themeDark();
+  var world=[[84,-179.9],[84,179.9],[-84,179.9],[-84,-179.9]];
+  L.polygon([world,chinaRing()],{
+    stroke:false, fillColor:dark?"#0B1817":"#F7F5F0", fillOpacity:dark?.74:.72,
+    interactive:false, className:"maskout"
+  }).addTo(map);
+  L.polygon(chinaRing(),{
+    color:dark?"#8FA09E":"#63706E", weight:1.5, opacity:.9, fill:false, interactive:false
+  }).addTo(map);
+}
+
+/* ══ zones des régions : enveloppe convexe des destinations, élargie ══ */
+function hull(pts){
+  if(pts.length<3) return pts.slice();
+  var p=pts.slice().sort(function(a,b){return a[0]-b[0]||a[1]-b[1];});
+  function cross(o,a,b){return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);}
+  var lo=[],hi=[],i;
+  for(i=0;i<p.length;i++){ while(lo.length>=2&&cross(lo[lo.length-2],lo[lo.length-1],p[i])<=0) lo.pop(); lo.push(p[i]); }
+  for(i=p.length-1;i>=0;i--){ while(hi.length>=2&&cross(hi[hi.length-2],hi[hi.length-1],p[i])<=0) hi.pop(); hi.push(p[i]); }
+  lo.pop(); hi.pop(); return lo.concat(hi);
+}
+function regionShape(r){
+  var ids=Object.keys(D).filter(function(id){return D[id].reg===r;});
+  var pts=ids.map(function(id){return [D[id].lon,D[id].lat];});
+  var cx=0,cy=0; pts.forEach(function(p){cx+=p[0];cy+=p[1];}); cx/=pts.length; cy/=pts.length;
+  var h=hull(pts);
+  if(h.length<3){                       /* une ou deux destinations : on dessine un cercle */
+    var ring=[],R=1.5;
+    for(var a=0;a<360;a+=24) ring.push([cx+R*Math.cos(a*Math.PI/180)/Math.cos(cy*Math.PI/180), cy+R*Math.sin(a*Math.PI/180)]);
+    return {ring:ring.map(function(p){return [p[1],p[0]];}),c:[cy,cx]};
+  }
+  var pad=1.25;
+  var big=h.map(function(p){
+    var dx=p[0]-cx,dy=p[1]-cy,L=Math.sqrt(dx*dx+dy*dy)||1;
+    return [p[0]+dx/L*pad, p[1]+dy/L*pad];
+  });
+  return {ring:big.map(function(p){return [p[1],p[0]];}),c:[cy,cx]};
+}
+var ZLAYER=null;
+function drawRegions(){
+  if(!CMAP) return;
+  if(ZLAYER) CMAP.removeLayer(ZLAYER);
+  ZLAYER=L.layerGroup().addTo(CMAP);
+  REG.forEach(function(r){
+    var s=regionShape(r),act=(r===filt);
+    L.polygon(s.ring,{
+      color:act?"#E24A3C":"#7d8a88", weight:act?2:1, opacity:act?.9:.35,
+      fillColor:act?"#E24A3C":"#7d8a88", fillOpacity:act?.1:.05,
+      interactive:!act, className:"regzone"
+    }).addTo(ZLAYER).on("click",function(){ filt=r; drawFilters(); drawGrid(); });
+    L.marker(s.c,{interactive:false,icon:L.divIcon({className:"",
+      html:'<div class="zlbl'+(act?" act":"")+'">'+r+'</div>',iconSize:[90,18],iconAnchor:[45,9]})}).addTo(ZLAYER);
+  });
+  ZLAYER.eachLayer(function(l){ if(l.bringToBack) l.bringToBack(); });
+}
+
 /* ══ vraie carte, si Leaflet a pu charger ══ */
 var LMAP=null,LLAYER=null;
 function initLeaflet(){
@@ -1078,6 +1148,7 @@ function initLeaflet(){
   if(st==="dark") dark=true; if(st==="light") dark=false;
   L.tileLayer("https://{s}.basemaps.cartocdn.com/"+(dark?"dark_nolabels":"light_nolabels")+"/{z}/{x}/{y}{r}.png",
     {maxZoom:19,subdomains:"abcd",attribution:"&copy; OpenStreetMap &copy; CARTO"}).addTo(LMAP);
+  addChinaMask(LMAP);
   LLAYER=L.layerGroup().addTo(LMAP);
   return true;
 }
