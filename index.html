@@ -118,7 +118,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   padding:3px 7px;letter-spacing:.04em}
 .sheet-body{padding:clamp(18px,2.6vw,30px)}
 .sheet-body h3{font-size:clamp(24px,3vw,34px);text-transform:uppercase;font-weight:900;letter-spacing:-.04em}
-.sheet-han{font-family:var(--han);font-weight:500;font-size:19px;color:var(--tx2);margin-left:9px}
+.sheet-body{position:relative}
+.sheet-wm{position:absolute;right:clamp(10px,2vw,24px);top:2px;font-family:var(--han);font-weight:300;
+  font-size:clamp(64px,10vw,124px);line-height:.86;color:var(--tx);opacity:.055;pointer-events:none;user-select:none}
 .sheet-meta{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 18px}
 .sheet-meta span{font-size:10.5px;font-weight:700;letter-spacing:.06em;background:var(--pap);border-radius:100px;padding:4px 11px;color:var(--tx2)}
 .sheet-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,38px)}
@@ -200,6 +202,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .leaflet-popup-content{margin:11px 13px;font-size:14px}
 .leaflet-popup-content .h{font-family:var(--han);color:var(--tx2);font-size:12.5px;display:block;margin-top:2px}
 .leaflet-popup-content .m{color:var(--tx2);font-size:12.5px;margin-top:5px}
+.lbl-fr{background:var(--card);color:var(--tx);border:0;border-radius:6px;box-shadow:0 1px 5px #0000002e;
+  font-weight:700;font-size:12.5px;padding:2px 8px;white-space:nowrap}
+.lbl-fr::before{display:none}
 </style>
 
 <div class="top">
@@ -316,41 +321,41 @@ function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null
 
 /* ══ photos, Wikimedia Commons ══ */
 var PH={
- pekin:[{d:"6/64",f:"The_Mutianyu_section_of_the_Great_Wall_of_China.jpg",w:6000,c:"Lloyd Tudor, CC BY-SA 4.0"},{d:"e/ef",f:"The_Forbidden_City_-_View_from_Coal_Hill.jpg",w:4092,c:"Pixelflake, CC BY-SA 3.0"},{d:"0/0a",f:"Temple_of_Heaven%2C_Beijing%2C_China_-_010_edit.jpg",w:9027,c:"Maros M r a z (Maros), CC BY-SA 3.0"}],
- datong:[{d:"8/80",f:"Yungang_Grottoes_%26_Wind_Power_Plants_2019.jpg",w:3907,c:"Charlie fong, CC BY-SA 4.0"},{d:"b/bf",f:"Hunyuan_Xuankong_Si_2013.08.30_09-02-11.jpg",w:5472,c:"Zhangzhugang, CC BY-SA 3.0"}],
- pingyao:[{d:"c/c8",f:"Pingyao_Ancient_City_%E5%B9%B3%E9%81%99%E5%8F%A4%E5%9F%8E_-_panoramio_-_lienyuan_lee_%282%29.jpg",w:4608,c:"lienyuan lee, CC BY 3.0"},{d:"3/3f",f:"Pingyao_%284058839157%29.jpg",w:4288,c:"M M from Switzerland, CC BY-SA 2.0"}],
- xian:[{d:"4/49",f:"Terracotta_Army%2C_View_of_Pit_1.jpg",w:5472,c:"Jmhullot, CC BY 3.0"},{d:"d/df",f:"Xiaoshan_city_wall_on_the_Xi_Shan.jpg",w:4096,c:"Yumeto, CC BY-SA 4.0"},{d:"c/c4",f:"Muslim_Quarter_Xi%27an_China.jpg",w:1600,c:"Batiste Pannetier, FAL"}],
- shanghai:[{d:"d/df",f:"Pudong_Shanghai_November_2017_panorama.jpg",w:10200,c:"King of Hearts, CC BY-SA 4.0"},{d:"7/72",f:"Shanghai_-_Yu_Garden_-_0034.jpg",w:5117,c:"Stefan Fussan, CC BY-SA 3.0"},{d:"3/32",f:"Pudong_Shanghai_November_2017_HDR_panorama.jpg",w:10200,c:"King of Hearts, CC BY-SA 4.0"}],
- suzhou:[{d:"f/f5",f:"Humble_Administrator%27s_Garden_Suzhou_November_2017_005.jpg",w:6016,c:"King of Hearts, CC BY-SA 4.0"},{d:"1/11",f:"A_gallery_bridge_in_Pingjiang_Road%2C_Gusu%2C_Suzhou%2C_Jiangsu%2C_China%2C_215000.jpg",w:5312,c:"song songroov, CC BY 3.0"}],
- hangzhou:[{d:"f/fd",f:"Hangzhou_Skyline_against_the_West_Lake.png",w:6000,c:"Y Chen, CC BY-SA 4.0"},{d:"6/66",f:"Lingyin_Temple%2C_Hangzhou_20161003.jpg",w:2560,c:"Tyg728, CC BY-SA 4.0"}],
- huangshan:[{d:"3/31",f:"Huangshan_%2830670155061%29.jpg",w:3267,c:"Dr. Hans-Günter Wagner, CC BY-SA 2.0"},{d:"5/57",f:"China%2C_Anhui_Province%2C_Hongcun%2C_central_clearing.jpg",w:9972,c:"Davidmcbride, CC BY-SA 3.0"}],
- zhangjiajie:[{d:"4/47",f:"Zhangjiajie_National_Forest_Park.jpg",w:3648,c:"Kuruman from Tokyo, Japan, CC BY 2.0"},{d:"b/b5",f:"Zhangjiajie_from_Tianmen_Mountain_01.jpg",w:5712,c:"Codas, CC BY-SA 4.0"}],
- fenghuang:[{d:"d/df",f:"1_fenghuang_ancient_town_hunan_china.jpg",w:7204,c:"chensiyuan, CC BY-SA 4.0"}],
- chongqing:[{d:"a/a2",f:"20250521_Hongyadong_%28223216%29.jpg",w:4096,c:"Yumeto, CC BY-SA 4.0"},{d:"f/ff",f:"20070923_chongqing_panorama.jpg",w:6316,c:"Frnkfankfrank, CC BY-SA 3.0"}],
- chengdu:[{d:"c/c1",f:"Chengdu_Research_Base_of_Giant_Panda_Breeding%2C_201907%2C_01.jpg",w:4032,c:"Jimmyshjj, CC BY-SA 4.0"},{d:"d/d5",f:"Teahouse_in_Peoples_Park_-_Chengdu%2C_China_-_DSC05348.jpg",w:5472,c:"Daderot, CC0"}],
- leshan:[{d:"4/4b",f:"Leshan_Giant_Buddha%2C_20161102.jpg",w:3000,c:"王计, CC BY 2.5"}],
- emeishan:[{d:"1/19",f:"Golden_Summit%2C_Mount_Emei%2C_China%2C_August_2016.jpg",w:3000,c:"王计, CC BY 2.5"}],
- jiuzhaigou:[{d:"6/64",f:"Reed_Lake_%28Jiuzhaigou_Valley%29_20260511-1.jpg",w:5184,c:"Suicasmo, CC0"}],
- kunming:[{d:"5/5e",f:"Shilin_Yunnan_China_Shilin-Stone-Forest-10.jpg",w:4073,c:"CEphoto, Uwe Aranas, CC BY-SA 3.0"},{d:"f/fc",f:"Black_Headed_Gull_In_Kunming_China_%28102446461%29.jpeg",w:2048,c:"Charrine Liu, CC BY-SA 3.0"}],
- dali:[{d:"5/5b",f:"Dali_Yunnan_China_Chongsheng-Temple-10.jpg",w:3841,c:"CEphoto, Uwe Aranas, CC BY-SA 3.0"},{d:"b/bf",f:"20260223_Erhai_Park_in_Dali%2C_Yunnan.jpg",w:5712,c:"Ngguls, CC BY-SA 4.0"}],
- lijiang:[{d:"7/74",f:"1_lijiang_old_town_night.jpg",w:7360,c:"chensiyuan, CC BY-SA 4.0"},{d:"b/be",f:"Lijiang_Yunnan_China_Jade-Dragon-Snow-Mountain-01.jpg",w:4272,c:"CEphoto, Uwe Aranas, CC BY-SA 3.0"}],
- shaxi:[{d:"a/a3",f:"Shaxi%2C_Yunnan%2C_China.jpg",w:10360,c:"Matthieu Lelievre, CC BY-SA 2.0"}],
- shangrila:[{d:"8/8d",f:"1_songzanlin_monastery_yunnan_2018.jpg",w:23397,c:"Chensiyuan, CC BY-SA 4.0"},{d:"e/eb",f:"Old_Town%2C_Shangri-la.jpg",w:4360,c:"Rod Waddington, CC BY-SA 2.0"}],
- yuanyang:[{d:"8/82",f:"1_yuanyang_rice_terrace_duoyishu_sunrise_2012.jpg",w:7360,c:"chensiyuan, CC BY-SA 4.0"}],
- jianshui:[{d:"1/1a",f:"Jianshui_Confucian_Temple_-_P1360934.JPG",w:2560,c:"User:Vmenkov, CC BY-SA 3.0"},{d:"0/0a",f:"Shuanglong_Bridge_Jianshui.JPG",w:5184,c:"Xin, CC BY-SA 4.0"}],
- tigerleaping:[{d:"4/4b",f:"Yunnan_China_Tiger-Leaping-Gorge-07.jpg",w:4181,c:"CEphoto, Uwe Aranas, CC BY-SA 3.0"}],
- guilin:[{d:"7/7b",f:"Yangshuo-Li-River-2019-Luka-Peternel.jpg",w:5472,c:"Luka Peternel, CC BY-SA 4.0"},{d:"3/39",f:"Guilin_landscape.jpg",w:2560,c:"走路的鱼, CC BY-SA 3.0 cn"}],
- yangshuo:[{d:"c/c2",f:"1_aerial_yangshuo_panorama_2017.jpg",w:8267,c:"Chensiyuan, CC BY-SA 4.0"}],
- longsheng:[{d:"7/72",f:"Longji_Rice_Terraces_003.jpg",w:1600,c:"Rutger van der Maar, CC BY 2.0"}],
- xijiang:[{d:"9/9a",f:"Xijiang_Qianhu_Miaozhai.Skyline.jpg",w:3264,c:"Popolon, CC BY-SA 4.0"}],
- canton:[{d:"2/24",f:"Canton_Tower_20241027.jpg",w:7205,c:"Tim Wu, CC BY-SA 4.0"},{d:"b/b6",f:"Shamian_Island%2C_Guangzhou_%285928586397%29.jpg",w:3264,c:"Eduardo M. C., CC BY 2.0"}],
- hongkong:[{d:"a/a4",f:"Hong_Kong_Harbour_Night_2019-06-11.jpg",w:10439,c:"Benh LIEU SONG (Flickr), CC BY-SA 4.0"},{d:"8/87",f:"Panorama_of_Hong_Kong_Harbour_from_The_Peak_dllu.jpg",w:26001,c:"Dllu, CC BY-SA 4.0"}],
- xiamen:[{d:"b/b6",f:"Gulangyu_Island_from_Zhongshan_Road%2C_Xiamen.jpg",w:4857,c:"Slyronit, CC BY-SA 4.0"}],
- lhassa:[{d:"c/cd",f:"%E5%B8%83%E8%BE%BE%E6%8B%89%E5%AE%AB.jpg",w:2809,c:"Coolmanjackey, CC BY-SA 3.0"},{d:"f/f0",f:"Jokhang_Temple_frontal_view.jpg",w:3000,c:"Rene Heise, CC BY-SA 4.0"}],
- zhangye:[{d:"a/ac",f:"Zhangye_Danxia_2016.jpg",w:5111,c:"Marcus Hsu, CC BY-SA 4.0"}],
- dunhuang:[{d:"6/6b",f:"Reproduced_Mural_of_220_cave%2C_Mogao_caves%2C_Dunhuang.jpg",w:3910,c:"Hiroooooo, CC BY-SA 3.0"},{d:"c/c6",f:"Singing_Sand_Dunes_and_Crescent_Lake_%2820230918100733%29.jpg",w:7074,c:"N509FZ, CC BY-SA 4.0"}],
- kashgar:[{d:"f/fc",f:"East_gate_of_the_Ancient_City_of_Kashi_%2820230923104429%29.jpg",w:6040,c:"N509FZ, CC BY-SA 4.0"}],
- harbin:[{d:"7/71",f:"Snow_sculpture%2C_Harbin_International_Ice_and_Snow_Sculpture_Festival_%283238491776%29.jpg",w:3072,c:"Rincewind42 from China, CC BY 2.0"},{d:"7/7c",f:"Saint_Sophia_Cathedral%2C_Harbin_10.jpg",w:4048,c:"闫恩铭 / Enming Yan, CC BY-SA 4.0"}]
+ canton:[{d:"2/24",f:"Canton_Tower_20241027.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:7205,c:"Tim Wu, CC BY-SA 4.0"},{d:"d/da",f:"Canton1860.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:11680,c:"Daniel Vrooman, Public domain"},{d:"2/2b",f:"Flying_Seed_Sculpture%2C_Terminal_3%2C_Guangzhou_Baiyun_International_Airport_20251221-A.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:8003,c:"Tim Wu, CC BY-SA 4.0"},{d:"2/24",f:"Canton_Tower_20241027.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7205,c:"Tim Wu, CC BY-SA 4.0"}],
+ chengdu:[{d:"4/4c",f:"Chengdu_Research_Base_Eingang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:2560,c:"Kreisverkehrsampel, CC BY-SA 3.0"},{d:"1/1a",f:"1_panda_trio_sichuan_china_2011.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4256,c:"chensiyuan, CC BY-SA 4.0"},{d:"c/ce",f:"Chengdu_Research_Base_of_Giant_Panda_Breeding_Eingangsschild.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2560,c:"Kreisverkehrsampel, CC BY-SA 3.0"},{d:"4/4c",f:"Chengdu_Research_Base_Eingang.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2560,c:"Kreisverkehrsampel, CC BY-SA 3.0"}],
+ chongqing:[{d:"6/67",f:"Chongqing_Nightscape.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:2000,c:"Jay Huang, CC BY 2.0"},{d:"6/66",f:"Dazu-Baoding_Shan-164-No11-2012-gje.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Gerd Eichmann, CC BY-SA 4.0"},{d:"5/50",f:"Chongqing_Great_Hall_of_the_People_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"flyerletian, CC0"},{d:"2/25",f:"Chongqing_in_fog_20140822.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4896,c:"yeung ming, CC BY 2.0"}],
+ dali:[{d:"d/df",f:"20240502_Chongshengsi_Santa_%28131232%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4096,c:"Yumeto, CC BY-SA 4.0"},{d:"c/c3",f:"Three_Pagodas_of_Chongsheng_Temple_front_view_from_entrance.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Jason Zhang, CC BY-SA 3.0"},{d:"d/df",f:"20240502_Chongshengsi_Santa_%28131232%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4096,c:"Yumeto, CC BY-SA 4.0"},{d:"c/ce",f:"%E5%B4%87%E5%9C%A3%E5%AF%BA%E4%B8%89%E5%A1%94_-_panoramio_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3264,c:"江上清风1961, CC BY 3.0"}],
+ datong:[{d:"9/90",f:"61292-Yungang-Grottoes_%2828498548881%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"5/52",f:"Yungang_painting_2010.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3008,c:"Marcin Białek, CC BY-SA 3.0"},{d:"9/92",f:"Yungang_12.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3008,c:"Marcin Białek, CC BY-SA 3.0"},{d:"9/90",f:"61292-Yungang-Grottoes_%2828498548881%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"}],
+ dunhuang:[{d:"9/9e",f:"Mogao_Caves_%2854376969262%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:2560,c:"xiquinhosilva, CC BY 2.0"},{d:"d/d2",f:"Jingangjing.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4917,c:"The colophon, at the inner end, reads: Reverently [caused to b"},{d:"8/82",f:"Grotta_nr_158.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3264,c:"Bairuilong, CC BY-SA 4.0"},{d:"e/e4",f:"Grotta_nr_275.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3264,c:"Bairuilong, CC BY-SA 4.0"}],
+ emeishan:[{d:"5/56",f:"%E5%B3%A8%E7%9C%89%E5%B1%B1%E9%A3%8E%E6%99%AF%E5%8C%BA_Mount_Emei_Scenic_Area_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:7952,c:"George N, CC BY 2.0"},{d:"5/56",f:"%E5%B3%A8%E7%9C%89%E5%B1%B1%E9%A3%8E%E6%99%AF%E5%8C%BA_Mount_Emei_Scenic_Area_07.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7952,c:"George N, CC BY 2.0"},{d:"f/f8",f:"%E5%B3%A8%E7%9C%89%E5%B1%B1%E9%A3%8E%E6%99%AF%E5%8C%BA_Mount_Emei_Scenic_Area_06.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7952,c:"George N, CC BY 2.0"},{d:"d/de",f:"Elephant_statues_in_the_fog_on_the_steps_of_the_temple_atop_Mount_Emei.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4776,c:"PieCam, CC BY-SA 4.0"}],
+ fenghuang:[{d:"1/11",f:"Fenghuang_hunan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:1280,c:"Vera &amp; Jean-Christophe, CC BY-SA 2.0"},{d:"7/7d",f:"1_fenghuang_2018.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:8256,c:"Chensiyuan, CC BY-SA 4.0"},{d:"4/47",f:"1_fenghuang_ancient_town_hunan_china_2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7360,c:"chensiyuan, CC BY-SA 4.0"}],
+ guilin:[{d:"b/bb",f:"Xiangshan_Scenic_Area_89468-Guilin_%2831130832628%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"1/1b",f:"1_pano_cuiping_yangshuo_2016.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:17806,c:"Chensiyuan, CC BY-SA 4.0"},{d:"6/69",f:"1_pano_xinping_yangshupo.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:10400,c:"Chensiyuan, CC BY-SA 4.0"},{d:"c/c2",f:"1_aerial_yangshuo_panorama_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:8267,c:"Chensiyuan, CC BY-SA 4.0"}],
+ hangzhou:[{d:"1/17",f:"West_Lake%2C_Hangzhou_2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4570,c:"Takashishin, CC BY 4.0"},{d:"1/14",f:"Scenic_Attractions_of_West_Lake_%E8%A5%BF%E6%B9%96%E6%B8%85%E8%B6%A3%E5%9C%96_%2811%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5600,c:"李嵩, Public domain"},{d:"f/f8",f:"Hangzhou_%2815730606661%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5309,c:"Carlos Adampol Galindo from DF, México, CC BY-SA 2.0"},{d:"f/fa",f:"Su_Causeway_near_West_Lake%2C_looking_towards_north_20120529_1.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4928,c:"DXR, CC BY-SA 4.0"}],
+ harbin:[{d:"9/94",f:"26935-Harbin_%2829661238117%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"3/34",f:"Harbin_Grand_Theatre_Pano_201609.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:8192,c:"Jeremy Thompson from Los Angeles, California, CC BY 2.0"},{d:"f/ff",f:"Harbin_Music_Park_2016-03-09.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5616,c:"Caliva, CC BY-SA 4.0"},{d:"e/ed",f:"Guobaorou_a0.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5312,c:"CYAN, CC BY-SA 4.0"}],
+ hongkong:[{d:"a/a4",f:"Hong_Kong_Harbour_Night_2019-06-11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:10439,c:"Benh LIEU SONG (Flickr), CC BY-SA 4.0"},{d:"9/96",f:"Hong_Kong_Skyline_viewed_from_Victoria_Peak.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:16000,c:"Haydn Hsin, CC BY-SA 3.0"},{d:"5/5e",f:"Vista_del_Puerto_de_Victoria_desde_Sky100%2C_Hong_Kong%2C_2013-08-09%2C_DD_10.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5011,c:"Diego Delso, CC BY-SA 3.0"},{d:"7/75",f:"Hong_Kong_at_night.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4481,c:"Temppic at English Wikipedia, Public domain"}],
+ huangshan:[{d:"1/1d",f:"Huangshan_pic_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4096,c:"Chi King, CC BY 2.0"},{d:"4/4d",f:"Environment_of_huangshan.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7615,c:"François Philipp, CC BY 2.0"},{d:"c/cf",f:"Huangshan%2C_September_2018_35_%E8%93%AE%E8%8A%B1%E5%B3%B0%E8%88%87%E7%8E%89%E5%B1%8F%E5%B3%B0.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6000,c:"De-Shao Liu (Terry850324), CC BY-SA 4.0"},{d:"0/0e",f:"Sommet_d%27un_pic_-_HuangShan.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4752,c:"Stephane.janel, CC BY-SA 3.0"}],
+ jianshui:[{d:"3/37",f:"%E5%BB%BA%E6%B0%B4%E5%8E%BF%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-04_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4032,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"7/7e",f:"%E5%BB%BA%E6%B0%B4%E6%9C%9D%E9%98%B3%E6%A5%BC_-_2025-05-04.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5328,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"2/23",f:"%E8%92%99%E5%AE%9D%E9%93%81%E8%B7%AF_-_%E5%BB%BA%E6%B0%B4%E4%B9%A1%E4%BC%9A%E6%A1%A5%E6%AE%B5_-_2025-05-04_01.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5328,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"9/92",f:"%E7%BA%B3%E6%A5%BC%E9%95%BF%E5%AE%98%E5%8F%B8%E7%BD%B2_-_%E5%A4%A7%E9%97%A8_-_2025-05-06_02.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5328,c:"瑞丽江的河水, CC BY-SA 4.0"}],
+ jiuzhaigou:[{d:"2/28",f:"1_jiuzhaigou_valley_wu_hua_hai_2011b.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4180,c:"Chensiyuan, CC BY-SA 4.0"},{d:"e/ef",f:"1_nuorilang_jiuzhaigou_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:10734,c:"Chensiyuan, CC BY-SA 4.0"},{d:"1/1d",f:"1_jiuzhaigou_zhen_zhu_ta_pu_bu_pearl_shoal_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:10627,c:"Chensiyuan, CC BY-SA 4.0"},{d:"2/2e",f:"1_jiuzhaigou_valley_shuzheng_village_panorama_2011.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5906,c:"chensiyuan, CC BY-SA 4.0"}],
+ kashgar:[{d:"7/7d",f:"H%C3%ABytgah_Mosque%2C_Kashi_%2820230923100109%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4990,c:"N509FZ, CC BY-SA 4.0"},{d:"d/df",f:"Pudong_Shanghai_November_2017_panorama.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:10200,c:"King of Hearts, CC BY-SA 4.0"},{d:"2/22",f:"20250525%E5%96%80%E4%BB%80%E5%8F%A4%E5%9F%8E%E4%B8%80%E8%A7%92.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:9504,c:"MasaneMiyaPA, CC BY-SA 4.0"},{d:"b/bc",f:"20250525%E5%96%80%E4%BB%80%E5%8F%A4%E5%9F%8E%E5%A4%A7%E9%97%A8.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:9284,c:"MasaneMiyaPA, CC BY-SA 4.0"}],
+ kunming:[{d:"e/e8",f:"Shilin%2C_Yunnan_24740.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3745,c:"xiquinhosilva, CC BY 2.0"},{d:"2/2f",f:"Shilin%2C_Yunnan_24812.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3745,c:"xiquinhosilva, CC BY 2.0"},{d:"e/e2",f:"Shilin-24774_%2853182221999%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3745,c:"xiquinhosilva, CC BY 2.0"},{d:"7/7d",f:"Shilin%2C_Yunnan_24801.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3745,c:"xiquinhosilva, CC BY 2.0"}],
+ leshan:[{d:"4/4c",f:"36275-Leshan_%2849067653383%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"4/4c",f:"36275-Leshan_%2849067653383%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"b/b9",f:"36273-Leshan_%2849067652118%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"}],
+ lhassa:[{d:"b/b6",f:"Potala_Palace_HQ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:1920,c:"Lhasa Government, CC BY-SA 4.0"},{d:"c/ca",f:"Lhasa-Potala-66-Ostseite-2014-gje.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Gerd Eichmann, CC BY-SA 4.0"},{d:"5/5a",f:"Potala_Palace_%2823651397662%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4414,c:"Laika ac from UK, CC BY-SA 2.0"},{d:"e/e9",f:"Potala_palace21.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3504,c:"Antoine Taveneaux, CC BY-SA 3.0"}],
+ lijiang:[{d:"4/45",f:"Lijiang_-_panoramio_%286%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4928,c:"Pavel Špindler, CC BY 3.0"},{d:"6/6e",f:"1_lijiang_old_town_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:22800,c:"chensiyuan, CC BY-SA 4.0"},{d:"3/3a",f:"1_lijiang_old_town_yulong_xueshan_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7360,c:"chensiyuan, CC BY-SA 4.0"},{d:"7/74",f:"1_lijiang_old_town_night.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7360,c:"chensiyuan, CC BY-SA 4.0"}],
+ longsheng:[{d:"c/c8",f:"1_longsheng_ping_an_rice_terrace_2011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4256,c:"chensiyuan, CC BY-SA 4.0"}],
+ pekin:[{d:"2/23",f:"The_Great_Wall_of_China_at_Jinshanling-edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4288,c:"Severin.stalder, CC BY-SA 3.0"},{d:"1/1b",f:"MutianyuGreatWallWildSection.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4608,c:"Bryanmackinnon, CC BY-SA 3.0"},{d:"2/23",f:"The_Great_Wall_of_China_at_Jinshanling-edit.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4288,c:"Severin.stalder, CC BY-SA 3.0"},{d:"c/c4",f:"Gubeikou_Gate.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4160,c:"Sgnpkd, CC BY-SA 4.0"}],
+ pingyao:[{d:"1/1f",f:"Pingyao_Shilou_2013.08.25_07-01-33.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:5472,c:"Zhangzhugang, CC BY-SA 3.0"},{d:"5/52",f:"1_pingyao_ancient_city_aerial_pano_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:15963,c:"Chensiyuan, CC BY-SA 4.0"},{d:"5/5a",f:"2015-01-06_Pingyao_Confucian_Temple.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6000,c:"Jan Bockaert, CC BY-SA 2.0"},{d:"1/1f",f:"Pingyao_Shilou_2013.08.25_07-01-33.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5472,c:"Zhangzhugang, CC BY-SA 3.0"}],
+ shanghai:[{d:"4/4c",f:"Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"8/86",f:"Blue_hour_view_of_the_Bund_from_the_Shanghai_World_Financial_Center_dllu.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:7451,c:"Dllu, CC BY-SA 4.0"},{d:"b/bd",f:"CADAL03020496_%E6%96%B0%E4%B8%8A%E6%B5%B7.djvu?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6624,c:", Public domain"},{d:"8/83",f:"Bund_at_night_Shanghai.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4530,c:"Ernest Jourdier, CC BY 4.0"}],
+ shangrila:[{d:"c/cf",f:"%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA_-_%E5%85%A8%E6%99%AF_-_2025-05-07_09_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:5166,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"8/8d",f:"1_songzanlin_monastery_yunnan_2018.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:23397,c:"Chensiyuan, CC BY-SA 4.0"},{d:"b/bb",f:"%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA_-_%E5%A4%A7%E9%97%A8_-_2025-05-07_03.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5328,c:"瑞丽江的河水, CC BY-SA 4.0"},{d:"5/5b",f:"%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA_-_%E5%8D%93%E5%BA%B7%E5%8F%82_-_2025-05-07_02.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5328,c:"瑞丽江的河水, CC BY-SA 4.0"}],
+ shaxi:[{d:"0/0f",f:"Yunnan_xingjiao_temple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3888,c:"eviltomthai, CC BY 2.0"},{d:"4/4c",f:"The_Ancient_Tea_Horse_Road_in_Sideng_Street.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Xin, CC BY-SA 4.0"},{d:"8/85",f:"Elderly_Bai_woman_in_Shaxi.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Evelynleee, CC BY-SA 4.0"},{d:"0/0f",f:"Yunnan_xingjiao_temple.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3888,c:"eviltomthai, CC BY 2.0"}],
+ suzhou:[{d:"c/ce",f:"20240203_Lingering_Garden_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:1800,c:"Windmemories, CC BY-SA 4.0"},{d:"f/f0",f:"France_Loiret_La_Bussiere_Potager_05.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3294,c:"No machine-readable author provided. Calips assumed (based on "},{d:"c/c3",f:"20090905_Suzhou_Couple%27s_Retreat_Garden_4442.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3008,c:"Jakub Hałun, CC BY-SA 4.0"},{d:"b/b1",f:"20090905_Suzhou_Lion_Grove_Garden_4520.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3008,c:"Jakub Hałun, CC BY-SA 4.0"}],
+ tigerleaping:[{d:"7/76",f:"%E8%99%8E%E8%B7%B3%E5%B3%A1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:2500,c:"Gisling, CC BY-SA 3.0"},{d:"7/76",f:"%E8%99%8E%E8%B7%B3%E5%B3%A1.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2500,c:"Gisling, CC BY-SA 3.0"},{d:"7/7b",f:"Tiger_Leaping_Gorge%2C_December_2006.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2288,c:"Tdxiang at English Wikipedia, Public domain"},{d:"0/0f",f:"Tiger_Leaping_Gorge_Bridge.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2288,c:"Tdxiang at English Wikipedia, Public domain"}],
+ xiamen:[{d:"d/df",f:"2018%E5%B9%B4%E7%9A%84%E9%BC%93%E6%B5%AA%E5%B1%BF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"-森屿-, CC BY 2.5"},{d:"2/28",f:"PANO_of_Kulangsu.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6898,c:"Sparktour, CC BY-SA 4.0"},{d:"b/bd",f:"Hai_Tian_Tang_Gou_Mansion%2C_2019-09-26_36.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5948,c:"Siyuwj, CC BY-SA 4.0"},{d:"f/f6",f:"Catholic_Church%2C_Kulangsu%2C_2019-09-26_18.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5676,c:"Siyuwj, CC BY-SA 4.0"}],
+ xian:[{d:"8/88",f:"51714-Terracota-Army.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3000,c:"xiquinhosilva, CC BY 2.0"},{d:"a/a0",f:"Qin_bronze_chariot_two.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5472,c:"Jmhullot, CC BY 3.0"},{d:"9/9a",f:"2015-09-22-081415_-_Terrakotta-Armee%2C_Grosse_Halle.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5472,c:"Zossolino, CC BY-SA 4.0"},{d:"b/b0",f:"Han_Terracotta_Warriors%2C_Pit_1%2C_Han_Tomb_of_Liu_Wu%2C_King_of_Chu_%2810082899994%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5184,c:"Gary Todd from Xinzheng, China, CC0"}],
+ xijiang:[{d:"9/9a",f:"Xijiang_Qianhu_Miaozhai.Skyline.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:3264,c:"Popolon, CC BY-SA 4.0"},{d:"f/ff",f:"1_xijiang_panorama.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:17444,c:"Chensiyuan, CC BY-SA 4.0"},{d:"9/9a",f:"Xijiang_Qianhu_Miaozhai.Skyline.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3264,c:"Popolon, CC BY-SA 4.0"}],
+ yangshuo:[{d:"8/86",f:"1_guilin_yangshuo_2017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"8/86",f:"1_guilin_yangshuo_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"b/bf",f:"Yangshuo-Landpartie-70-Hausbesuch-Gastgeber-2012-gje.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5562,c:"Gerd Eichmann, CC BY-SA 4.0"},{d:"7/7b",f:"Yangshuo-Li-River-2019-Luka-Peternel.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:5472,c:"Luka Peternel, CC BY-SA 4.0"}],
+ yuanyang:[{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"},{d:"2/2b",f:"1_yuanyang_county_rice_terrace_bada_view_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4986,c:"chensiyuan, CC BY-SA 4.0"},{d:"d/d6",f:"Subsistent_Farming_Southern_China.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:3356,c:"JialiangGao www.peace-on-earth.org, CC BY-SA 3.0"},{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"}],
+ zhangjiajie:[{d:"7/77",f:"1_tianzishan_wulingyuan_zhangjiajie_2012.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:8841,c:"chensiyuan, CC BY-SA 4.0"},{d:"7/77",f:"1_tianzishan_wulingyuan_zhangjiajie_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:8841,c:"chensiyuan, CC BY-SA 4.0"},{d:"3/30",f:"Zhangjiajie%2C_National_park_-_panoramio_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:4272,c:"Kovacs Bela-Hungary, CC BY 3.0"}],
+ zhangye:[{d:"7/74",f:"Zhangye_National_Geopark_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",w:4000,c:"H2v5o68z, CC0"},{d:"4/4b",f:"Flickr_image_29851221553.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"2/22",f:"Flickr_image_30483606125.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"1/17",f:"Striated_rocks_in_Zhangye_National_Geopark.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",w:6000,c:"Terry Wu, CC BY-SA 2.0"}]
 };
 var BUCK=[330,960,1280,1920];
 function img(id,i,want){
@@ -595,15 +600,12 @@ function drawGrid(){
     if(im){var i=document.createElement("img");i.src=im.u;i.alt=d.fr;i.loading="lazy";t.appendChild(i);}
     var ob=el("button","open"); ob.setAttribute("aria-label","Voir "+d.fr);
     ob.addEventListener("click",function(){openSheet(id);}); t.appendChild(ob);
-    var sl=sunLabel(d.sun);
-    var sp=el("div","sun "+sl.c,sl.t); t.appendChild(sp);
     var ab=el("button","add",sel.indexOf(id)>=0?"✓":"+");
     ab.setAttribute("aria-label",(sel.indexOf(id)>=0?"Retirer ":"Ajouter ")+d.fr);
     ab.addEventListener("click",function(e){e.stopPropagation();toggle(id);});
     t.appendChild(ab);
     var tx=el("div","txt");
     tx.appendChild(el("div","nm",d.fr));
-    tx.appendChild(el("div","hn",d.han));
     tx.appendChild(el("div","rg",d.reg+" · "+d.t));
     t.appendChild(tx); g.appendChild(t);
   });
@@ -619,11 +621,12 @@ function openSheet(id){
   (PH[id]||[]).forEach(function(_,i){
     var im=img(id,i,1280); if(!im) return;
     var fg=el("figure"); var g=document.createElement("img"); g.src=im.u; g.alt=d.fr; fg.appendChild(g);
-    fg.appendChild(el("figcaption",null,im.c+" · Wikimedia Commons")); gal.appendChild(fg);
+    gal.appendChild(fg);
   });
   b.appendChild(gal);
   var bd=el("div","sheet-body");
-  var h=el("h3",null,d.fr); var hs=el("span","sheet-han",d.han); h.appendChild(hs); bd.appendChild(h);
+  var wm=el("div","sheet-wm"); wm.textContent=d.han; wm.setAttribute("aria-hidden","true"); bd.appendChild(wm);
+  bd.appendChild(el("h3",null,d.fr));
   var mt=el("div","sheet-meta");
   [d.reg,d.t,sunLabel(d.sun).t,d.alt+" m d'altitude",d.n+" nuits conseillées"].forEach(function(x){mt.appendChild(el("span",null,x));});
   if(AIR.indexOf(id)>=0) mt.appendChild(el("span",null,"aéroport"));
@@ -759,7 +762,6 @@ function drawCarte(refit){
     var d=D[id],x=px(d.lon),y=py(d.lat);
     svg.appendChild(mk("circle",{cx:x,cy:y,r:fs(3.6),class:"cn-dot"}));
     svg.appendChild(mk("text",{x:x+ +fs(10),y:y-sc*1,class:"cn-fr","font-size":fs(12.5)},(i+1)+". "+d.fr));
-    svg.appendChild(mk("text",{x:x+ +fs(10),y:y+sc*11,class:"cn-han","font-size":fs(11)},d.han));
   });
 }
 (function(){
@@ -781,7 +783,7 @@ function drawInsp(){
     var a=el("article");
     a.appendChild(el("h3",null,x.n)); a.appendChild(el("div","m",x.m));
     var ol=document.createElement("ol");
-    x.s.forEach(function(id){ol.appendChild(el("li",null,D[id].fr+" — "+D[id].han));});
+    x.s.forEach(function(id){ol.appendChild(el("li",null,D[id].fr));});
     a.appendChild(ol); a.appendChild(el("p",null,x.p));
     var bt=el("button","btn","Charger dans ma route");
     bt.addEventListener("click",function(){
@@ -836,8 +838,11 @@ function initLeaflet(){
   document.getElementById("carte").style.display="none";
   var z=document.querySelector(".zoom"); if(z) z.style.display="none";
   LMAP=L.map("lmap",{scrollWheelZoom:true}).setView([32,105],4);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(LMAP);
+  var dark=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;
+  var st=document.documentElement.getAttribute("data-theme");
+  if(st==="dark") dark=true; if(st==="light") dark=false;
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/"+(dark?"dark_nolabels":"light_nolabels")+"/{z}/{x}/{y}{r}.png",
+    {maxZoom:19,subdomains:"abcd",attribution:"&copy; OpenStreetMap &copy; CARTO"}).addTo(LMAP);
   LLAYER=L.layerGroup().addTo(LMAP);
   return true;
 }
@@ -856,8 +861,9 @@ function drawLeaflet(){
     var d=D[id],n=nights[id]||1;
     var ic=L.divIcon({className:"",html:'<div class="pin-n">'+(i+1)+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
     var m=L.marker([d.lat,d.lon],{icon:ic,title:d.fr}).addTo(LLAYER);
-    var html='<b>'+d.fr+'</b><span class="h">'+d.han+' · '+d.reg+'</span>'
+    var html='<b>'+d.fr+'</b><span class="h">'+d.reg+'</span>'
             +'<div class="m">'+n+' nuit'+(n>1?'s':'')+' · '+d.t+' · '+d.alt+' m</div>';
+    m.bindTooltip(d.fr,{permanent:true,direction:"right",offset:[11,0],className:"lbl-fr"});
     m.bindPopup(html);
     m.on("click",function(){ openSheet(id); });
   });
@@ -879,7 +885,18 @@ function render(){
   drawGrid(); drawRoute(); drawSum();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
-document.getElementById("credits").textContent="Photographies : Wikimedia Commons, licences libres, créditées sous chaque image dans les fiches. Si aucune image n'apparaît, la page est consultée dans un environnement qui bloque les ressources externes.";
+(function(){
+  var seen={},list=[];
+  Object.keys(PH).forEach(function(id){ PH[id].forEach(function(p){
+    var c=String(p.c||"").replace(/^[\s,]+/,"").replace(/[\s,]+$/,"");
+    var a=c.split(",")[0].trim();
+    if(!a||a.length<2) return;                 /* auteur inconnu : on ne cite que la licence */
+    if(!seen[a]){ seen[a]=1; list.push(a); }
+  }); });
+  list.sort(function(x,y){return x.localeCompare(y,"fr");});
+  document.getElementById("credits").textContent=
+    "Photographies : Wikimedia Commons, sous licences libres (CC BY, CC BY-SA, domaine public). "+list.length+" auteurs : "+list.join(" · ")+".";
+})();
 drawFilters(); drawInsp();
 initLeaflet();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); });
