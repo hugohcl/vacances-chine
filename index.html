@@ -1,28 +1,21 @@
-﻿<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<title>Chine 2026 · construire notre voyage</title>
+﻿<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Les Robeb en Chine</title></head><body><title>Chine 2026 · construire notre voyage</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <meta name="robots" content="noindex, nofollow">
 
 <style>
 :root{
-  --deep:#0D2422;--deep2:#123331;--zhu:#E24A3C;--pap:#F7F5F0;--card:#FFFFFF;
+  --deep:#0D2422;--deep2:#123331;--zhu:#3C6382; --rouge:#C4483C;--pap:#F7F5F0;--card:#FFFFFF;
   --tx:#14201F;--tx2:#63706E;--line:#14201f1a;--onDark:#F1F5F4;--onDark2:#B9C6C4;
   --ok:#2C8C7C;--warn:#C4761F;
   --r:16px;--rs:11px;
   --ff:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
   --han:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
 }
-@media (prefers-color-scheme:dark){:root{--pap:#0B1817;--card:#132524;--tx:#EDF2F1;--tx2:#8FA09E;--line:#edf2f114}}
+@media (prefers-color-scheme:dark){
+  :root{--zhu:#6E9CBF}:root{--pap:#0B1817;--card:#132524;--tx:#EDF2F1;--tx2:#8FA09E;--line:#edf2f114}}
 :root[data-theme="light"]{--pap:#F7F5F0;--card:#FFFFFF;--tx:#14201F;--tx2:#63706E;--line:#14201f1a}
-:root[data-theme="dark"]{--pap:#0B1817;--card:#132524;--tx:#EDF2F1;--tx2:#8FA09E;--line:#edf2f114}
+:root[data-theme="dark"]{--zhu:#6E9CBF; --pap:#0B1817;--card:#132524;--tx:#EDF2F1;--tx2:#8FA09E;--line:#edf2f114}
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--pap);color:var(--tx);font-family:var(--ff);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -124,7 +117,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .sheet-body ul{list-style:none;padding:0;margin:0 0 17px;font-size:14.5px}
 .sheet-body li{padding-left:19px;position:relative;margin-bottom:6px;line-height:1.5}
 .pl li::before{content:"+";position:absolute;left:0;color:var(--ok);font-weight:800}
-.mn li::before{content:"–";position:absolute;left:0;color:var(--zhu);font-weight:800}
+.mn li::before{content:"–";position:absolute;left:0;color:var(--rouge);font-weight:800}
 .sheet-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .btn{padding:11px 20px;border-radius:100px;font-size:14.5px;font-weight:700;background:var(--zhu);color:#fff}
 .btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
@@ -158,7 +151,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .sum .row:last-child{border-bottom:0}
 .sum .row b{font-variant-numeric:tabular-nums lining-nums}
 .alert{border-radius:var(--rs);padding:11px 13px;font-size:14px;margin-top:9px;line-height:1.5}
-.alert.bad{background:#e24a3c1f;color:var(--zhu)}
+.alert.bad{background:#c4483c1f;color:var(--rouge)}
 .alert.warn{background:#c4761f1f;color:var(--warn)}
 .alert.good{background:#2c8c7c1f;color:var(--ok)}
 .mapwrap{position:relative;border-radius:var(--r);background:var(--card);border:1px solid var(--line);overflow:hidden;touch-action:none}
@@ -287,11 +280,11 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .vd{font-weight:800!important}
 .vd.good{background:#2C8C7C!important;color:#fff!important}
 .vd.warn{background:#C4761F!important;color:#fff!important}
-.vd.bad{background:#E24A3C!important;color:#fff!important}
+.vd.bad{background:var(--rouge)!important;color:#fff!important}
 .vdt{position:absolute;top:9px;left:9px;z-index:4;font-size:9.5px;font-weight:800;letter-spacing:.04em;
   border-radius:100px;padding:3px 9px;backdrop-filter:blur(6px);color:#fff}
 .vdt.warn{background:#C4761Fe6}
-.vdt.bad{background:#E24A3Ce6}
+.vdt.bad{background:#C4483Ce6}
 .tile .dt{top:auto;bottom:54px}
 .tile .dt{background:#17161Bcc;color:#fff}
 .tile .dt.jour{background:#2C8C7Ce6}
@@ -346,6 +339,23 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .sticker.ok ~ .panda{display:none}
 
 @media (max-width:820px){#stick1{height:96px;bottom:-22px}#stick2{height:88px;bottom:-18px}.hero-left{width:80px}.hero-r{width:86px}}
+.insplist{display:flex;flex-direction:column;gap:5px;margin:4px 0 14px}
+.insprow{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:10px;background:var(--pap);transition:background .16s}
+.insprow:hover{background:var(--line)}
+.insprow.on{background:#3C638214;box-shadow:inset 2px 0 0 var(--zhu)}
+.ith{flex:none;width:52px;height:38px;border-radius:7px;overflow:hidden;background:var(--deep2);padding:0}
+.ith img{width:100%;height:100%;object-fit:cover}
+.itx{flex:1;min-width:0}
+.inm{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.ime{font-size:11.5px;color:var(--tx2);margin-top:1px}
+.ivd{flex:none;font-size:9px;font-weight:800;letter-spacing:.04em;border-radius:100px;padding:2px 7px;color:#fff}
+.ivd.warn{background:#C4761F}.ivd.bad{background:var(--rouge)}
+.iadd{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);
+  font-size:16px;font-weight:700;display:grid;place-items:center;transition:background .16s,color .16s}
+.iadd:hover{background:var(--zhu);color:#fff;border-color:var(--zhu)}
+.insprow.on .iadd{background:var(--zhu);color:#fff;border-color:var(--zhu)}
+.inspact{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.insppris{font-size:12.5px;color:var(--zhu);font-weight:700}
 </style>
 
 <div class="top">
@@ -368,8 +378,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   <path d="M30 66c-9 3-14 13-11 22 3 8 11 11 17 8z" fill="#1f1f22"/>
   <path d="M90 66c9 3 14 13 11 22-3 8-11 11-17 8z" fill="#1f1f22"/>
   <!-- écharpe cinabre -->
-  <path d="M39 60c6 6 13 9 21 9s15-3 21-9c2 5 2 9 1 13-7 6-14 9-22 9s-15-3-22-9c-1-4-1-8 1-13z" fill="#E24A3C"/>
-  <path d="M79 71l9 15-11 2-4-13z" fill="#C43A2E"/>
+  <path d="M39 60c6 6 13 9 21 9s15-3 21-9c2 5 2 9 1 13-7 6-14 9-22 9s-15-3-22-9c-1-4-1-8 1-13z" fill="#3C6382"/>
+  <path d="M79 71l9 15-11 2-4-13z" fill="#2E4E68"/>
   <!-- oreilles -->
   <circle cx="32" cy="26" r="13" fill="#1f1f22"/>
   <circle cx="88" cy="26" r="13" fill="#1f1f22"/>
@@ -876,7 +886,7 @@ function miniMap(id){
   svg.setAttribute("class","mini");
   svg.setAttribute("aria-hidden","true");
   svg.appendChild(mk("path",{d:MINI.d,fill:"#ffffff26",stroke:"#ffffff8c","stroke-width":.7,"stroke-linejoin":"round"}));
-  svg.appendChild(mk("circle",{cx:MINI.x(d.lon),cy:MINI.y(d.lat),r:3.4,fill:"#E24A3C",stroke:"#fff","stroke-width":1.1}));
+  svg.appendChild(mk("circle",{cx:MINI.x(d.lon),cy:MINI.y(d.lat),r:3.4,fill:"#3C6382",stroke:"#fff","stroke-width":1.1}));
   return svg;
 }
 
@@ -955,7 +965,7 @@ function drawCatMap(){
   shown.forEach(function(id){
     var d=D[id],on=sel.indexOf(id)>=0;
     var m=L.circleMarker([d.lat,d.lon],{radius:on?7:5,weight:2,
-      color:on?"#E24A3C":"#7d8a88",fillColor:on?"#E24A3C":"#ffffff",fillOpacity:on?.95:.85});
+      color:on?"#3C6382":"#7d8a88",fillColor:on?"#3C6382":"#ffffff",fillOpacity:on?.95:.85});
     m.bindTooltip(d.fr,{direction:"top",offset:[0,-6],className:"lbl-fr"});
     m.on("click",function(){openSheet(id);});
     m.on("mouseover",function(){ var e=document.getElementById("tile-"+id); if(e){ e.classList.add("hot"); e.scrollIntoView({block:"nearest",behavior:"smooth"}); } });
@@ -972,12 +982,12 @@ function hoverCat(id,on){
   var m=CMARK[id]; if(!m) return;
   var picked=sel.indexOf(id)>=0;
   if(on){
-    m.setStyle({radius:11,weight:3,color:"#E24A3C",fillColor:"#E24A3C",fillOpacity:1});
+    m.setStyle({radius:11,weight:3,color:"#3C6382",fillColor:"#3C6382",fillOpacity:1});
     m.openTooltip(); m.bringToFront();
     if(CMAP && !CMAP.getBounds().contains(m.getLatLng())) CMAP.panTo(m.getLatLng(),{animate:true});
   } else {
-    m.setStyle({radius:picked?7:5,weight:2,color:picked?"#E24A3C":"#7d8a88",
-      fillColor:picked?"#E24A3C":"#ffffff",fillOpacity:picked?.95:.85});
+    m.setStyle({radius:picked?7:5,weight:2,color:picked?"#3C6382":"#7d8a88",
+      fillColor:picked?"#3C6382":"#ffffff",fillOpacity:picked?.95:.85});
     m.closeTooltip();
   }
 }
@@ -1315,16 +1325,47 @@ function drawInsp(){
   var b=document.getElementById("insp"); b.innerHTML="";
   INSP.forEach(function(x){
     var a=el("article");
-    a.appendChild(el("h3",null,x.n)); a.appendChild(el("div","m",x.m));
-    var ol=document.createElement("ol");
-    x.s.forEach(function(id){ol.appendChild(el("li",null,D[id].fr));});
-    a.appendChild(ol); a.appendChild(el("p",null,x.p));
-    var bt=el("button","btn","Charger dans ma route");
-    bt.addEventListener("click",function(){
-      x.s.forEach(function(id){ if(sel.indexOf(id)<0){sel.push(id);nights[id]=Math.min(D[id].n,paceN()+1);} });
+    a.appendChild(el("h3",null,x.n));
+    a.appendChild(el("div","m",x.m));
+
+    /* chaque étape s'ajoute séparément : rien n'est imposé */
+    var list=el("div","insplist");
+    x.s.forEach(function(id,k){
+      var d=D[id],picked=sel.indexOf(id)>=0;
+      var row=el("div","insprow"+(picked?" on":""));
+      var th=el("button","ith"); th.setAttribute("aria-label","Voir "+d.fr);
+      var im=img(id,0,330);
+      if(im){var g=document.createElement("img");g.src=im.u;g.alt="";g.loading="lazy";th.appendChild(g);}
+      th.addEventListener("click",function(){openSheet(id);});
+      th.addEventListener("mouseenter",function(){hoverCat(id,true);});
+      th.addEventListener("mouseleave",function(){hoverCat(id,false);});
+      row.appendChild(th);
+      var tx=el("div","itx");
+      tx.appendChild(el("div","inm",(k+1)+". "+d.fr));
+      tx.appendChild(el("div","ime",temp(d)+"  ·  "+duree(id)));
+      row.appendChild(tx);
+      if(d.vd!=="ok") row.appendChild(el("span","ivd "+VD[d.vd].c,VD[d.vd].t));
+      var ab=el("button","iadd",picked?"✓":"+");
+      ab.setAttribute("aria-label",(picked?"Retirer ":"Ajouter ")+d.fr);
+      ab.addEventListener("click",function(){toggle(id);});
+      row.appendChild(ab);
+      list.appendChild(row);
+    });
+    a.appendChild(list);
+    a.appendChild(el("p",null,x.p));
+
+    var act=el("div","inspact");
+    var manque=x.s.filter(function(id){return sel.indexOf(id)<0;});
+    var bt=el("button","btn ghost",manque.length?"Tout ajouter ("+manque.length+")":"Tout est déjà dans la route");
+    if(manque.length) bt.addEventListener("click",function(){
+      manque.forEach(function(id){ sel.push(id); nights[id]=Math.min(D[id].n,paceN()+1); });
       order(); render(); document.getElementById("p-route").scrollIntoView({behavior:"smooth",block:"start"});
     });
-    a.appendChild(bt); b.appendChild(a);
+    act.appendChild(bt);
+    var pris=x.s.filter(function(id){return sel.indexOf(id)>=0;}).length;
+    if(pris) act.appendChild(el("span","insppris",pris+" sur "+x.s.length+" dans votre route"));
+    a.appendChild(act);
+    b.appendChild(a);
   });
 }
 
@@ -1410,7 +1451,7 @@ function drawRegions(){
       /* pas de contour : les provinces d une meme region se touchent,
          leurs aplats fusionnent donc en une seule silhouette */
       L.polygon(ring,{
-        stroke:false, fillColor:act?"#E24A3C":"#8B9997", fillOpacity:act?.20:.085,
+        stroke:false, fillColor:act?"#3C6382":"#8B9997", fillOpacity:act?.20:.085,
         interactive:!act, className:"regzone"
       }).addTo(ZLAYER).on("click",function(){ filt=r; drawFilters(); drawGrid(); });
     });
@@ -1446,7 +1487,7 @@ function drawLeaflet(){
   var pts=sel.map(function(id){ return [D[id].lat,D[id].lon]; });
   for(var i=0;i<sel.length-1;i++){
     var lg=legOf(sel[i],sel[i+1]);
-    var o={color:"#E24A3C",weight:3,opacity:.92};
+    var o={color:"#3C6382",weight:3,opacity:.92};
     if(lg.air) o.dashArray="4 8";
     L.polyline([pts[i],pts[i+1]],o).addTo(LLAYER);
   }
@@ -1472,7 +1513,7 @@ function render(){
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
   if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
-  drawGrid(); drawRoute(); drawSum();
+  drawGrid(); drawRoute(); drawSum(); drawInsp();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 (function(){
@@ -1498,6 +1539,4 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
 render();
 })();
 </script>
-
-</body>
-</html>
+</body></html>
