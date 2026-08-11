@@ -296,7 +296,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .tile .dt{background:#17161Bcc;color:#fff}
 .tile .dt.jour{background:#2C8C7Ce6}
 /* ── en-tête ── */
-.top{position:relative;min-height:clamp(300px,46vh,440px);display:flex;align-items:stretch;background:var(--deep);isolation:isolate;margin-bottom:52px}
+.top{position:relative;min-height:clamp(300px,46vh,440px);display:flex;align-items:stretch;background:var(--deep);isolation:isolate;margin-bottom:46px}
 .top-bg{position:absolute;inset:0;overflow:hidden;z-index:0;border-radius:0}
 #heroimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.86) saturate(.92)}
 .top-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,#0a1f1ef2 0%,#0a1f1ec4 38%,#0a1f1e4d 66%,#0a1f1e26 100%),linear-gradient(180deg,#0a1f1e00 55%,#0a1f1eb3 100%)}
@@ -306,15 +306,16 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .hero-eyebrow{display:flex;align-items:center;gap:11px;font-size:10px;letter-spacing:.24em;
   text-transform:uppercase;color:#D9E3E1;font-weight:700}
 .hero-eyebrow::before{content:"";width:26px;height:2px;background:var(--zhu);flex:none}
-.top h1{margin:0;font-weight:900;line-height:1;letter-spacing:-.045em;white-space:nowrap;font-size:clamp(22px,3.5vw,54px);text-transform:uppercase;color:#fff;text-shadow:0 2px 30px #0a1f1e73}
+.top h1{margin:0;font-weight:900;line-height:1;letter-spacing:-.045em;white-space:nowrap;font-size:clamp(25px,4.6vw,72px);text-transform:uppercase;color:#fff;text-shadow:0 2px 30px #0a1f1e73}
 .top .cn{margin-top:clamp(8px,1.2vw,16px);font-family:var(--han);font-weight:300;color:var(--zhu);
-  font-size:clamp(15px,2.1vw,30px);letter-spacing:.14em;line-height:1.35;white-space:nowrap}
-.top .cn i{font-style:normal;color:#ffffff59;margin:0 .35em}
+  font-size:clamp(15px,2.3vw,34px);letter-spacing:.1em;line-height:1.35;white-space:nowrap}
+.top .cn span{margin-right:clamp(18px,2.6vw,42px)}
+.top .cn span:last-child{margin-right:0}
 .top .sub{margin:13px 0 0;max-width:56ch;font-size:14.5px;line-height:1.55;color:#C9D5D3}
 
 .hero-side{flex:none;position:relative;align-self:flex-end;height:1px}
-.hero-left{width:clamp(96px,13.5vw,215px)}
-.hero-r{width:clamp(110px,15.5vw,250px)}
+.hero-left{width:clamp(90px,11vw,168px)}
+.hero-r{width:clamp(96px,12vw,180px)}
 .hero-col{font-family:var(--han);writing-mode:vertical-rl;font-weight:300;letter-spacing:.46em;
   font-size:clamp(22px,2.9vw,36px);color:#ffffff70;line-height:1;user-select:none;
   padding:18px 0;border-left:1px solid #ffffff33;padding-left:18px}
@@ -335,16 +336,16 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .panda{position:absolute;right:0;bottom:-20px;width:clamp(96px,12vw,150px);height:auto;filter:drop-shadow(0 8px 22px #0a1f1e6b);transform:rotate(-4deg)}
 
 @media (max-width:820px){.panda{width:70px}}
-.sticker{display:none;position:absolute;bottom:-26px;width:auto;cursor:default;
+.sticker{display:none;position:absolute;bottom:-26px;width:auto;max-width:none;cursor:default;
   filter:drop-shadow(0 10px 26px #0a1f1e73);transition:transform .4s cubic-bezier(.2,.7,.3,1)}
 .sticker.ok{display:block}
-#stick1{right:0;bottom:-46px;height:clamp(132px,20.5vw,290px);transform:rotate(-5deg);z-index:2}
-#stick2{left:0;bottom:-36px;height:clamp(118px,18vw,252px);transform:rotate(-7deg);z-index:2}
+#stick1{right:0;bottom:-36px;height:clamp(116px,15.5vw,218px);transform:rotate(-5deg);z-index:2}
+#stick2{left:0;bottom:-30px;height:clamp(104px,13.5vw,190px);transform:rotate(-7deg);z-index:2}
 #stick1:hover{transform:rotate(-1deg) translateY(-10px) scale(1.04)}
 #stick2:hover{transform:rotate(-3deg) translateY(-10px) scale(1.04)}
 .sticker.ok ~ .panda{display:none}
 
-@media (max-width:820px){#stick1{height:104px;bottom:-24px}#stick2{height:96px;bottom:-20px}.hero-left{width:96px}.hero-r{width:104px}}
+@media (max-width:820px){#stick1{height:96px;bottom:-22px}#stick2{height:88px;bottom:-18px}.hero-left{width:80px}.hero-r{width:86px}}
 </style>
 
 <div class="top">
@@ -353,7 +354,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <div class="hero-side hero-left"><img class="sticker" id="stick2" alt="" src="oogway.png"></div>
     <div class="hero-l">
       <h1>Les Robeb en Chine</h1>
-      <div class="cn">中国之行 <i>·</i> 山高水长 <i>·</i> 行旅</div>
+      <div class="cn"><span>中国之行</span><span>山高水长</span><span>行旅</span></div>
     </div>
     <div class="hero-side hero-r">
       <img class="sticker" id="stick1" alt="" src="po.png">
