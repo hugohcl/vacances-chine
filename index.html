@@ -1825,7 +1825,7 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
 
   /* ── l'ascension ── */
   var asc=document.getElementById("asc"), ascv=document.getElementById("ascv"),
-      audio=document.getElementById("ascaudio"), fini=false;
+      audio=document.getElementById("ascaudio"), fini=false, arreterPetales=null;
 
   function ascension(){
     /* on quitte le rideau rouge en douceur */
@@ -1849,9 +1849,11 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
       ascv.pause(); document.body.style.overflow="";
     },1000);
 
-    /* la musique reste, et monte doucement */
-    audio.volume=0; audio.loop=true;
+    /* la musique se joue une fois en entier, et monte doucement */
+    audio.volume=0; audio.loop=false;
     var pa=audio.play(); if(pa&&pa.catch) pa.catch(function(){});
+    /* les pétales tombent tant que le morceau dure, puis s'effacent avec lui */
+    audio.addEventListener("ended",function(){ if(arreterPetales) arreterPetales(); },{once:true});
     var t0=Date.now();
     var mont=setInterval(function(){
       var k=Math.min(1,(Date.now()-t0)/2600);
@@ -1873,7 +1875,7 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
   function petales(){
     var c=document.getElementById("petales"); if(!c) return;
     if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var g=c.getContext("2d"), L=0,H=0, dpr=Math.min(2,window.devicePixelRatio||1), fl=[], t=0;
+    var g=c.getContext("2d"), L=0,H=0, dpr=Math.min(2,window.devicePixelRatio||1), fl=[], t=0, raf=0;
 
     /* teintes relevées sur la scène : rose de pêcher, crème, et un or rare */
     var TONS=[["#FFD3DC","#E97F9B"],["#FFC7D2","#DC6A8A"],["#FFE0CE","#E5926F"],
@@ -1959,13 +1961,23 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
         g.drawImage(p.sp,-w/2,-h/2,w,h);
         g.restore();
       }
-      requestAnimationFrame(boucle);
+      raf=requestAnimationFrame(boucle);
     }
 
     window.addEventListener("resize",taille,{passive:true});
     c.classList.add("on");
     setTimeout(function(){ c.classList.add("vu"); },40);
     boucle();
+
+    /* fin du morceau : fondu de 2,6 s, puis on coupe vraiment la boucle */
+    arreterPetales=function(){
+      c.classList.remove("vu");
+      setTimeout(function(){
+        cancelAnimationFrame(raf);
+        c.classList.remove("on");
+        g.clearRect(0,0,L,H);
+      },2800);
+    };
   }
 
   document.getElementById("ascskip").addEventListener("click",finir);
