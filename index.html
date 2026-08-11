@@ -37,7 +37,7 @@ img{max-width:100%;display:block}
 
 
 /* nav */
-.tabs{display:flex;gap:6px;position:sticky;top:var(--hmini);z-index:40;background:var(--pap);padding:9px 0;
+.tabs{display:flex;gap:6px;position:sticky;top:var(--hmini);z-index:1100;background:var(--pap);padding:9px 0;
   overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:100px;color:var(--tx2)}
@@ -92,7 +92,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
 
 /* fiche destination */
-.sheet{position:fixed;inset:0;z-index:100;display:none;background:#0d2422b8;backdrop-filter:blur(3px);
+.sheet{position:fixed;inset:0;z-index:2000;display:none;background:#0d2422b8;backdrop-filter:blur(3px);
   overflow-y:auto;padding:clamp(10px,3vw,40px)}
 .sheet.on{display:block}
 .sheet-in{max-width:980px;margin:0 auto;background:var(--card);border-radius:var(--r);overflow:hidden;position:relative}
@@ -183,7 +183,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .prat b{font-weight:700}
 .credits{margin-top:22px;font-size:12px;color:var(--tx2);line-height:1.6;max-width:80ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-#lmap{display:none;width:100%;height:clamp(330px,52vh,540px)}
+#lmap{isolation:isolate;z-index:0;display:none;width:100%;height:clamp(330px,52vh,540px)}
 .leaflet-container{background:var(--pap);font-family:var(--ff)}
 .pin-n{background:var(--zhu);color:#fff;border:2px solid #fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-weight:800;font-size:12px;box-shadow:0 2px 6px #0000004d}
 .leaflet-popup-content{margin:11px 13px;font-size:14px}
@@ -243,7 +243,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .cat{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(16px,2.2vw,26px);align-items:start}
 
 .catside{position:sticky;top:calc(var(--hmini) + var(--tabsh) + 10px)}
-#catmap{width:100%;height:520px;border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
+#catmap{isolation:isolate;z-index:0;width:100%;height:520px;border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
 .cathint{font-size:12px;color:var(--tx2);margin:8px 2px 0;line-height:1.45}
 
 
@@ -291,7 +291,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 /* ── en-tête ── */
 /* l'en-tête reste visible : grande en haut de page, réduite dès qu'on descend */
 :root{--hfull:clamp(300px,46vh,440px);--hmini:88px;--tabsh:50px}
-.top{position:fixed;left:0;right:0;top:0;z-index:60;min-height:var(--hfull);display:flex;align-items:stretch;
+.top{position:fixed;left:0;right:0;top:0;z-index:1200;min-height:var(--hfull);display:flex;align-items:stretch;
   background:var(--deep);isolation:isolate;will-change:min-height}
 /* la cale garde la place de l'en-tete pleine : le contenu ne passe jamais dessous */
 .topsp{height:var(--hfull);margin-bottom:46px}
@@ -738,7 +738,7 @@ var D={
   ok:["Les maisons sur pilotis au bord de l'eau","La vieille ville de nuit","Les ponts couverts"],
   pl:["Se combine naturellement avec Zhangjiajie","Très belle de nuit"],
   mn:["Devenue très commerciale","Souvent brumeux et humide à cette saison"]},
- chongqing:{fr:"Chongqing",han:"重庆",reg:"Sichuan",lat:29.56,lon:106.55,alt:244,n:3,mx:16.0,tmin:11.6,rain:12,sun:7.6,vd:"no",air:1,
+ chongqing:{fr:"Chongqing",han:"重庆",reg:"Sichuan",lat:29.56,lon:106.55,alt:244,n:3,mx:16.0,tmin:11.6,rain:12,sun:7.6,vd:"warn",air:1,
   why:"La ville la plus verticale de Chine. Un métro qui traverse un immeuble, des abris anti-aériens devenus boutiques, et le hotpot le plus pimenté du pays.",
   ok:["Le métro de Liziba qui traverse un immeuble d'habitation","Hongyadong et Jiefangbei de nuit","Les abris anti-aériens reconvertis","Téléphérique du Yangtsé et croisière de nuit","Hotpot à marmite compartimentée"],
   pl:["Tout ce qu'on y fait est nocturne ou souterrain : la grisaille ne gêne pas","La brume met la ville de nuit en valeur","Desservie sans escale depuis Paris, deux vols par semaine","Températures douces"],
