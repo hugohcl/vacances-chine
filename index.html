@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <title>Chine 2026 · construire notre voyage</title>
@@ -337,6 +337,16 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .miniwrap{position:absolute;right:9px;bottom:52px;z-index:4;width:46px;height:40px;
   background:#0d2422a6;backdrop-filter:blur(5px);border-radius:7px;padding:2px;display:grid;place-items:center}
 .mini{width:100%;height:100%;display:block}
+.panda{width:clamp(76px,9.5vw,124px);height:auto;display:block;flex:none;
+  filter:drop-shadow(0 6px 18px #0a1f1e59);transform:rotate(-3deg);transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+.top:hover .panda{transform:rotate(2deg) translateY(-4px)}
+@media (max-width:820px){.panda{width:70px}}
+.sticker{display:none;width:clamp(84px,10.5vw,140px);height:auto;flex:none;
+  filter:drop-shadow(0 8px 22px #0a1f1e6b);transform:rotate(-3deg);transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+.sticker.ok{display:block}
+.sticker.ok ~ .panda{display:none}
+.top:hover .sticker{transform:rotate(2deg) translateY(-5px)}
+@media (max-width:820px){.sticker{width:76px}}
 </style>
 
 <div class="top">
@@ -346,7 +356,37 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
       <h1>Les Robeb<br>en Chine<span class="cn">中国之行</span></h1>
     </div>
     <div class="hero-r">
-      <div class="hero-col" aria-hidden="true">山高水长</div>
+      <img class="sticker" id="stick1" alt="" src="panda.png">
+      <svg class="panda" viewBox="0 0 120 132" aria-hidden="true">
+  <!-- jambes -->
+  <ellipse cx="42" cy="116" rx="15" ry="12" fill="#1f1f22"/>
+  <ellipse cx="78" cy="116" rx="15" ry="12" fill="#1f1f22"/>
+  <!-- corps -->
+  <path d="M60 44c22 0 34 16 34 38 0 21-15 33-34 33S26 103 26 82c0-22 12-38 34-38z" fill="#fbfaf6"/>
+  <!-- bras -->
+  <path d="M30 66c-9 3-14 13-11 22 3 8 11 11 17 8z" fill="#1f1f22"/>
+  <path d="M90 66c9 3 14 13 11 22-3 8-11 11-17 8z" fill="#1f1f22"/>
+  <!-- écharpe cinabre -->
+  <path d="M39 60c6 6 13 9 21 9s15-3 21-9c2 5 2 9 1 13-7 6-14 9-22 9s-15-3-22-9c-1-4-1-8 1-13z" fill="#E24A3C"/>
+  <path d="M79 71l9 15-11 2-4-13z" fill="#C43A2E"/>
+  <!-- oreilles -->
+  <circle cx="32" cy="26" r="13" fill="#1f1f22"/>
+  <circle cx="88" cy="26" r="13" fill="#1f1f22"/>
+  <!-- tête -->
+  <ellipse cx="60" cy="40" rx="33" ry="29" fill="#fbfaf6"/>
+  <!-- taches des yeux -->
+  <ellipse cx="45" cy="38" rx="10.5" ry="12.5" fill="#1f1f22" transform="rotate(-16 45 38)"/>
+  <ellipse cx="75" cy="38" rx="10.5" ry="12.5" fill="#1f1f22" transform="rotate(16 75 38)"/>
+  <!-- yeux -->
+  <circle cx="46.5" cy="37" r="4.2" fill="#fbfaf6"/>
+  <circle cx="73.5" cy="37" r="4.2" fill="#fbfaf6"/>
+  <circle cx="47.5" cy="37.6" r="2.1" fill="#1f1f22"/>
+  <circle cx="74.5" cy="37.6" r="2.1" fill="#1f1f22"/>
+  <!-- museau -->
+  <path d="M60 48c3.6 0 6 2 6 4.2 0 2.4-2.7 3.8-6 3.8s-6-1.4-6-3.8c0-2.2 2.4-4.2 6-4.2z" fill="#1f1f22"/>
+  <path d="M55 59c1.6 2 3.2 2.8 5 2.8s3.4-.8 5-2.8" fill="none" stroke="#1f1f22" stroke-width="2.1" stroke-linecap="round"/>
+</svg>
+      <img class="sticker" id="stick2" alt="" src="oogway.png">
       <div class="seal" aria-hidden="true"><span>行旅</span></div>
     </div>
   </div>
@@ -1450,6 +1490,11 @@ function render(){
 drawFilters(); drawInsp();
 initLeaflet(); initCatMap();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
+["stick1","stick2"].forEach(function(id){
+  var im=document.getElementById(id); if(!im) return;
+  im.onload=function(){ im.classList.add("ok"); };
+  im.onerror=function(){ im.remove(); };   /* pas de fichier : on garde le dessin */
+});
 render();
 })();
 </script>
