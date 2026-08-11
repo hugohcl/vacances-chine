@@ -1778,13 +1778,16 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
   var zone=document.getElementById("chisteps"), msg=document.getElementById("chimsg"),
       ok=document.getElementById("chiok"), attendu=0, gagne=false;
 
+  /* l'ordre affiché est tiré une seule fois : le remélanger à chaque erreur
+     empêchait d'apprendre de la tentative précédente */
+  var MELANGE=ETAPES.map(function(e,i){return {e:e,i:i};});
+  for(var k=MELANGE.length-1;k>0;k--){                   /* mélange de Fisher-Yates */
+    var jj=Math.floor(Math.random()*(k+1)), tmp=MELANGE[k]; MELANGE[k]=MELANGE[jj]; MELANGE[jj]=tmp;
+  }
+
   function dessiner(){
     zone.innerHTML="";
-    var melange=ETAPES.map(function(e,i){return {e:e,i:i};});
-    for(var k=melange.length-1;k>0;k--){                 /* mélange de Fisher-Yates */
-      var j=Math.floor(Math.random()*(k+1)), tmp=melange[k]; melange[k]=melange[j]; melange[j]=tmp;
-    }
-    melange.forEach(function(x){
+    MELANGE.forEach(function(x){
       var b=document.createElement("button");
       b.className="chistep"; b.type="button"; b.dataset.i=x.i;
       b.innerHTML='<span class="rk">?</span><span><span class="nm"></span><span class="ds"></span></span>';
@@ -1811,7 +1814,11 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
       msg.className="chimsg non"; msg.textContent=RATES[Math.floor(Math.random()*RATES.length)];
       zone.classList.add("chisecoue");
       setTimeout(function(){ zone.classList.remove("chisecoue"); },400);
-      attendu=0; dessiner();
+      attendu=0;
+      /* on remet les compteurs à zéro sans toucher à l'ordre affiché */
+      [].forEach.call(zone.querySelectorAll(".chistep"),function(b){
+        b.classList.remove("pris"); b.querySelector(".rk").textContent="?";
+      });
     }
   }
   dessiner();
@@ -1859,48 +1866,102 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
     petales();           /* le site ne redevient pas tout à fait comme avant */
   }
 
-  /* ── les fleurs de pêcher, une fois l'ascension passée ── */
+  /* ── les fleurs de pêcher, une fois l'ascension passée ──
+     Les pétales sont pré-rendus une fois en sprites : à l'écran on ne fait plus
+     que des drawImage transformés, ce qui laisse le champ libre pour trois plans
+     de profondeur et un mouvement moins mécanique.                             */
   function petales(){
     var c=document.getElementById("petales"); if(!c) return;
     if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var g=c.getContext("2d"), L=0,H=0,dpr=Math.min(2,window.devicePixelRatio||1), fl=[];
-    var TONS=["#F7C6CE","#F3AFC0","#FCE3D8","#FFD9C7","#E8C36A"];
+    var g=c.getContext("2d"), L=0,H=0, dpr=Math.min(2,window.devicePixelRatio||1), fl=[], t=0;
+
+    /* teintes relevées sur la scène : rose de pêcher, crème, et un or rare */
+    var TONS=[["#FFD3DC","#E97F9B"],["#FFC7D2","#DC6A8A"],["#FFE0CE","#E5926F"],
+              ["#FFD6E4","#D979A6"],["#FFEBC4","#D8A23C"]];
+
+    /* un pétale : large et échancré au sommet, effilé à la base */
+    function sprite(clair,fonce){
+      var W=64,Ht=82, s=document.createElement("canvas");
+      s.width=W; s.height=Ht;
+      var x=s.getContext("2d");
+      var grd=x.createLinearGradient(0,Ht,0,0);
+      grd.addColorStop(0,fonce); grd.addColorStop(.62,clair); grd.addColorStop(1,clair);
+      x.fillStyle=grd;
+      /* un relief discret, sinon le pétale disparait sur le fond crème du site */
+      x.shadowColor="rgba(110,35,55,.22)"; x.shadowBlur=3; x.shadowOffsetY=1;
+      x.beginPath();
+      x.moveTo(32,80);                          /* base, le point d'attache */
+      x.bezierCurveTo(6,64, 1,34, 13,12);
+      x.bezierCurveTo(20,1, 29,6, 32,15);       /* l'échancrure du sommet */
+      x.bezierCurveTo(35,6, 44,1, 51,12);
+      x.bezierCurveTo(63,34, 58,64, 32,80);
+      x.closePath(); x.fill();
+      x.shadowColor="transparent"; x.shadowBlur=0; x.shadowOffsetY=0;
+      /* nervure centrale, à peine visible */
+      x.globalAlpha=.22; x.strokeStyle=fonce; x.lineWidth=1.6;
+      x.beginPath(); x.moveTo(32,76); x.quadraticCurveTo(32,44,32,20); x.stroke();
+      return s;
+    }
+    var SPRITES=TONS.map(function(p){ return sprite(p[0],p[1]); });
 
     function taille(){
       L=window.innerWidth; H=window.innerHeight;
       c.width=L*dpr; c.height=H*dpr; c.style.width=L+"px"; c.style.height=H+"px";
       g.setTransform(dpr,0,0,dpr,0,0);
     }
-    /* depart : repartis sur toute la hauteur, sinon l'ecran reste vide une minute.
-       ensuite : ils reviennent par le haut */
+
+    /* z de 0 (loin) à 1 (près) : pilote taille, vitesse, opacité et netteté */
     function naitre(depart){
-      return { x:Math.random()*L, y:depart?Math.random()*H:-20-Math.random()*80,
-        r:3.2+Math.random()*3.6, vy:.22+Math.random()*.42,
-        amp:14+Math.random()*30, ph:Math.random()*Math.PI*2, vph:.006+Math.random()*.011,
-        rot:Math.random()*Math.PI, vrot:(Math.random()-.5)*.014,
-        bat:Math.random()*Math.PI*2, vbat:.014+Math.random()*.022,
-        a:.34+Math.random()*.34, col:TONS[Math.floor(Math.random()*TONS.length)] };
+      var z=Math.random();
+      return {
+        z:z,
+        x:Math.random()*L,
+        y:depart?Math.random()*H:-40-Math.random()*90,
+        t:9+z*13,                                  /* taille en px */
+        vy:.16+z*.5,                               /* les proches tombent plus vite */
+        a:(.34+z*.44),
+        a1:16+Math.random()*26, f1:.0055+Math.random()*.006, p1:Math.random()*6.283,
+        a2:5+Math.random()*11,  f2:.017+Math.random()*.016, p2:Math.random()*6.283,
+        rot:Math.random()*6.283, vrot:(Math.random()-.5)*.009,
+        bat:Math.random()*6.283, vbat:.011+Math.random()*.019,
+        sp:SPRITES[(Math.random()*SPRITES.length)|0]
+      };
     }
+
     taille();
-    var N=Math.max(14,Math.min(30,Math.round(L/58)));
+    var N=Math.max(16,Math.min(34,Math.round(L/46)));
     for(var i=0;i<N;i++) fl.push(naitre(true));
+    fl.sort(function(a,b){ return a.z-b.z; });     /* les lointains dessinés dessous */
 
     function boucle(){
+      t++;
       g.clearRect(0,0,L,H);
+      var vent=Math.sin(t*.0016)*.42+Math.sin(t*.00061)*.28;   /* souffle lent et irrégulier */
+
       for(var i=0;i<fl.length;i++){
         var p=fl[i];
-        p.y+=p.vy; p.ph+=p.vph; p.rot+=p.vrot; p.bat+=p.vbat;
-        var x=p.x+Math.sin(p.ph)*p.amp;
-        if(p.y>H+30){ fl[i]=naitre(false); continue; }
+        p.y+=p.vy;
+        p.x+=vent*(.35+p.z);
+        p.rot+=p.vrot; p.bat+=p.vbat;
+
+        /* deux sinusoïdes décalées : le balancement ne se répète pas à l'œil */
+        var d1=Math.sin(t*p.f1+p.p1), d2=Math.sin(t*p.f2+p.p2);
+        var x=p.x+d1*p.a1+d2*p.a2;
+
+        if(p.y>H+50||x<-90||x>L+90){ fl[i]=naitre(false); continue; }
+
+        var w=p.t, h=p.t*1.28;
         g.save();
-        g.translate(x,p.y); g.rotate(p.rot);
-        g.scale(Math.max(.18,Math.abs(Math.cos(p.bat))),1);   /* le pétale se retourne en tombant */
-        g.globalAlpha=p.a; g.fillStyle=p.col;
-        g.beginPath(); g.ellipse(0,0,p.r,p.r*1.45,0,0,Math.PI*2); g.fill();
+        g.translate(x,p.y);
+        g.rotate(p.rot+d1*.5);                    /* il s'incline dans le sens du balancement */
+        g.scale(Math.max(.16,Math.abs(Math.cos(p.bat))),1);   /* il se retourne en tombant */
+        g.globalAlpha=p.a;
+        g.drawImage(p.sp,-w/2,-h/2,w,h);
         g.restore();
       }
       requestAnimationFrame(boucle);
     }
+
     window.addEventListener("resize",taille,{passive:true});
     c.classList.add("on");
     setTimeout(function(){ c.classList.add("vu"); },40);
