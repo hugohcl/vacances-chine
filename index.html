@@ -356,6 +356,72 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .insprow.on .iadd{background:var(--zhu);color:#fff;border-color:var(--zhu)}
 .inspact{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
 .insppris{font-size:12.5px;color:var(--zhu);font-weight:700}
+
+/* ══ prérequis n° 0 : kitsch assumé, du néon de restaurant chinois ══ */
+
+/* l'invite, en bas à droite */
+.footrow{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.footrow .credits{flex:1;min-width:260px;margin:0}
+.chibtn{flex:none;display:flex;align-items:center;gap:9px;
+  padding:11px 17px 11px 13px;border:0;border-radius:100px;cursor:pointer;
+  background:linear-gradient(135deg,#D42B23,#A81A18);color:#FFE9A8;
+  font-size:13px;font-weight:800;letter-spacing:-.01em;font-family:inherit;
+  box-shadow:0 8px 26px #7a0f0d4d,0 0 0 2px #E8C36A inset;
+  animation:chiFloat 3.4s ease-in-out infinite;transition:transform .22s cubic-bezier(.2,.7,.3,1)}
+.chibtn:hover{transform:translateY(-3px) scale(1.035)}
+.chibtn .lant{font-size:17px;animation:chiSway 2.6s ease-in-out infinite;transform-origin:50% 0}
+@keyframes chiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes chiSway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.chibtn.fait{background:linear-gradient(135deg,#1E7F55,#14603F)}
+@media (prefers-reduced-motion:reduce){.chibtn,.chibtn .lant{animation:none}}
+@media (max-width:600px){.chibtn{font-size:12px;padding:9px 14px 9px 11px}.footrow{gap:14px}}
+
+/* le rideau */
+.chi{position:fixed;inset:0;z-index:9000;display:none;place-items:center;padding:20px;
+  background:radial-gradient(120% 90% at 50% 0%,#8E1512f2,#3A0705f7)}
+.chi.on{display:grid;animation:chiIn .3s ease-out}
+@keyframes chiIn{from{opacity:0}to{opacity:1}}
+
+/* la boîte, dorée et sans pudeur */
+.chibox{position:relative;width:min(430px,100%);max-height:94vh;overflow:auto;text-align:center;
+  padding:clamp(22px,4vw,32px) clamp(18px,3.4vw,28px);
+  background:linear-gradient(168deg,#C42B22,#8E1512 62%,#6E0F0D);
+  border:3px solid #E8C36A;border-radius:5px;
+  box-shadow:0 0 0 1px #6E0F0D,0 0 0 5px #C9A24E,0 26px 70px #00000080,0 0 70px #E8C36A26;
+  animation:chiPop .4s cubic-bezier(.2,.9,.3,1.1)}
+@keyframes chiPop{from{transform:scale(.9) rotate(-1.4deg);opacity:0}to{transform:none;opacity:1}}
+.chibox::before{content:"";position:absolute;inset:7px;border:1px dashed #E8C36A73;
+  border-radius:2px;pointer-events:none}
+
+.chilants{font-size:26px;letter-spacing:14px;margin-left:14px;line-height:1;filter:drop-shadow(0 3px 8px #00000059)}
+.chilants span{display:inline-block;animation:chiSway 2.8s ease-in-out infinite}
+.chilants span:nth-child(2){animation-delay:.5s}
+.chilants span:nth-child(3){animation-delay:1s}
+
+.chieb{margin-top:12px;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;
+  color:#F2D89A;font-weight:800}
+.chibox h2{margin:7px 0 0;font-size:clamp(27px,6vw,40px);line-height:.95;letter-spacing:-.035em;
+  text-transform:uppercase;font-weight:900;
+  background:linear-gradient(180deg,#FFF3CE,#E8C36A 52%,#B98C36);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 #5C0B09)}
+.chihan{font-family:var(--han);font-weight:700;font-size:clamp(28px,6.6vw,40px);color:#FFE9A8;
+  letter-spacing:.2em;margin:9px 0 0;margin-left:.2em;text-shadow:0 2px 0 #5C0B09,0 0 22px #E8C36A73}
+.chibox p{margin:12px 0 0;font-size:14px;line-height:1.5;color:#FFDFA4;font-weight:600}
+
+.chivid{margin-top:16px;border-radius:3px;overflow:hidden;background:#000;
+  display:grid;place-items:center;border:2px solid #E8C36A;box-shadow:0 8px 26px #00000073}
+.chivid video{display:block;max-height:50vh;max-width:100%;width:auto;height:auto}
+
+.chiok{margin-top:16px;width:100%;padding:13px;border:2px solid #E8C36A;border-radius:3px;
+  background:#5C0B0980;color:#FFE9A8;font-family:inherit;font-size:13.5px;font-weight:800;
+  letter-spacing:.02em;cursor:pointer;transition:background .18s,transform .18s}
+.chiok:hover{background:#E8C36A;color:#6E0F0D;transform:translateY(-2px)}
+.chix{position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;z-index:2;
+  background:#5C0B0999;color:#E8C36A;font-size:17px;line-height:1;display:grid;place-items:center;
+  border:1px solid #E8C36A66;cursor:pointer;transition:background .16s}
+.chix:hover{background:#E8C36A;color:#6E0F0D}
+
 </style>
 
 <div class="top">
@@ -401,6 +467,22 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     </div>
   </div>
   <div class="hero-rule"></div>
+</div>
+
+<!-- l'invite est en bas de page, à droite des sources -->
+<div class="chi" id="chi" role="dialog" aria-modal="true" aria-labelledby="chit" hidden>
+  <div class="chibox">
+    <button class="chix" id="chix" aria-label="Fermer">×</button>
+    <div class="chilants"><span>🏮</span><span>🏮</span><span>🏮</span></div>
+    <div class="chieb">Prérequis n° 0</div>
+    <h2 id="chit">Maîtriser le chi</h2>
+    <div class="chihan">掌握气</div>
+    <p>Le visa, ça s'obtient. Ça, non.</p>
+    <div class="chivid"><video id="chiv" src="chi.mp4" controls playsinline preload="none"></video></div>
+    <button class="chiok" id="chiok">J'ai maîtrisé mon chi 🐼</button>
+  </div>
+</div>
+  </div>
 </div>
 
 </div>
@@ -500,7 +582,10 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li>Trois choses n'existent qu'à cette période : <b>rizières de Yuanyang en eau</b>, <b>mouettes de Sibérie à Kunming</b>, <b>feuillage du delta</b>.</li>
         <li>Le <b>Yunnan est la meilleure région</b> du pays sur cette fenêtre.</li></ul></section>
     </div>
-    <p class="credits" id="credits"></p>
+    <div class="footrow">
+      <p class="credits" id="credits"></p>
+      <button class="chibtn" id="chibtn"><span class="lant">🏮</span>Tu penses être prête pour la Chine ?</button>
+    </div>
   </div>
 </div>
 
@@ -1531,6 +1616,34 @@ function render(){
 drawFilters(); drawInsp();
 initLeaflet(); initCatMap();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
+/* ── l'easter egg : cliquer Po ouvre la leçon ── */
+(function(){
+  var ov=document.getElementById("chi"), v=document.getElementById("chiv");
+  if(!ov||!v) return;
+  function ouvrir(){
+    ov.hidden=false; ov.classList.add("on");
+    document.body.style.overflow="hidden";
+    /* le clic de l'utilisateur autorise le son : on tente, sinon les contrôles sont là */
+    var p=v.play(); if(p&&p.catch) p.catch(function(){});
+  }
+  function fermer(){
+    ov.classList.remove("on"); ov.hidden=true;
+    document.body.style.overflow="";
+    v.pause(); v.currentTime=0;
+  }
+  var bt=document.getElementById("chibtn");
+  if(bt) bt.addEventListener("click",ouvrir);
+  document.getElementById("chix").addEventListener("click",fermer);
+  document.getElementById("chiok").addEventListener("click",function(){
+    fermer();
+    if(!bt) return;
+    bt.classList.add("fait");
+    bt.innerHTML='<span class="lant">🐼</span>Chi maîtrisé. Tu peux partir.';
+  });
+  ov.addEventListener("click",function(e){ if(e.target===ov) fermer(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!ov.hidden) fermer(); });
+})();
+
 ["stick1","stick2"].forEach(function(id){
   var im=document.getElementById(id); if(!im) return;
   im.onload=function(){ im.classList.add("ok"); };
