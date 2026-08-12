@@ -400,9 +400,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
 /* le rideau */
 .chi{position:fixed;inset:0;z-index:9000;display:none;place-items:center;padding:20px;
-  background:radial-gradient(120% 90% at 50% 0%,#8E1512f2,#3A0705f7);
-  transition:background-color .55s ease}
-.chi.eteint{background-image:none;background-color:#04080C}
+  background:radial-gradient(120% 90% at 50% 0%,#8E1512f2,#3A0705f7)}
 .chi.eteint .chibox{opacity:0;transform:scale(.985);
   transition:opacity .42s ease,transform .5s cubic-bezier(.4,0,.6,1)}
 .chi.on{display:grid;animation:chiIn .3s ease-out}
@@ -1862,8 +1860,7 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
     document.body.style.overflow="hidden";
     v.pause(); v.currentTime=0;
 
-    /* le rouge s'éteint vers le noir : sans ce palier, le bleu nuit se superposait
-       au rouge encore visible et les deux se mélangeaient */
+    /* la boîte s'efface, mais le rouge reste : la nuit se fond par-dessus */
     ov.classList.add("eteint");
 
     setTimeout(function(){
@@ -1874,7 +1871,7 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
 
       ascv.currentTime=0; ascv.volume=1;
       var p=ascv.play(); if(p&&p.catch) p.catch(function(){});
-    },600);
+    },360);
     /* on part avant la dernière image : la vidéo se dissout au lieu de se couper net */
     ascv.addEventListener("timeupdate",function(){
       if(ascv.duration&&ascv.currentTime>=ascv.duration-1.5) finir();
