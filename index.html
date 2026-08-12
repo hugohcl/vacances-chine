@@ -685,7 +685,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li><b>Carte d'arrivée numérique</b> obligatoire, à remplir dans les 72 h. C'est gratuit.</li></ul></section>
       <section><span class="lbl">Se déplacer</span><h3>Trains et vols</h3><ul>
         <li><b>Fenêtre de vente des trains : 15 jours.</b> Rien ne se réserve depuis la France.</li>
-        <li>Le <b>passeport tient lieu de billet</b>. Arriver 30 à 45 minutes avant.</li>
+        <li><b>Aucun billet à imprimer ni à retirer.</b> La place est rattachée à votre numéro de passeport : à la gare, vous présentez le passeport, c'est lui qui prouve la réservation.</li>
+        <li><b>Les portiques automatiques ne lisent pas les passeports étrangers</b> : passer au guichet manuel, à l'entrée comme à la sortie.</li>
+        <li>Arriver <b>45 à 60 min avant</b>, <b>90 min</b> à Pékin Sud ou Shanghai Hongqiao.</li>
         <li>La <b>seconde classe</b> suffit. L'avion ne gagne qu'au-delà de 800 km ou 5 h de train.</li>
         <li>Soute des vols intérieurs souvent limitée à <b>20 kg</b>.</li></ul></section>
       <section><span class="lbl">Sur place</span><h3>Payer, se connecter</h3><ul>
@@ -806,7 +808,7 @@ var D={
  shanghai:{fr:"Shanghai",han:"上海",reg:"Delta",lat:31.23,lon:121.47,alt:4,n:4,mx:15.9,tmin:9.6,rain:2,sun:8.5,vd:"ok",air:1,
   why:"Le choc de modernité. Gratte-ciels, malls futuristes, métro parfait, et une vieille ville juste à côté.",
   ok:["Le Bund et la skyline de Pudong","L'ancienne concession française à pied","Yu Garden et la vieille ville","Nanjing Road de nuit","Le marché aux célibataires de People's Park le week-end"],
-  pl:["16 / 10 °C et huit heures et demie de soleil par jour","Desservie sans escale, dix-neuf vols par semaine, la route la moins chère","Suzhou et Hangzhou à moins d'une heure de train"],
+  pl:["16 / 10 °C et huit heures et demie de soleil par jour","Desservie sans escale, dix-neuf vols par semaine : avec Pékin, la seule route où plusieurs compagnies se concurrencent","Suzhou et Hangzhou à moins d'une heure de train"],
   mn:["Les nuits fraîchissent en fin de séjour, jusqu'à 3 °C","C'est une mégapole : bruyante et fatigante à haute dose"]},
  suzhou:{fr:"Suzhou",han:"苏州",reg:"Delta",lat:31.30,lon:120.58,alt:5,n:2,mx:16.4,tmin:9.3,rain:2,sun:8.6,vd:"ok",
   why:"Les jardins classiques les plus raffinés de Chine, et des canaux qui lui ont valu le surnom de Venise de l'Orient.",
@@ -814,7 +816,7 @@ var D={
   pl:["Vingt-cinq minutes de train depuis Shanghai","Le pic de feuillage tombe fin novembre","Se fait très bien à la journée"],
   mn:["La gare TGV Nord est à quinze kilomètres du centre","Les jardins sont petits et se remplissent vite"]},
  hangzhou:{fr:"Hangzhou",han:"杭州",reg:"Delta",lat:30.27,lon:120.15,alt:10,n:2,mx:17.1,tmin:10.0,rain:6,sun:8.5,vd:"ok",
-  why:"Le lac de l'Ouest, le paysage le plus peint de Chine, et les plantations de thé Longjing sur les collines.",
+  why:"Le lac de l'Ouest, classé UNESCO, et les plantations de thé Longjing sur les collines.",
   ok:["Le tour du lac de l'Ouest à vélo","Temple de Lingyin et ses ginkgos centenaires","Les plantations de Longjing","Jiuxi Shibajian pour les érables"],
   pl:["Le pic de feuillage tombe après la première gelée, fin novembre : c'est le seul de premier plan encore disponible","Quarante minutes de train depuis Shanghai"],
   mn:["Très fréquenté le week-end","Pas de vol direct depuis Paris"]},
@@ -822,7 +824,7 @@ var D={
   why:"Les montagnes Jaunes, pins tordus et mers de nuages. Et les villages Ming de Hongcun et Xidi au pied.",
   ok:["Nuit au sommet pour le lever du jour","Mer de nuages et givre","Villages de Hongcun et Xidi"],
   pl:["Givre et mer de nuages sont à leur meilleur en hiver","Très peu de monde"],
-  mn:["Le Grand Canyon de la Mer de l'Ouest ferme le 1er décembre","Les téléphériques ferment un mois chacun en maintenance entre novembre et janvier","Il gèle au sommet"]},
+  mn:["Certains sentiers d'altitude ferment l'hiver par verglas : vérifier l'état des accès la veille","Les téléphériques ferment un mois chacun en maintenance entre novembre et janvier","Il gèle au sommet"]},
  zhangjiajie:{fr:"Zhangjiajie",han:"张家界",reg:"Centre",lat:29.35,lon:110.48,alt:400,n:3,mx:10.2,tmin:4.2,rain:7,sun:6.4,vd:"no",
   why:"Les pitons de grès qui ont inspiré les montagnes flottantes d'Avatar.",
   ok:["Parc national de Wulingyuan","Tianmen Shan, téléphérique et route aux 99 virages","La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
@@ -861,7 +863,7 @@ var D={
  kunming:{fr:"Kunming",han:"昆明",reg:"Yunnan",lat:25.04,lon:102.72,alt:1890,n:2,mx:18.0,tmin:7.6,rain:4,sun:8.9,vd:"ok",
   why:"La ville du printemps éternel, porte d'entrée du Yunnan, et la Forêt de pierre à une heure.",
   ok:["Forêt de pierre de Shilin, karst de 270 millions d'années","Les mouettes rieuses de Sibérie au lac Dianchi","Marché aux fleurs de Dounan, le plus grand d'Asie","Le parc du Lac Vert"],
-  pl:["Quarante mille mouettes venues de Sibérie, uniquement en hiver","Climat doux toute l'année","Vol le moins cher depuis Paris vers la Chine"],
+  pl:["Jusqu'à quarante mille mouettes venues de Sibérie, uniquement en hiver","Climat doux toute l'année","Parmi les vols les moins chers depuis Paris : 571 € l'aller-retour relevé en août 2026"],
   mn:["Pas de vol direct depuis Paris","La ville elle-même a peu de charme, c'est une base"]},
  dali:{fr:"Dali",han:"大理",reg:"Yunnan",lat:25.61,lon:100.27,alt:1970,n:3,mx:17.6,tmin:8.1,rain:1,sun:9.9,vd:"ok",
   why:"Un lac de montagne entre deux chaînes, la culture bai, et les Trois Pagodes du Xe siècle.",
@@ -894,7 +896,7 @@ var D={
   pl:["Coupe naturellement la longue route vers Yuanyang","Très peu de touristes étrangers"],
   mn:["Petite, une journée suffit","Ajoute une base à l'itinéraire"]},
  tigerleaping:{fr:"Saut du Tigre",han:"虎跳峡",reg:"Yunnan",lat:27.19,lon:100.11,alt:2000,n:2,mx:16.0,tmin:3.0,rain:1,sun:9.5,vd:"ok",
-  why:"Une des plus profondes gorges du monde, le Yangtsé encaissé sous des sommets à 5 000 mètres.",
+  why:"Une des plus profondes gorges du monde : le Yangtsé encaissé entre le Yulong (5 596 m) et le Haba (5 396 m), 3 790 m de dénivelé du fleuve au sommet.",
   ok:["La haute randonnée, deux jours avec une nuit en auberge","Le belvédère du milieu","La descente au bord du fleuve"],
   pl:["Praticable en novembre, ciel dégagé","Sur la route entre Lijiang et Shangri-La","La plus belle marche du nord Yunnan"],
   mn:["Attention : contrairement à ce qu'on lit partout, ce lieu n'apparaît pas dans Pékin Express","Deux jours de marche, dénivelé sérieux"]},
@@ -921,7 +923,7 @@ var D={
  canton:{fr:"Canton",han:"广州",reg:"Sud",lat:23.13,lon:113.26,alt:20,n:2,mx:23.9,tmin:16.8,rain:6,sun:8.5,vd:"ok",air:1,
   why:"La capitale de la cuisine cantonaise, et le meilleur climat de Chine à cette saison.",
   ok:["Dim sum le matin","L'île de Shamian, quartier colonial","La tour de Canton","Le marché de Qingping"],
-  pl:["17 à 25 °C, faible humidité, ciel clair : le climat le plus confortable du pays à vos dates","Desservie sans escale depuis Paris","On y mange remarquablement bien"],
+  pl:["24 / 17 °C, faible humidité et ciel clair : le climat le plus doux du catalogue à vos dates","Desservie sans escale depuis Paris","On y mange remarquablement bien"],
   mn:["Peu de sites monumentaux","Très étendue et dense"]},
  hongkong:{fr:"Hong Kong",han:"香港",reg:"Sud",lat:22.32,lon:114.17,alt:30,n:3,mx:22.9,tmin:15.8,rain:9,sun:7.4,vd:"warn",air:1,
   why:"Une ville verticale entre mer et montagne, et une bonne porte de sortie si le voyage descend au sud.",
@@ -1019,7 +1021,7 @@ var LINKS=[
  {b:"yangshuo",x:"longsheng",t:"jour",d:"2 h 30 de route",p:"Même chose depuis Yangshuo, un peu plus long."},
  {b:"kunming",x:"jianshui",t:"jour",d:"2 h de train",p:"Possible à la journée, mais Jianshui mérite plutôt une halte sur la route de Yuanyang."},
  {b:"canton",x:"hongkong",t:"paire",d:"2 h de train",p:"Deux villes très différentes à deux heures l'une de l'autre. Attention, Hong Kong est une juridiction distincte : formalités à chaque passage."},
- {b:"chongqing",x:"chengdu",t:"paire",d:"1 h 30 de train",p:"Le trajet le plus court du pays entre deux grandes villes. On les enchaîne presque toujours."},
+ {b:"chongqing",x:"chengdu",t:"paire",d:"1 h 30 de train",p:"Une heure trente de train entre deux métropoles voisines. On les enchaîne presque toujours."},
  {b:"guilin",x:"yangshuo",t:"paire",d:"30 min de train",p:"Même paysage, mais on dort bien mieux à Yangshuo. Beaucoup ne font que passer par Guilin."},
  {b:"datong",x:"pingyao",t:"paire",d:"2 à 3 h de train",p:"Les deux grands arrêts du Shanxi, sur la même ligne."},
  {b:"zhangjiajie",x:"fenghuang",t:"paire",d:"4 h de route",p:"La suite naturelle de Zhangjiajie, dans la même province."},
