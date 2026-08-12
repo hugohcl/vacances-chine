@@ -400,7 +400,11 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
 /* le rideau */
 .chi{position:fixed;inset:0;z-index:9000;display:none;place-items:center;padding:20px;
-  background:radial-gradient(120% 90% at 50% 0%,#8E1512f2,#3A0705f7)}
+  background:radial-gradient(120% 90% at 50% 0%,#8E1512f2,#3A0705f7);
+  transition:background-color .55s ease}
+.chi.eteint{background-image:none;background-color:#04080C}
+.chi.eteint .chibox{opacity:0;transform:scale(.985);
+  transition:opacity .42s ease,transform .5s cubic-bezier(.4,0,.6,1)}
 .chi.on{display:grid;animation:chiIn .3s ease-out}
 @keyframes chiIn{from{opacity:0}to{opacity:1}}
 
@@ -478,7 +482,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 /* ══ l'ascension : plus de kitsch, on épouse la nuit bleue de la vidéo ══ */
 .asc{position:fixed;inset:0;z-index:9500;display:none;place-items:center;padding:20px;
   background:radial-gradient(88% 66% at 50% 44%,#0C2643 0%,#061626 58%,#02090F 100%);
-  opacity:0}
+  opacity:0;transition:opacity .95s ease}
 .asc.on{display:grid}
 .asc.vu{opacity:1}
 .asc.sort{opacity:0;transition:opacity 1.7s cubic-bezier(.37,0,.28,1)}
@@ -488,7 +492,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 @keyframes ascPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.07);opacity:1}}
 #ascv{position:relative;width:min(560px,86vw);aspect-ratio:1/1;display:block;border-radius:10px;
   background:#02090F;object-fit:cover;
-  box-shadow:0 0 0 1px #54699640,0 34px 90px #00000073,0 0 130px #3C638254}
+  box-shadow:0 0 0 1px #54699640,0 34px 90px #00000073,0 0 130px #3C638254;
+  opacity:0;transition:opacity 1.1s ease}
+.asc.vu #ascv{opacity:1}
 .asc.sort #ascv{opacity:0;transform:scale(1.035);
   transition:opacity 1.15s cubic-bezier(.4,0,.5,1),transform 1.7s cubic-bezier(.3,0,.3,1)}
 .asc.sort .ascglow{opacity:0;transition:opacity 1.4s ease}
@@ -1853,15 +1859,22 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
       audio=document.getElementById("ascaudio"), fini=false, arreterPetales=null;
 
   function ascension(){
-    /* on quitte le rideau rouge en douceur */
-    ov.classList.remove("on"); ov.hidden=true;
-    v.pause(); v.currentTime=0;
     document.body.style.overflow="hidden";
+    v.pause(); v.currentTime=0;
 
-    asc.hidden=false; asc.classList.add("on","vu");   /* elle est là tout de suite, sans fondu d'entrée */
+    /* le rouge s'éteint vers le noir : sans ce palier, le bleu nuit se superposait
+       au rouge encore visible et les deux se mélangeaient */
+    ov.classList.add("eteint");
 
-    ascv.currentTime=0; ascv.volume=1;
-    var p=ascv.play(); if(p&&p.catch) p.catch(function(){});
+    setTimeout(function(){
+      asc.hidden=false; asc.classList.add("on");
+      setTimeout(function(){ asc.classList.add("vu"); },40);
+      /* le rouge ne disparaît qu'une fois la nuit installée par-dessus */
+      setTimeout(function(){ ov.classList.remove("on","eteint"); ov.hidden=true; },1150);
+
+      ascv.currentTime=0; ascv.volume=1;
+      var p=ascv.play(); if(p&&p.catch) p.catch(function(){});
+    },600);
     /* on part avant la dernière image : la vidéo se dissout au lieu de se couper net */
     ascv.addEventListener("timeupdate",function(){
       if(ascv.duration&&ascv.currentTime>=ascv.duration-1.5) finir();
