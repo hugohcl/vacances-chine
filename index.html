@@ -442,6 +442,12 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
 /* l'épreuve : remettre les quatre étapes dans l'ordre */
 .chigame{margin-top:18px;padding-top:16px;border-top:1px dashed #E8C36A66}
+.chigame[hidden],.chiok[hidden]{display:none}
+.chiattente{margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;color:#F2D89Ab3;animation:chiRespire 2.6s ease-in-out infinite}
+@keyframes chiRespire{0%,100%{opacity:.55}50%{opacity:1}}
+.chiapparait{animation:chiOuvre .55s cubic-bezier(.2,.7,.3,1)}
+@keyframes chiOuvre{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
 .chiq{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F2D89A}
 .chiq b{display:block;margin-top:5px;font-size:13px;letter-spacing:0;text-transform:none;
   font-weight:600;color:#FFDFA4}
@@ -567,13 +573,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <p>Le visa, ça s'obtient. Ça, non.</p>
     <div class="chivid"><video id="chiv" src="chi.mp4" controls playsinline preload="none"></video></div>
 
-    <div class="chigame">
+    <div class="chiattente" id="chiattente">Regarde jusqu'au bout</div>
+
+    <div class="chigame" id="chigame" hidden>
       <div class="chiq">L'épreuve<b>Les quatre étapes se sont mélangées. Clique-les dans le bon ordre.</b></div>
       <div class="chisteps" id="chisteps"></div>
       <div class="chimsg" id="chimsg"></div>
     </div>
 
-    <button class="chiok" id="chiok" disabled>Chi non maîtrisé</button>
+    <button class="chiok" id="chiok" hidden disabled>Chi non maîtrisé</button>
     </div>
   </div>
 </div>
@@ -1756,6 +1764,21 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
     /* le clic de l'utilisateur autorise le son : on tente, sinon les contrôles sont là */
     var p=v.play(); if(p&&p.catch) p.catch(function(){});
   }
+
+  /* ── l'épreuve n'apparaît qu'une fois la vidéo regardée jusqu'au bout ── */
+  function ouvrirEpreuve(){
+    var jeu=document.getElementById("chigame"),
+        att=document.getElementById("chiattente"),
+        bo=document.getElementById("chiok");
+    if(!jeu||!jeu.hidden) return;
+    if(att) att.remove();
+    jeu.hidden=false; bo.hidden=false;
+    jeu.classList.add("chiapparait"); bo.classList.add("chiapparait");
+    jeu.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  v.addEventListener("ended",ouvrirEpreuve);
+  /* si la vidéo ne peut pas être lue, on ne bloque pas l'épreuve derrière elle */
+  v.addEventListener("error",ouvrirEpreuve);
   function fermer(){
     ov.classList.remove("on"); ov.hidden=true;
     document.body.style.overflow="";
