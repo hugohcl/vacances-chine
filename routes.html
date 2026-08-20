@@ -307,7 +307,9 @@ body > .pg{display:grid;grid-template-columns:336px minmax(0,1fr);
         <span class="lbl">Se déplacer</span><h3>Trains et vols</h3>
         <ul>
           <li><b>La fenêtre de vente des trains est de 15 jours</b>, pas 30. Rien ne se réserve depuis la France.</li>
-          <li><b>Le passeport tient lieu de billet</b>, à poser sur le lecteur du portique. Arriver 30 à 45 minutes avant.</li>
+          <li><b>Aucun billet à imprimer ni à retirer.</b> La place est rattachée à votre numéro de passeport : à la gare, vous présentez le passeport, c'est lui qui prouve la réservation.</li>
+          <li><b>Les portiques automatiques ne lisent pas les passeports étrangers</b> : passer au guichet manuel, à l'entrée comme à la sortie.</li>
+          <li>Arriver <b>45 à 60 min avant</b>, <b>90 min</b> à Pékin Sud ou Shanghai Hongqiao.</li>
           <li>La <b>seconde classe</b> suffit largement. La première se justifie au-delà de cinq heures.</li>
           <li>Réserver sur <b>12306</b>, l'application officielle en anglais, ou <b>Trip.com</b> en secours.</li>
           <li>L'avion ne gagne qu'au-delà de <b>800 km ou 5 h</b> de train porte à porte. Soute souvent limitée à 20 kg en intérieur.</li>
@@ -327,7 +329,8 @@ body > .pg{display:grid;grid-template-columns:336px minmax(0,1fr);
       <section>
         <span class="lbl">Budget</span><h3>Pour deux, tout compris</h3>
         <div id="budget"></div>
-        <ul><li>Le plafond fixé était de 3 000 à 5 000 € par personne. On reste dessous.</li>
+        <p id="budgetnote" class="m"></p>
+        <ul><li>Le plafond fixé était de 3 000 à 5 000 € par personne.</li>
           <li>La ligne des vols est celle qui bouge : <a href="#p-vols">le relevé quotidien des prix</a> dit si elle monte ou descend.</li></ul>
       </section>
       <section>
@@ -545,9 +548,88 @@ var SRC=[
   seq:["shanghai","suzhou","hefei","zhangjiajie","chongqing","chengdu","leshan"],
   note:"Son trajet, fait exactement à vos dates à un an près. Neuf vidéos, transcription extraite, source solide. Hefei était une usine NIO en accès privé, non visitable."}
 ];
-var BUDGET=[["Vols internationaux, open-jaw","1 200 – 1 800 €"],["Visa","0 €"],["Vols intérieurs","150 – 400 €"],
-["Trains","200 – 350 €"],["Transferts locaux","150 – 300 €"],["Hébergement","950 – 1 700 €"],["Nourriture","620 – 1 150 €"],
-["Visites et téléphériques","300 – 550 €"],["Assurance","80 – 150 €"],["Marge 10 %","365 – 650 €"]];
+/* Le budget suit la route affichee et le curseur de nuits : plus rien n'est fige.
+
+   L'hebergement est la somme, etape par etape, des fourchettes annoncees dans les
+   fiches (le champ stay de S). Ce sont elles qui font foi : elles sont concretes et
+   attachees a un quartier. L'ancienne ligne globale, 950 a 1 700 € pour 28 nuits,
+   revenait a 34-61 € la nuit et contredisait toutes les fiches, qui vont de 30-70 €
+   a Yuanyang jusqu'a 60-110 € a Shanghai.
+
+   Les autres postes gardent les enveloppes deja retenues, ramenees a leur unite
+   naturelle sur la configuration qui servait de reference : la route A a 28 nuits,
+   9 etapes, 8 trajets dont 2 en avion. A cette configuration les totaux sont donc
+   inchanges, hors hebergement. */
+var COUT={
+  intl:   [1200,1800],   /* forfait, pour deux : voir le releve quotidien */
+  visa:   [0,0],
+  volInt: [75,200],      /* par trajet en avion, pour deux  (150-400 sur 2 trajets) */
+  train:  [33,58],       /* par trajet terrestre, pour deux (200-350 sur 6 trajets) */
+  transf: [5.4,10.7],    /* par nuit, pour deux             (150-300 sur 28 nuits)  */
+  repas:  [22.1,41.1],   /* par nuit, pour deux             (620-1150 sur 28 nuits) */
+  visite: [33.3,61.1],   /* par etape, pour deux            (300-550 sur 9 etapes)  */
+  assur:  [2.86,5.36]    /* par nuit, pour deux             (80-150 sur 28 nuits)   */
+};
+var MARGE=0.10;
+
+/* Les fourchettes a la nuit sont relues dans les fiches plutot que recopiees ici :
+   un prix corrige dans une fiche se propage tout seul au budget. */
+var NUIT=(function(){
+  var t={};
+  for(var k in S){
+    var m=/(\d+)\s*à\s*(\d+)\s*€/.exec(S[k].stay||"");
+    if(m) t[k]=[+m[1],+m[2]];
+  }
+  return t;
+})();
+var NUIT_DEFAUT=[40,90];   /* etapes de transit sans fourchette : jamais dans R */
+
+function eur(n){ return Math.round(n).toLocaleString("fr-FR").replace(/ | /g," ")+" €"; }
+function plage(a){ return Math.round(a[0]).toLocaleString("fr-FR").replace(/ | /g," ")+" – "+eur(a[1]); }
+function mul(c,k){ return [c[0]*k,c[1]*k]; }
+
+/* list : les etapes retenues, telles que plan() les rend. */
+function calculBudget(list,volsInt){
+  var nuits=list.reduce(function(a,x){return a+x.n;},0);
+  var trajets=Math.max(0,list.length-1), terrestres=Math.max(0,trajets-volsInt);
+  var heb=[0,0];
+  list.forEach(function(x){
+    var f=NUIT[x.id]||NUIT_DEFAUT;
+    heb[0]+=f[0]*x.n; heb[1]+=f[1]*x.n;
+  });
+  var l=[["Vols internationaux, open-jaw",COUT.intl],
+         ["Visa",COUT.visa],
+         ["Vols intérieurs",mul(COUT.volInt,volsInt)],
+         ["Trains",mul(COUT.train,terrestres)],
+         ["Transferts locaux",mul(COUT.transf,nuits)],
+         ["Hébergement",heb],
+         ["Nourriture",mul(COUT.repas,nuits)],
+         ["Visites et téléphériques",mul(COUT.visite,list.length)],
+         ["Assurance",mul(COUT.assur,nuits)]];
+  var st=l.reduce(function(a,x){return [a[0]+x[1][0],a[1]+x[1][1]];},[0,0]);
+  l.push(["Marge 10 %",[st[0]*MARGE,st[1]*MARGE]]);
+  return {lignes:l,total:[st[0]*(1+MARGE),st[1]*(1+MARGE)],nuits:nuits};
+}
+
+function renderBudget(list,volsInt){
+  var b=document.getElementById("budget"); if(!b) return;
+  var r=calculBudget(list,volsInt);
+  b.textContent="";
+  r.lignes.forEach(function(x){
+    var d=el("div","money");
+    d.appendChild(el("span",null,x[0]));
+    d.appendChild(el("span",null,x[1][1]===0?"0 €":plage(x[1])));
+    b.appendChild(d);
+  });
+  var t=el("div","money tot");
+  t.appendChild(el("span",null,"Total à deux"));
+  t.appendChild(el("span",null,plage(r.total)));
+  b.appendChild(t);
+  var n=document.getElementById("budgetnote");
+  if(n) n.textContent="Calculé pour la route affichée : "+r.nuits+" nuits, "+list.length+" étapes. "
+    +"Soit "+plage([r.total[0]/2,r.total[1]/2])+" par personne. L'hébergement est la somme "
+    +"des fourchettes annoncées sur chaque étape.";
+}
 
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 var START=new Date(Date.UTC(2026,10,14)),VISA=new Date(Date.UTC(2026,11,14));
@@ -801,10 +883,6 @@ function drawCmp(){
     c.appendChild(bt); box.appendChild(c);
   });
 }
-(function(){ var b=document.getElementById("budget");
-  BUDGET.forEach(function(x){ var d=el("div","money"); d.appendChild(el("span",null,x[0])); d.appendChild(el("span",null,x[1])); b.appendChild(d); });
-  var t=el("div","money tot"); t.appendChild(el("span",null,"Total à deux")); t.appendChild(el("span",null,"4 000 – 7 000 €")); b.appendChild(t);
-})();
 
 /* la barre du haut fait défiler, elle ne masque rien : tout reste sur la page */
 function showTab(name,scrollTo){
@@ -858,6 +936,10 @@ function render(refit){
     document.getElementById("dropped").textContent=p.dropped.length?("À cette durée, on abandonne : "+p.dropped.join(", ")+"."):"";
     document.getElementById("readout").innerHTML="Retour le <b>"+fmt(dep)+"</b>, soit <b>"+marge+"</b> jour"+(Math.abs(marge)>1?"s":"")+" avant la date limite du visa, le 14 décembre.";
     document.getElementById("maphint").textContent="Trait plein : train ou route. Pointillé : vol. Cliquez une ville pour ouvrir son étape.";
+    /* Le budget ne se recalcule qu'en mode route : les parcours de reference
+       n'ont ni nuits ni dates, donc pas de budget possible. Il garde alors
+       la derniere route consultee. */
+    renderBudget(p.s,vols);
   }
   curIds=ids;
   var hid=isSrc?HEROSRC[cur]:HERO[cur], hp=PH[hid];

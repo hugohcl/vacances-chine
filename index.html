@@ -647,7 +647,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
   <div class="panel" id="p-destinations">
     <div class="bh"><span class="lbl">Le catalogue</span><h2>Faire ses courses</h2>
-      <p>Trente-cinq destinations. Cliquez une tuile pour tout savoir, le bouton rond pour l'ajouter à votre route.
+      <p>Quarante-cinq destinations. Cliquez une tuile pour tout savoir, le bouton rond pour l'ajouter à votre route.
          La pastille en haut à gauche dit ce que vaut la météo à vos dates.</p></div>
     <div class="filters" id="filters"></div>
     <div class="cat">
@@ -1060,6 +1060,9 @@ function dayTripBases(id){
 var LT={jour:"à la journée",route:"sur la route",paire:"à enchaîner"};
 
 var AIR=["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong","kunming","hangzhou","guilin"];
+/* Les villes de AIR ont un aeroport ; celles de DIRECT sont en plus reliees a Paris
+   sans escale. Kunming, Hangzhou et Guilin ont un aeroport mais aucun vol direct. */
+var DIRECT=["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong"];
 
 /* ══ inspirations ══ */
 var INSP=[
@@ -1596,7 +1599,7 @@ function drawInsp(){
   AIR.forEach(function(id){
     [ai,ao].forEach(function(s){
       var o=document.createElement("option"); o.value=id;
-      o.textContent=D[id].fr+(["pekin","shanghai","canton","chengdu","chongqing","xian","xiamen","hongkong"].indexOf(id)>=0?" ·":"");
+      o.textContent=D[id].fr+(DIRECT.indexOf(id)>=0?" ·":"");
       s.appendChild(o);
     });
   });
