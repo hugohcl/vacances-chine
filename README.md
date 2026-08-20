@@ -19,9 +19,10 @@ et trace la courbe. Aucun serveur, aucune dependance.
 
 ### Mise en service, une seule fois
 
-1. Creer un compte sur travelpayouts.com et copier le jeton d'API.
+1. Creer un compte gratuit sur serpapi.com, palier Free, et copier la cle
+   depuis serpapi.com/manage-api-key.
 2. Dans le depot : Settings → Secrets and variables → Actions → New repository
-   secret, nomme `TRAVELPAYOUTS_TOKEN`.
+   secret, nomme `SERPAPI_KEY`.
 3. Onglet Actions → « Releve des prix de vols » → Run workflow, pour amorcer
    sans attendre le premier cron.
 
@@ -31,11 +32,12 @@ l'environnement, et la page ne fait aucun appel a l'API.
 ### Changer les trajets suivis
 
 Tout est dans le tableau `ROUTES` en haut de `scripts/fetch-prices.js`, avec les
-deux dates juste au-dessus. Les metadonnees sont reecrites a chaque passage :
+deux dates juste au-dessus. Attention au quota : le palier gratuit couvre 250
+releves par mois, les cinq trajets actuels en consomment 155. Les metadonnees sont reecrites a chaque passage :
 ajouter ou retirer un trajet suffit, `vols.html` suit sans migration.
 
 ### Tester sans clef
 
-`scripts/fetch-prices.js` lit `TRAVELPAYOUTS_API` si la variable existe, ce qui
+`scripts/fetch-prices.js` lit `SERPAPI_API` si la variable existe, ce qui
 permet de le faire pointer vers un faux serveur local et de verifier le flux
 complet hors ligne.

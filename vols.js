@@ -8,8 +8,10 @@
 var VOLS = (function () {
 "use strict";
 
-var COL = { aller:"#E24A3C", retour:"#0F766E", ar_pekin:"#7C3AED", ar_kunming:"#B45309" };
-var ORDER = ["aller","retour","ar_pekin","ar_kunming"];
+/* L'open-jaw en tete : c'est le billet qu'on achetera vraiment, les autres
+   lignes ne sont la que pour situer son prix. */
+var COL = { openjaw:"#1D4ED8", aller:"#E24A3C", retour:"#0F766E", ar_pekin:"#7C3AED", ar_kunming:"#B45309" };
+var ORDER = ["openjaw","aller","retour","ar_pekin","ar_kunming"];
 var DEPART = new Date(Date.UTC(2026,10,13));
 var MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
 
@@ -121,7 +123,7 @@ function paint(st, db, opts){
   host.appendChild(chart(st, byRoute, routes, dates));
   host.appendChild(table(byRoute, routes));
   host.appendChild(notes());
-  var m = el("p","vl-maj","Relevé automatique par GitHub Actions · source Travelpayouts · dernière mise à jour "
+  var m = el("p","vl-maj","Relevé automatique par GitHub Actions · source Google Flights · dernière mise à jour "
     + (db.updated ? fmt(db.updated) : "—"));
   host.appendChild(m);
 }
@@ -133,7 +135,10 @@ function facts(series, db){
     var s = series.filter(function(x){ return x.r===id; });
     if(s.length) last[id] = s[s.length-1].p;
   });
-  var oj = (last.aller!=null && last.retour!=null) ? last.aller+last.retour : null;
+  /* Le vrai billet multi-destinations fait foi. La somme des deux allers simples
+     ne sert que de repli, les jours ou l'open-jaw n'a rien renvoye. */
+  var oj = last.openjaw!=null ? last.openjaw
+         : ((last.aller!=null && last.retour!=null) ? last.aller+last.retour : null);
   var dates = [];
   series.forEach(function(x){ if(dates.indexOf(x.d)<0) dates.push(x.d); });
 
@@ -295,9 +300,9 @@ function table(byRoute, routes){
 function notes(){
   var ul = el("ul","vl-notes");
   [["Ce sont des prix indicatifs, pas des billets.",
-    " Travelpayouts sert des tarifs mis en cache, trouvés par d'autres voyageurs. Le prix réel au moment d'acheter sera proche, rarement identique."],
-   ["L'open-jaw affiché est une somme de deux allers simples.",
-    " Un vrai billet multi-destinations se vend en général moins cher que ses deux moitiés : lisez la ligne comme un plafond, et comme un indicateur de tendance."],
+    " Le relevé interroge Google Flights une fois par jour. Le prix réel au moment d'acheter sera proche, rarement identique."],
+   ["L'open-jaw est un vrai billet multi-destinations.",
+    " Il est interrogé pour lui-même, et non reconstitué en additionnant les deux allers simples. Ces deux lignes restent affichées : leur somme dit ce que coûterait le même voyage acheté en deux fois."],
    ["Le prix ne fait pas tout.",
     " Air China inclut deux bagages de 23 kg, Air France un seul. À deux, aller et retour, le second bagage peut effacer un écart de 100 €."],
    ["Le départ est PAR, pas CDG.",
@@ -318,8 +323,8 @@ function emptyBox(){
   b.appendChild(el("h3",null,"Le relevé n'a pas encore tourné"));
   b.appendChild(el("p",null,"Trois choses à faire une seule fois, et la courbe se remplit toute seule ensuite."));
   var ol = el("ol");
-  ["Créer un compte sur travelpayouts.com et copier le jeton d'API.",
-   "Dans le dépôt GitHub : Settings → Secrets and variables → Actions → New repository secret, nommé TRAVELPAYOUTS_TOKEN.",
+  ["Créer un compte gratuit sur serpapi.com et copier la clé depuis serpapi.com/manage-api-key.",
+   "Dans le dépôt GitHub : Settings → Secrets and variables → Actions → New repository secret, nommé SERPAPI_KEY.",
    "Onglet Actions → « Relevé des prix de vols » → Run workflow. Ensuite c'est quotidien, à 6 h 10 UTC."
   ].forEach(function(x){ ol.appendChild(el("li",null,x)); });
   b.appendChild(ol);
