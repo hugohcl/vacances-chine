@@ -50,8 +50,16 @@ h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1.06}
   border-top:1px solid #f1f5f42e;padding-top:14px}
 .facts b{display:block;font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1;letter-spacing:-.03em}
 .facts span{display:block;margin-top:6px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--onDark2);font-weight:700}
-.back{display:inline-block;margin-top:16px;font-size:13.5px;color:var(--onDark2);text-decoration:none;border-bottom:1px solid #f1f5f43d;padding-bottom:1px}
-.back:hover{color:var(--onDark)}
+/* ── navigation : les deux autres pages, même grammaire qu'ailleurs ── */
+.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:30;background:var(--pap);
+  padding:10px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{display:flex;align-items:center;gap:6px;padding:8px 16px;font-size:14px;font-weight:600;
+  white-space:nowrap;border-radius:100px;color:var(--tx2);text-decoration:none;
+  border:1px solid var(--line);transition:background .18s,color .18s,border-color .18s}
+.tabs a:hover{background:var(--line);color:var(--tx);border-color:var(--zhu)}
+.tabs a[aria-current="page"]{background:var(--zhu);color:#fff;border-color:var(--zhu)}
+.tabs .sep{width:1px;background:var(--line);margin:5px 3px;flex:none}
 
 .panel{padding:clamp(20px,2.4vw,32px) 0}
 .panel + .panel{border-top:1px solid var(--line)}
@@ -122,11 +130,17 @@ h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1.06}
       <div><b class="num" id="f-jours">—</b><span>Jours avant départ</span></div>
       <div><b class="num" id="f-releves">—</b><span>Jours de relevé</span></div>
     </div>
-    <a class="back" href="routes.html">← Revenir aux itinéraires</a>
   </div>
 </header>
 
 <main class="pg">
+
+  <nav class="tabs" aria-label="Parties">
+    <a href="index.html"><span aria-hidden="true">↖</span> Destinations</a>
+    <a href="routes.html"><span aria-hidden="true">↖</span> Itinéraires</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="vols.html" aria-current="page">Prix des vols</a>
+  </nav>
 
   <section class="panel">
     <div id="window"></div>

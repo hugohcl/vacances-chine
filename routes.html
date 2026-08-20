@@ -66,6 +66,12 @@ img{max-width:100%;display:block}
   color:var(--tx2);transition:background .18s,color .18s}
 .tabs button:hover{background:var(--line);color:var(--tx)}
 .tabs button[aria-current="true"]{background:var(--zhu);color:#fff}
+/* Le lien sortant est cerclé, pas plein : il quitte la page, il ne se surligne jamais. */
+.tabs a{display:flex;align-items:center;gap:6px;padding:8px 16px;font-size:14px;font-weight:600;
+  white-space:nowrap;border-radius:100px;color:var(--tx2);text-decoration:none;
+  border:1px solid var(--line);transition:background .18s,color .18s,border-color .18s}
+.tabs a:hover{background:var(--line);color:var(--tx);border-color:var(--zhu)}
+.tabs .sep{width:1px;background:var(--line);margin:5px 3px;flex:none}
 
 .panel{padding:clamp(20px,2.4vw,32px) 0;scroll-margin-top:60px}
 .panel + .panel{border-top:1px solid var(--line)}
@@ -238,6 +244,8 @@ body > .pg{display:grid;grid-template-columns:336px minmax(0,1fr);
     <button aria-current="false" data-t="etapes">Les étapes</button>
     <button aria-current="false" data-t="comparer">Comparer</button>
     <button aria-current="false" data-t="pratique">Pratique</button>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="vols.html">Prix des vols <span aria-hidden="true">↗</span></a>
   </nav>
 
   <div class="panel" id="p-voyage">

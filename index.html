@@ -43,6 +43,10 @@ img{max-width:100%;display:block}
 .tabs button{padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:100px;color:var(--tx2)}
 .tabs button:hover{background:var(--line);color:var(--tx)}
 .tabs button[aria-current="true"]{background:var(--zhu);color:#fff}
+.tabs a{display:flex;align-items:center;gap:6px;padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;
+  border-radius:100px;color:var(--tx2);text-decoration:none;border:1px solid var(--line)}
+.tabs a:hover{background:var(--line);color:var(--tx);border-color:var(--zhu)}
+.tabs .sep{width:1px;background:var(--line);margin:5px 3px;flex:none}
 .tabs .cnt{margin-left:6px;font-size:11px;background:#ffffff42;border-radius:100px;padding:1px 7px}
 
 .panel{padding:clamp(18px,2.4vw,30px) 0;scroll-margin-top:56px}
@@ -612,6 +616,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <button data-t="destinations">Destinations</button>
     <button data-t="route">Ma route<span class="cnt" id="cnt">0</span></button>
     <button data-t="pratique">Pratique</button>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="vols.html">Prix des vols <span aria-hidden="true">↗</span></a>
   </nav>
 
   <div class="panel" id="p-param">
