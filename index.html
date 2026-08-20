@@ -43,10 +43,6 @@ img{max-width:100%;display:block}
 .tabs button{padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;border-radius:100px;color:var(--tx2)}
 .tabs button:hover{background:var(--line);color:var(--tx)}
 .tabs button[aria-current="true"]{background:var(--zhu);color:#fff}
-.tabs a{display:flex;align-items:center;gap:6px;padding:7px 15px;font-size:14px;font-weight:600;white-space:nowrap;
-  border-radius:100px;color:var(--tx2);text-decoration:none;border:1px solid var(--line)}
-.tabs a:hover{background:var(--line);color:var(--tx);border-color:var(--zhu)}
-.tabs .sep{width:1px;background:var(--line);margin:5px 3px;flex:none}
 .tabs .cnt{margin-left:6px;font-size:11px;background:#ffffff42;border-radius:100px;padding:1px 7px}
 
 .panel{padding:clamp(18px,2.4vw,30px) 0;scroll-margin-top:56px}
@@ -616,8 +612,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <button data-t="destinations">Destinations</button>
     <button data-t="route">Ma route<span class="cnt" id="cnt">0</span></button>
     <button data-t="pratique">Pratique</button>
-    <span class="sep" aria-hidden="true"></span>
-    <a href="vols.html">Prix des vols <span aria-hidden="true">↗</span></a>
+    <button data-t="vols">Prix des vols</button>
   </nav>
 
   <div class="panel" id="p-param">
@@ -696,7 +691,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li>Arriver <b>45 à 60 min avant</b>, <b>90 min</b> à Pékin Sud ou Shanghai Hongqiao.</li>
         <li>La <b>seconde classe</b> suffit. L'avion ne gagne qu'au-delà de 800 km ou 5 h de train.</li>
         <li>Soute des vols intérieurs souvent limitée à <b>20 kg</b>.</li>
-        <li>Pour les vols internationaux : <a href="vols.html">le prix relevé chaque jour</a>.</li></ul></section>
+        <li>Pour les vols internationaux : <a href="#p-vols">le prix relevé chaque jour</a>.</li></ul></section>
       <section><span class="lbl">Sur place</span><h3>Payer, se connecter</h3><ul>
         <li><b>Alipay</b> accepte les cartes étrangères, 3 % au-dessus de 200 yuans. En faire l'outil principal.</li>
         <li>Le <b>QR Alipay ouvre le métro</b> dans plus de 200 villes.</li>
@@ -709,6 +704,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li>Trois choses n'existent qu'à cette période : <b>rizières de Yuanyang en eau</b>, <b>mouettes de Sibérie à Kunming</b>, <b>feuillage du delta</b>.</li>
         <li>Le <b>Yunnan est la meilleure région</b> du pays sur cette fenêtre.</li></ul></section>
     </div>
+  </div>
+
+  <div class="panel" id="p-vols">
+    <div class="bh"><span class="lbl">Vols internationaux</span><h2>Le prix au jour le jour</h2>
+      <p>Un relevé automatique chaque matin, sur les quatre combinaisons qui nous intéressent. Le graphe ne dit pas quoi faire : il dit si le prix monte, descend, ou ne bouge pas.</p></div>
+    <div id="volsbox"></div>
+  </div>
+
+  <div>
     <div class="footrow">
       <p class="credits" id="credits"></p>
       <button class="chibtn" id="chibtn"><span class="lant">🏮</span>Tu penses être prête pour la Chine ?</button>
@@ -761,7 +765,8 @@ var PH={
  yangshuo:[{d:"8/86",f:"1_guilin_yangshuo_2017.jpg",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"8/86",f:"1_guilin_yangshuo_2017.jpg",w:13609,c:"Chensiyuan, CC BY-SA 4.0"},{d:"b/bf",f:"Yangshuo-Landpartie-70-Hausbesuch-Gastgeber-2012-gje.jpg",w:5562,c:"Gerd Eichmann, CC BY-SA 4.0"},{d:"7/7b",f:"Yangshuo-Li-River-2019-Luka-Peternel.jpg",w:5472,c:"Luka Peternel, CC BY-SA 4.0"}],
  yuanyang:[{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"},{d:"2/2b",f:"1_yuanyang_county_rice_terrace_bada_view_2012.jpg",w:4986,c:"chensiyuan, CC BY-SA 4.0"},{d:"d/d6",f:"Subsistent_Farming_Southern_China.jpg",w:3356,c:"JialiangGao www.peace-on-earth.org, CC BY-SA 3.0"},{d:"7/70",f:"Terrace_field_yunnan_china_denoised.jpg",w:2000,c:"Jialiang Gao, www.peace-on-earth.org, CC BY-SA 3.0"}],
  zhangjiajie:[{d:"6/62",f:"1_zhangjiajie_huangshizhai_wulingyuan_panorama_2012.jpg",w:13206,c:"chensiyuan, CC BY-SA 4.0"},{d:"7/77",f:"1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",w:8841,c:"chensiyuan, CC BY-SA 4.0"},{d:"8/8d",f:"Zhangjiajie_from_Tianmen_Mountain_03.jpg",w:5712,c:"Codas, CC BY-SA 4.0"},{d:"6/67",f:"Solar_effect_with_Tianmen_Mountain_01.jpg",w:5712,c:"Codas, CC BY-SA 4.0"},{d:"7/71",f:"Zhangjiajie_from_Tianmen_Mountain_05.jpg",w:5712,c:"Codas, CC BY-SA 4.0"}],
- zhangye:[{d:"7/74",f:"Zhangye_National_Geopark_5.jpg",w:4000,c:"H2v5o68z, CC0"},{d:"4/4b",f:"Flickr_image_29851221553.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"2/22",f:"Flickr_image_30483606125.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"1/17",f:"Striated_rocks_in_Zhangye_National_Geopark.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"}],
+ zhangye:[{d:"7/74",f:"Zhangye_National_Geopark_5.jpg",w:4000,c:"H2v5o68z, CC0"},{d:"4/4b",f:"Flickr_image_29851221553.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"2/22",f:"Flickr_image_30483606125.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"},{d:"1/17",f:"Striated_rocks_in_Zhangye_National_Geopark.jpg",w:6000,c:"Terry Wu, CC BY-SA 2.0"}]
+,
  tengchong:[{d:"5/55",f:"Tengchong_Volcano_Cluster_03.jpg",w:4320,c:"STW932, CC BY-SA 4.0"},{d:"8/85",f:"Tengchong_volcanic_rock_01.jpg",w:4320,c:"STW932, CC BY-SA 4.0"},{d:"5/5b",f:"Tengchong_Volcanic_Geology_Museum.jpg",w:4320,c:"STW932, CC BY-SA 4.0"},{d:"9/90",f:"Tengchong_Volcano_Cluster_01.jpg",w:4320,c:"STW932, CC BY-SA 4.0"},{d:"2/2a",f:"Tengchong_volcanic_rock_04.jpg",w:4320,c:"STW932, CC BY-SA 4.0"}],
  quanzhou:[{d:"8/8e",f:"Luoyang_Bridge%2C_Quanzhou_%2820201001150149%29.jpg",w:7186,c:"N509FZ, CC BY-SA 4.0"},{d:"2/29",f:"A_woman_taking_selfie_on_Luoyang_Bridge%2C_Quanzhou_%2820201001150243%29.jpg",w:5972,c:"N509FZ, CC BY-SA 4.0"},{d:"e/ed",f:"Quanzhou_Qingjing_Si_20120229-03.jpg",w:4752,c:"Zhangzhugang, CC BY-SA 4.0"},{d:"e/e6",f:"Quanzhou_Qingjing_Si_20120229-02.jpg",w:4752,c:"Zhangzhugang, CC BY-SA 4.0"},{d:"8/87",f:"Quanzhou_Luoyang_Qiao_20120302-1.jpg",w:4674,c:"Zhangzhugang, CC BY-SA 4.0"}],
  tulou:[{d:"b/bd",f:"Yongding_Chuxi_2013.10.03_09-14-08.jpg",w:13336,c:"Zhangzhugang, CC BY-SA 3.0"},{d:"1/1f",f:"Tianluokeng_Tulou_cluster_DSC5269_%2816013519850%29.jpg",w:7360,c:"Motohiro Sunouchi, CC BY 2.0"},{d:"0/06",f:"Tianluokeng_Tulou_cluster_DSC5263_%2816200036052%29.jpg",w:7360,c:"Motohiro Sunouchi, CC BY 2.0"},{d:"f/f5",f:"Yongding_Chuxi_2013.10.03_09-12-44.jpg",w:5472,c:"Zhangzhugang, CC BY-SA 3.0"},{d:"d/d8",f:"Yongding_Chuxi_2013.10.03_09-05-10.jpg",w:5472,c:"Zhangzhugang, CC BY-SA 3.0"}],
@@ -2053,4 +2058,7 @@ window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(i
 render();
 })();
 </script>
+
+<script src="vols.js"></script>
+<script>VOLS.mount("volsbox");</script>
 </body></html>
