@@ -1,0 +1,412 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Vols · le prix au jour le jour</title>
+
+<style>
+/* ─────────────────────────────────────────────
+   Même grammaire que routes.html : voile vert-encre,
+   accent cinabre, aucune dépendance.
+   ───────────────────────────────────────────── */
+:root{
+  --deep:#0D2422;
+  --zhu:#E24A3C;        /* 朱 cinabre, l'unique accent */
+  --pap:#F7F5F0;
+  --card:#FFFFFF;
+  --tx:#14201F; --tx2:#63706E; --line:#14201f1a;
+  --onDark:#F1F5F4; --onDark2:#B9C6C4;
+  --up:#C2410C; --down:#15803D;
+  --r:18px; --rs:12px;
+  --ff:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --pap:#0B1817; --card:#132524; --tx:#EDF2F1; --tx2:#8FA09E; --line:#edf2f114;
+         --up:#FB923C; --down:#4ADE80; }
+}
+:root[data-theme="light"]{ --pap:#F7F5F0; --card:#FFFFFF; --tx:#14201F; --tx2:#63706E; --line:#14201f1a;
+                           --up:#C2410C; --down:#15803D; }
+:root[data-theme="dark"]{ --pap:#0B1817; --card:#132524; --tx:#EDF2F1; --tx2:#8FA09E; --line:#edf2f114;
+                          --up:#FB923C; --down:#4ADE80; }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--tx);font-family:var(--ff);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--zhu);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1.06}
+.pg{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3.4vw,40px)}
+.lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--tx2);font-weight:700}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ── en-tête ── */
+.top{background:var(--deep);color:var(--onDark);padding:clamp(22px,3.4vw,40px) 0 clamp(20px,2.8vw,30px)}
+.top .lbl{color:var(--onDark2)}
+.top h1{font-size:clamp(30px,5.4vw,60px);margin-top:8px;letter-spacing:-.045em;text-transform:uppercase;font-weight:900}
+.top .sub{font-size:15px;margin:10px 0 0;max-width:56ch;color:var(--onDark2)}
+.facts{display:flex;gap:clamp(14px,2.2vw,30px);margin-top:clamp(16px,2vw,22px);flex-wrap:wrap;
+  border-top:1px solid #f1f5f42e;padding-top:14px}
+.facts b{display:block;font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1;letter-spacing:-.03em}
+.facts span{display:block;margin-top:6px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--onDark2);font-weight:700}
+.back{display:inline-block;margin-top:16px;font-size:13.5px;color:var(--onDark2);text-decoration:none;border-bottom:1px solid #f1f5f43d;padding-bottom:1px}
+.back:hover{color:var(--onDark)}
+
+.panel{padding:clamp(20px,2.4vw,32px) 0}
+.panel + .panel{border-top:1px solid var(--line)}
+.bh{margin-bottom:clamp(16px,2vw,24px);max-width:64ch}
+.bh h2{font-size:clamp(21px,2.6vw,29px);margin-top:6px;text-transform:uppercase;font-weight:900;letter-spacing:-.03em}
+.bh p{margin:10px 0 0;color:var(--tx2);font-size:15.5px;max-width:60ch}
+
+/* ── la fenêtre de réservation ── */
+.win{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.win.now{border-color:var(--zhu);box-shadow:inset 3px 0 0 var(--zhu)}
+.win h3{font-size:17px;margin-bottom:6px}
+.win p{margin:0;color:var(--tx2);font-size:14.5px}
+.bar{position:relative;height:6px;background:var(--line);border-radius:100px;margin:16px 0 8px}
+.bar .zone{position:absolute;top:0;bottom:0;background:var(--zhu);opacity:.28;border-radius:100px}
+.bar .cur{position:absolute;top:-5px;width:3px;height:16px;background:var(--zhu);border-radius:2px}
+.barlab{display:flex;justify-content:space-between;font-size:10.5px;color:var(--tx2);letter-spacing:.1em}
+
+/* ── graphe ── */
+.chartwrap{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(14px,2vw,22px)}
+#chart{display:block;width:100%;height:clamp(260px,40vh,400px)}
+.gr-grid{stroke:var(--tx);stroke-opacity:.09;stroke-width:1;vector-effect:non-scaling-stroke}
+.gr-ax{fill:var(--tx2);font-size:11px}
+.gr-ln{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.gr-dot{stroke:var(--card);stroke-width:1.6}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.legend button{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--tx2);transition:color .18s,opacity .18s}
+.legend button[aria-pressed="false"]{opacity:.38}
+.legend button:hover{color:var(--tx)}
+.legend i{width:11px;height:11px;border-radius:3px;display:block;flex:none}
+
+/* ── tableau ── */
+.tbl{width:100%;border-collapse:collapse;margin-top:4px;font-size:14.5px}
+.tbl th{text-align:left;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx2);
+  font-weight:700;padding:0 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:13px 12px 13px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl .rt{font-weight:700}
+.tbl .rt small{display:block;font-weight:400;color:var(--tx2);font-size:12.5px;line-height:1.4;margin-top:2px;max-width:34ch}
+.tbl .p{font-weight:700;font-size:16.5px;white-space:nowrap}
+.dl{color:var(--down);font-weight:700;white-space:nowrap}
+.up{color:var(--up);font-weight:700;white-space:nowrap}
+.flat{color:var(--tx2);white-space:nowrap}
+@media (max-width:720px){ .tbl thead{display:none} .tbl td{display:block;padding:4px 0;border:0}
+  .tbl tr{display:block;padding:14px 0;border-bottom:1px solid var(--line)} }
+
+.notes{margin:0;padding-left:19px;color:var(--tx2);font-size:14.5px;line-height:1.62}
+.notes li{margin-bottom:9px}
+.notes b{color:var(--tx)}
+.empty{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,3vw,32px)}
+.empty h3{font-size:19px;margin-bottom:10px}
+.empty ol{margin:14px 0 0;padding-left:20px;color:var(--tx2);font-size:14.5px;line-height:1.62}
+.empty li{margin-bottom:8px}
+.empty code{background:var(--line);padding:2px 6px;border-radius:5px;font-size:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.foot{padding:26px 0 40px;color:var(--tx2);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="pg">
+    <span class="lbl">Vols internationaux</span>
+    <h1>Le prix au jour le jour</h1>
+    <p class="sub">Un relevé automatique chaque matin, sur les quatre combinaisons qui nous intéressent.
+      Le graphe ne dit pas quoi faire : il dit si le prix monte, descend, ou ne bouge pas.</p>
+    <div class="facts">
+      <div><b class="num" id="f-openjaw">—</b><span>Open-jaw, par personne</span></div>
+      <div><b class="num" id="f-deux">—</b><span>Pour deux</span></div>
+      <div><b class="num" id="f-jours">—</b><span>Jours avant départ</span></div>
+      <div><b class="num" id="f-releves">—</b><span>Jours de relevé</span></div>
+    </div>
+    <a class="back" href="routes.html">← Revenir aux itinéraires</a>
+  </div>
+</header>
+
+<main class="pg">
+
+  <section class="panel">
+    <div id="window"></div>
+  </section>
+
+  <section class="panel" id="p-chart">
+    <div class="bh">
+      <span class="lbl">L'évolution</span>
+      <h2>Ce que fait le prix</h2>
+      <p>Cliquez une légende pour masquer une courbe. Les deux allers simples additionnés
+        donnent l'estimation open-jaw ; les aller-retours sont là pour comparer.</p>
+    </div>
+    <div id="chartbox"></div>
+  </section>
+
+  <section class="panel" id="p-tbl">
+    <div class="bh">
+      <span class="lbl">Le détail</span>
+      <h2>Trajet par trajet</h2>
+      <p>La variation se lit depuis le premier relevé, pas depuis hier : c'est la tendance qui compte.</p>
+    </div>
+    <div id="tblbox"></div>
+  </section>
+
+  <section class="panel">
+    <div class="bh">
+      <span class="lbl">À savoir</span>
+      <h2>Ce que ces chiffres ne disent pas</h2>
+    </div>
+    <ul class="notes">
+      <li><b>Ce sont des prix indicatifs, pas des billets.</b> Travelpayouts sert des tarifs mis en cache,
+        trouvés par d'autres voyageurs. Le prix réel au moment d'acheter sera proche, rarement identique.</li>
+      <li><b>L'open-jaw affiché est une somme de deux allers simples.</b> Un vrai billet multi-destinations
+        se vend en général <em>moins</em> cher que ses deux moitiés : lisez la ligne comme un plafond,
+        et comme un indicateur de tendance.</li>
+      <li><b>Le prix ne fait pas tout.</b> Air China inclut deux bagages de 23 kg, Air France un seul.
+        À deux, aller et retour, le second bagage peut effacer un écart de 100 €.</li>
+      <li><b>Le départ est PAR, pas CDG.</b> La recherche couvre Roissy et Orly pour ne rien manquer ;
+        vérifiez l'aéroport avant de valider.</li>
+      <li><b>Une courbe courte ne fait pas une saisonnalité.</b> Elle sert à repérer une baisse
+        ou une flambée dans les semaines qui restent, pas à prédire un plancher.</li>
+    </ul>
+  </section>
+
+  <p class="foot">Relevé automatique par GitHub Actions · source Travelpayouts · dernière mise à jour <span id="maj">—</span></p>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+var COL = { aller:"#E24A3C", retour:"#0F766E", ar_pekin:"#7C3AED", ar_kunming:"#B45309" };
+var ORDER = ["aller","retour","ar_pekin","ar_kunming"];
+var DEPART = new Date(Date.UTC(2026,10,13));
+var MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+
+function el(t,c,x){ var e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e; }
+function mk(t,a,x){ var e=document.createElementNS("http://www.w3.org/2000/svg",t);
+  for(var k in a) e.setAttribute(k,a[k]); if(x!=null)e.textContent=x; return e; }
+function eur(n){ return Math.round(n).toLocaleString("fr-FR")+" €"; }
+function parse(d){ var p=d.split("-"); return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])); }
+function fmt(d){ var x=parse(d); return x.getUTCDate()+" "+MOIS[x.getUTCMonth()]; }
+function days(a,b){ return Math.round((b-a)/86400000); }
+
+var hidden = {};
+var CUR = null;          /* dernières données tracées, pour le redimensionnement */
+
+fetch("prices.json?v="+Date.now())
+  .then(function(r){ if(!r.ok) throw new Error("prices.json introuvable"); return r.json(); })
+  .then(render)
+  .catch(function(){ render(null); });
+
+function render(db){
+  var series = db && db.series ? db.series : [];
+  if(!series.length){ empty(); return; }
+
+  var routes = db.routes || {};
+  var byRoute = {};
+  ORDER.forEach(function(id){ byRoute[id] = series.filter(function(x){ return x.r===id; }); });
+
+  var dates = [];
+  series.forEach(function(x){ if(dates.indexOf(x.d)<0) dates.push(x.d); });
+  dates.sort();
+
+  /* ── les chiffres d'en-tête ── */
+  var last = {};
+  ORDER.forEach(function(id){ var s=byRoute[id]; if(s.length) last[id]=s[s.length-1].p; });
+  var oj = (last.aller!=null && last.retour!=null) ? last.aller+last.retour : null;
+
+  document.getElementById("f-openjaw").textContent = oj!=null ? eur(oj) : "—";
+  document.getElementById("f-deux").textContent    = oj!=null ? eur(oj*2) : "—";
+  document.getElementById("f-jours").textContent   = Math.max(0, days(new Date(), DEPART));
+  document.getElementById("f-releves").textContent = dates.length;
+  document.getElementById("maj").textContent = db.updated ? fmt(db.updated) : "—";
+
+  windowBox();
+  chart(byRoute, routes, dates);
+  table(byRoute, routes);
+}
+
+/* ── la fenêtre de réservation, 60 à 110 jours avant ── */
+function windowBox(){
+  var d = days(new Date(), DEPART);
+  var inside = d<=110 && d>=60;
+  var box = el("div","win"+(inside?" now":""));
+  box.appendChild(el("span","lbl","Fenêtre de réservation"));
+  box.appendChild(el("h3", null,
+    inside ? "Tu es dans la zone optimale" :
+    d>110  ? "Encore trop tôt" :
+    d>0    ? "La zone optimale est passée" : "Le départ est passé"));
+  box.appendChild(el("p", null,
+    inside ? "Le site vise 60 à 110 jours avant le départ. Il en reste "+d+" : c'est maintenant que ça se joue." :
+    d>110  ? "La zone visée commence dans "+(d-110)+" jours. Rien ne presse, mais le relevé tourne déjà." :
+    d>0    ? "Il reste "+d+" jours. Les prix ont tendance à monter dans les dernières semaines : ne pas trop attendre." :
+             "Bon voyage."));
+
+  /* échelle 180 → 0 jours, la zone 110-60 en cinabre */
+  var bar = el("div","bar");
+  var z = el("div","zone");
+  z.style.left  = ((180-110)/180*100)+"%";
+  z.style.width = ((110-60)/180*100)+"%";
+  bar.appendChild(z);
+  if(d>=0 && d<=180){ var c=el("div","cur"); c.style.left=((180-d)/180*100)+"%"; bar.appendChild(c); }
+  box.appendChild(bar);
+  var lab = el("div","barlab");
+  lab.appendChild(el("span",null,"180 j"));
+  lab.appendChild(el("span",null,"110 → 60 j"));
+  lab.appendChild(el("span",null,"départ"));
+  box.appendChild(lab);
+  document.getElementById("window").appendChild(box);
+}
+
+/* ── le graphe ── */
+function chart(byRoute, routes, dates){
+  var box = document.getElementById("chartbox");
+  box.innerHTML = "";
+  var wrap = el("div","chartwrap");
+  var svg = mk("svg",{id:"chart",preserveAspectRatio:"none"});
+  wrap.appendChild(svg);
+
+  var leg = el("div","legend");
+  ORDER.forEach(function(id){
+    if(!byRoute[id].length) return;
+    var b = el("button"); b.setAttribute("aria-pressed", hidden[id]?"false":"true");
+    var i = el("i"); i.style.background = COL[id];
+    b.appendChild(i);
+    b.appendChild(el("span",null,(routes[id]&&routes[id].label)||id));
+    b.onclick = function(){ hidden[id] = !hidden[id]; chart(byRoute,routes,dates); };
+    leg.appendChild(b);
+  });
+  wrap.appendChild(leg);
+  box.appendChild(wrap);
+  CUR = [byRoute, dates];
+  draw(svg, byRoute, dates);
+}
+
+function draw(svg, byRoute, dates){
+  var W = svg.clientWidth || 900, H = svg.clientHeight || 320;
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  var padL=54, padR=14, padT=14, padB=30;
+
+  var vis = ORDER.filter(function(id){ return byRoute[id].length && !hidden[id]; });
+  var all = [];
+  vis.forEach(function(id){ byRoute[id].forEach(function(x){ all.push(x.p); }); });
+  if(!all.length){ svg.appendChild(mk("text",{x:W/2,y:H/2,"text-anchor":"middle","class":"gr-ax"},
+      "Toutes les courbes sont masquées.")); return; }
+
+  var lo = Math.min.apply(null,all), hi = Math.max.apply(null,all);
+  var span = hi-lo || 1;
+  lo -= span*0.12; hi += span*0.12;
+
+  /* une seule date : on centre, sinon on étale */
+  function X(d){ var i=dates.indexOf(d);
+    return dates.length<2 ? (padL+(W-padL-padR)/2)
+                          : padL + i/(dates.length-1)*(W-padL-padR); }
+  function Y(p){ return padT + (1-(p-lo)/(hi-lo))*(H-padT-padB); }
+
+  /* grille + axe des prix */
+  for(var k=0;k<=4;k++){
+    var v = lo + (hi-lo)*k/4, y = Y(v);
+    svg.appendChild(mk("line",{x1:padL,y1:y,x2:W-padR,y2:y,"class":"gr-grid"}));
+    svg.appendChild(mk("text",{x:padL-9,y:y+4,"text-anchor":"end","class":"gr-ax"}, Math.round(v)+" €"));
+  }
+
+  /* axe des dates : premier, milieu, dernier — au-delà ça se chevauche */
+  var marks = dates.length<=2 ? dates.slice()
+            : [dates[0], dates[Math.floor((dates.length-1)/2)], dates[dates.length-1]];
+  /* Le premier et le dernier s'ancrent vers l'intérieur, sinon ils débordent du cadre. */
+  marks.forEach(function(d,i){
+    var a = marks.length>1 && i===0 ? "start"
+          : marks.length>1 && i===marks.length-1 ? "end" : "middle";
+    svg.appendChild(mk("text",{x:X(d),y:H-9,"text-anchor":a,"class":"gr-ax"}, fmt(d)));
+  });
+
+  vis.forEach(function(id){
+    var s = byRoute[id];
+    var pts = s.map(function(x){ return X(x.d).toFixed(1)+","+Y(x.p).toFixed(1); });
+    if(s.length>1){
+      svg.appendChild(mk("path",{d:"M"+pts.join("L"),"class":"gr-ln",stroke:COL[id]}));
+    }
+    s.forEach(function(x){
+      var c = mk("circle",{cx:X(x.d),cy:Y(x.p),r:s.length>40?2.4:3.6,fill:COL[id],"class":"gr-dot"});
+      c.appendChild(mk("title",null,fmt(x.d)+" — "+eur(x.p)+(x.a?" ("+x.a+")":"")));
+      svg.appendChild(c);
+    });
+  });
+}
+
+/* ── le tableau ── */
+function table(byRoute, routes){
+  var t = el("table","tbl");
+  var thead = el("thead"), tr = el("tr");
+  ["Trajet","Aujourd'hui","Depuis le 1ᵉʳ relevé","Le plus bas vu","Le plus haut vu"].forEach(function(h){
+    tr.appendChild(el("th",null,h));
+  });
+  thead.appendChild(tr); t.appendChild(thead);
+
+  var tb = el("tbody");
+  ORDER.forEach(function(id){
+    var s = byRoute[id]; if(!s.length) return;
+    var meta = routes[id] || {};
+    var cur = s[s.length-1].p, first = s[0].p;
+    var ps = s.map(function(x){ return x.p; });
+    var mn = Math.min.apply(null,ps), mx = Math.max.apply(null,ps);
+    var diff = cur-first, pct = first? Math.round(diff/first*100) : 0;
+
+    var r = el("tr");
+    var c0 = el("td","rt"); c0.appendChild(document.createTextNode(meta.label||id));
+    if(meta.note) c0.appendChild(el("small",null,meta.note));
+    r.appendChild(c0);
+
+    var c1 = el("td","p num", eur(cur));
+    c1.style.color = COL[id];
+    r.appendChild(c1);
+
+    var c2 = el("td");
+    if(s.length<2)    c2.appendChild(el("span","flat","premier relevé"));
+    else if(diff<0)   c2.appendChild(el("span","dl","↓ "+eur(-diff)+"  ("+pct+" %)"));
+    else if(diff>0)   c2.appendChild(el("span","up","↑ "+eur(diff)+"  (+"+pct+" %)"));
+    else              c2.appendChild(el("span","flat","stable"));
+    r.appendChild(c2);
+
+    r.appendChild(el("td","num", eur(mn)));
+    r.appendChild(el("td","num", eur(mx)));
+    tb.appendChild(r);
+  });
+  t.appendChild(tb);
+  document.getElementById("tblbox").appendChild(t);
+}
+
+/* ── avant le premier relevé ── */
+function empty(){
+  document.getElementById("f-jours").textContent = Math.max(0, days(new Date(), DEPART));
+  document.getElementById("f-releves").textContent = "0";
+  ["p-chart","p-tbl"].forEach(function(id){ document.getElementById(id).style.display="none"; });
+
+  var b = el("div","empty");
+  b.appendChild(el("span","lbl","Pas encore de données"));
+  b.appendChild(el("h3","","Le relevé n'a pas encore tourné"));
+  b.appendChild(el("p",null,"Trois choses à faire une seule fois, et la courbe se remplit toute seule ensuite."));
+  var ol = el("ol");
+  [ "Créer un compte sur travelpayouts.com et copier le jeton d'API.",
+    "Dans le dépôt GitHub : Settings → Secrets and variables → Actions → New repository secret, "+
+      "nommé TRAVELPAYOUTS_TOKEN.",
+    "Onglet Actions → « Relevé des prix de vols » → Run workflow. Ensuite c'est quotidien, à 6 h 10 UTC."
+  ].forEach(function(x){ ol.appendChild(el("li",null,x)); });
+  b.appendChild(ol);
+  document.getElementById("window").appendChild(b);
+  windowBox();
+}
+
+var to;
+window.addEventListener("resize", function(){
+  clearTimeout(to);
+  to = setTimeout(function(){
+    var svg = document.getElementById("chart");
+    if(svg && CUR){ svg.innerHTML=""; draw(svg, CUR[0], CUR[1]); }
+  }, 160);
+});
+})();
+</script>
+</body>
+</html>

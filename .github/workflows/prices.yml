@@ -1,0 +1,49 @@
+name: Relevé des prix de vols
+
+on:
+  schedule:
+    # 06h10 UTC chaque jour. Une minute décalée : les runners sont
+    # moins chargés qu'à l'heure ronde, le job démarre plus vite.
+    - cron: "10 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prices
+  cancel-in-progress: false
+
+jobs:
+  releve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Relever les prix
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: node scripts/fetch-prices.js
+
+      - name: Commit si le fichier a bougé
+        run: |
+          if git diff --quiet -- prices.json; then
+            echo "Aucun changement, rien à committer."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prices.json
+          git commit -m "Prix des vols au $(date -u +%d/%m/%Y)"
+          # Le cron et un push manuel peuvent se croiser : on rejoue sur la
+          # dernière version plutôt que d'échouer.
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          done
+          echo "Push impossible après trois tentatives." >&2
+          exit 1
