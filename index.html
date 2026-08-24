@@ -537,7 +537,10 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   background:var(--pap);border:1px solid transparent;transition:background .14s,border-color .14s}
 .calpitem:hover{background:var(--line);border-color:var(--zhu)}
 .calpitem:active{cursor:grabbing}
-.calpitem.dedans{opacity:.5;box-shadow:inset 3px 0 0 var(--c,var(--zhu))}
+.calpitem.dedans{opacity:.62;box-shadow:inset 3px 0 0 var(--c,var(--zhu))}
+.calpitem[data-nb]{opacity:1}
+.calpitem[data-nb]::after{content:"×" attr(data-nb);margin-left:auto;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--c,var(--zhu));border-radius:100px;padding:1px 6px;flex:none}
 .calpitem img{width:34px;height:26px;object-fit:cover;border-radius:5px;flex:none;background:var(--deep2)}
 .calpitem .pn{font-size:13px;font-weight:700;line-height:1.1}
 .calpitem .pm{font-size:10.5px;color:var(--tx2)}
@@ -591,6 +594,24 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 /* jour de continuation d'un séjour */
 .calsuite{display:flex;align-items:center;gap:8px;padding-left:4px;color:var(--tx2);font-size:12px}
 .calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--c,var(--zhu));opacity:.55;flex:none}
+
+/* trajets entre étapes */
+.caltrajet{margin-top:2px}
+.caltcorps{display:flex;align-items:center;gap:9px;flex-wrap:wrap;width:100%;text-align:left;
+  padding:5px 9px;border-radius:8px;border:1px dashed var(--line);background:var(--pap);
+  transition:border-color .16s,background .16s}
+.caltcorps:hover{border-color:var(--zhu);background:var(--card)}
+.caltrajet.vide .caltcorps{opacity:.7}
+.caltm{font-size:12px;font-weight:800}
+.caltd{font-size:12px;font-weight:700;color:var(--zhu)}
+.caltp{font-size:12px;font-weight:800;background:var(--zhu);color:#fff;border-radius:100px;padding:1px 8px}
+.caltn{font-size:11.5px;color:var(--tx2)}
+.calts{font-size:10.5px;color:var(--tx2);opacity:.75;font-style:italic}
+.caltform{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;padding:8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+.caltin{padding:6px 9px;border:1px solid var(--line);border-radius:7px;font-family:inherit;font-size:12.5px;
+  background:var(--pap);color:var(--tx);min-width:120px;flex:1}
+.caltin:focus{outline:2px solid var(--zhu);outline-offset:-1px}
+.caltform .btn{flex:none;padding:6px 13px;font-size:12.5px}
 
 /* jours particuliers */
 .calvol{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--tx2)}
@@ -899,6 +920,27 @@ function img(id,i,want){
 }
 
 /* ══ destinations ══ */
+/* ── Une ville peut figurer plusieurs fois dans la route ──
+   Chaque séjour porte une clé propre : "shanghai", puis "shanghai#2".
+   Le Proxy fait que D["shanghai#2"] et PH["shanghai#2"] renvoient la fiche
+   et les photos de Shanghai, donc rien d'autre dans le code n'a à le savoir. */
+function bid(k){ var s = String(k), i = s.indexOf("#"); return i < 0 ? s : s.slice(0, i); }
+function dansRoute(id){
+  for(var i = 0; i < sel.length; i++) if(bid(sel[i]) === id) return true;
+  return false;
+}
+function nouvelleCle(id){
+  if(!dansRoute(id)) return id;
+  var n = 2;
+  while(sel.indexOf(id + "#" + n) >= 0) n++;
+  return id + "#" + n;
+}
+if(typeof Proxy === "function"){
+  var resoud = { get: function(t, k){ return t[bid(k)]; }, has: function(t, k){ return bid(k) in t; } };
+  D  = new Proxy(D,  resoud);
+  PH = new Proxy(PH, resoud);
+}
+
 var REG=["Nord","Delta","Centre","Sichuan","Yunnan","Karst","Sud","Ouest"];
 var REGD={Nord:"Pékin et la Chine du Nord",Delta:"Shanghai et le bas Yangtsé",Centre:"Hunan, les pitons",
  Sichuan:"le bassin du Sichuan et Chongqing",Yunnan:"le plateau du Sud-Ouest",Karst:"Guangxi et Guizhou",
@@ -1998,6 +2040,123 @@ function drawPartage(){
   b.appendChild(etat);
 }
 
+/* ══ Trajets entre étapes ══
+   Une ligne entre deux séjours : mode, durée, prix, note. Modifiable.
+   Les valeurs par défaut ne sont posées que si elles sont sourcées ;
+   sinon la ligne dit « à renseigner » plutôt que d'inventer un horaire. */
+
+var MODES = { train:"🚄 Train", vol:"✈️ Vol", route:"🚗 Route", bus:"🚌 Bus", bateau:"⛴️ Bateau" };
+
+/* durées tenues du corpus ou vérifiées ; tout le reste reste vide volontairement */
+var TRAJETS_CONNUS = {
+  "shanghai>pekin":     { m:"train", d:"4 h 18",  s:"corpus, décision D9" },
+  "pekin>shanghai":     { m:"train", d:"4 h 18",  s:"corpus, décision D9" },
+  "chongqing>chengdu":  { m:"train", d:"1 h 30",  s:"corpus" },
+  "chengdu>chongqing":  { m:"train", d:"1 h 30",  s:"corpus" },
+  "lijiang>shangrila":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
+  "shangrila>lijiang":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
+  "dali>kunming":       { m:"train", d:"2 h",     s:"corpus" },
+  "kunming>dali":       { m:"train", d:"2 h",     s:"corpus" },
+  "kunming>shanghai":   { m:"vol",   d:"2 h 55",  s:"sans escale, vérifié" },
+  "shanghai>kunming":   { m:"vol",   d:"2 h 55",  s:"sans escale, vérifié" },
+  "dali>shaxi":         { m:"route", d:"2 h",     s:"corpus" },
+  "shaxi>dali":         { m:"route", d:"2 h",     s:"corpus" },
+  "lijiang>shaxi":      { m:"route", d:"2 h",     s:"corpus" },
+  "shaxi>lijiang":      { m:"route", d:"2 h",     s:"corpus" },
+  "kunming>yuanyang":   { m:"route", d:"4 h 30",  s:"corpus" },
+  "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" }
+};
+
+function cleTrajet(a, b){ return bid(a) + ">" + bid(b); }
+
+function trajetDe(a, b){
+  var k = cleTrajet(a, b);
+  var perso = (CAL.trajets && CAL.trajets[k]) || null;
+  if(perso) return perso;
+  var c = TRAJETS_CONNUS[k];
+  if(c) return { m:c.m, d:c.d, p:"", n:"", s:c.s };
+  return null;
+}
+
+function poserTrajet(k, v){
+  CAL.trajets = CAL.trajets || {};
+  if(!v || (!v.m && !v.d && !v.p && !v.n)) delete CAL.trajets[k];
+  else CAL.trajets[k] = v;
+  calSave();
+}
+
+function drawTrajet(a, b){
+  var k = cleTrajet(a, b);
+  var t = trajetDe(a, b);
+  var ligne = el("div", "caltrajet" + (t ? "" : " vide"));
+
+  var corps = el("button", "caltcorps");
+  corps.title = "Modifier ce trajet";
+  if(t){
+    corps.appendChild(el("span", "caltm", MODES[t.m] || "—"));
+    if(t.d) corps.appendChild(el("span", "caltd", t.d));
+    if(t.p) corps.appendChild(el("span", "caltp", t.p));
+    if(t.n) corps.appendChild(el("span", "caltn", t.n));
+    if(t.s && !t.p && !t.n) corps.appendChild(el("span", "calts", t.s));
+  } else {
+    corps.appendChild(el("span", "caltm", "Trajet à renseigner"));
+    corps.appendChild(el("span", "calts", D[a].fr + " → " + D[b].fr));
+  }
+  corps.addEventListener("click", function(){ editerTrajet(ligne, k, a, b); });
+  ligne.appendChild(corps);
+  return ligne;
+}
+
+function editerTrajet(ligne, k, a, b){
+  if(ligne.querySelector(".caltform")) return;
+  var t = trajetDe(a, b) || { m:"train", d:"", p:"", n:"" };
+  var f = el("div", "caltform");
+
+  var sel_ = document.createElement("select");
+  sel_.className = "caltin";
+  Object.keys(MODES).forEach(function(m){
+    var o = document.createElement("option");
+    o.value = m; o.textContent = MODES[m];
+    if(m === t.m) o.selected = true;
+    sel_.appendChild(o);
+  });
+
+  function champ(ph, val){
+    var i = document.createElement("input");
+    i.className = "caltin"; i.type = "text"; i.placeholder = ph; i.value = val || "";
+    return i;
+  }
+  var iD = champ("Durée, ex. 4 h 18", t.d);
+  var iP = champ("Prix à deux, ex. 130 €", t.p);
+  var iN = champ("Note, ex. gare Sud, réserver 14 j avant", t.n);
+
+  var ok = el("button", "btn", "Enregistrer");
+  ok.addEventListener("click", function(){
+    poserTrajet(k, { m:sel_.value, d:iD.value.trim(), p:iP.value.trim(), n:iN.value.trim() });
+    drawCal();
+  });
+  var raz = el("button", "btn ghost", "Vider");
+  raz.addEventListener("click", function(){ poserTrajet(k, null); drawCal(); });
+
+  f.appendChild(sel_); f.appendChild(iD); f.appendChild(iP); f.appendChild(iN);
+  f.appendChild(ok); f.appendChild(raz);
+  ligne.appendChild(f);
+  iD.focus();
+}
+
+/* total des trajets renseignés, pour le bandeau */
+function totalTrajets(){
+  var s = 0, n = 0;
+  for(var i = 0; i < sel.length - 1; i++){
+    var t = trajetDe(sel[i], sel[i + 1]);
+    if(t && t.p){
+      var v = parseFloat(String(t.p).replace(",", ".").replace(/[^\d.]/g, ""));
+      if(!isNaN(v)){ s += v; n++; }
+    }
+  }
+  return { somme:s, nb:n, total:Math.max(0, sel.length - 1) };
+}
+
 function drawCal(){
   var grille = document.getElementById("calgrid");
   if(!grille) return;
@@ -2041,6 +2200,10 @@ function drawCal(){
       suite.appendChild(el("div", "calrail"));
       suite.appendChild(el("span", null, D[c.id].fr + " · nuit " + c.nuit + " sur " + c.total));
       slot.appendChild(suite);
+    }
+    /* dernière nuit d'un séjour suivi d'un autre : on montre le trajet */
+    if(c && c.nuit === c.total && plan[i + 1] && plan[i + 1].id !== c.id){
+      slot.appendChild(drawTrajet(c.id, plan[i + 1].id));
     } else if(i < lignes - 1 && i > 0){
       slot.appendChild(el("div", "calvide", "Rien de posé. Glissez une destination ici."));
     }
@@ -2079,6 +2242,13 @@ function drawCal(){
       + (total > target ? " · <b>" + (total - target) + " de trop</b>"
          : total < target ? " · " + (target - total) + " encore libres" : " · pile poil");
     bar.appendChild(s);
+    var tj = totalTrajets();
+    if(tj.total){
+      var st = el("div", "calstat");
+      st.innerHTML = "Trajets : <b>" + tj.nb + "</b> chiffrés sur " + tj.total
+        + (tj.somme ? " · <b>" + Math.round(tj.somme) + " €</b> à deux" : "");
+      bar.appendChild(st);
+    }
     if(sel.length){
       var vider = el("button", "btn ghost", "Vider le calendrier");
       vider.addEventListener("click", function(){
@@ -2151,9 +2321,11 @@ function calDepose(charge, jour){
     if(de < pos) pos--;
     sel.splice(pos, 0, id);
   } else {
-    if(sel.indexOf(charge) >= 0 || !D[charge]) return;
-    nights[charge] = Math.min(D[charge].n, paceN() + 1);
-    sel.splice(pos, 0, charge);
+    if(!D[charge]) return;
+    var k = nouvelleCle(charge);          /* 2e séjour dans la même ville : clé distincte */
+    nights[k] = Math.min(D[k].n, paceN() + 1);
+    sel.splice(pos, 0, k);
+    charge = k;
   }
   render();
   /* un déplacement manuel prime : on ne réordonne pas derrière l'utilisateur.
@@ -2224,9 +2396,11 @@ function drawPalette(){
   Object.keys(D).forEach(function(id){
     var d = D[id];
     if(q && d.fr.toLowerCase().indexOf(q) < 0 && d.reg.toLowerCase().indexOf(q) < 0) return;
-    var pos = sel.indexOf(id);
+    var pos = sel.findIndex ? sel.findIndex(function(x){ return bid(x) === id; }) : sel.indexOf(id);
+    var nb  = sel.filter(function(x){ return bid(x) === id; }).length;
     var it = el("div", "calpitem" + (pos >= 0 ? " dedans" : ""));
     if(pos >= 0) it.style.setProperty("--c", teinte(pos));
+    if(nb > 1) it.dataset.nb = nb;
     it.draggable = true;
     var im = img(id, 0, 330);
     if(im){ var g = document.createElement("img"); g.src = im.u; g.alt = ""; g.loading = "lazy"; it.appendChild(g); }
@@ -2238,7 +2412,7 @@ function drawPalette(){
       e.dataTransfer.setData("text/plain", id);
       e.dataTransfer.effectAllowed = "copy";
     });
-    it.addEventListener("dblclick", function(){ if(sel.indexOf(id) < 0) toggle(id); });
+    it.addEventListener("dblclick", function(){ calDepose(id, 1e9); });   /* ajoute à la suite, même en double */
     box.appendChild(it);
   });
 }
