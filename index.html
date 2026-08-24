@@ -543,6 +543,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calpitem .pm{font-size:10.5px;color:var(--tx2)}
 
 /* l'agenda */
+.calregle{font-size:12.5px;color:var(--tx2);background:var(--pap);border-left:2px solid var(--zhu);padding:8px 11px;border-radius:0 8px 8px 0;margin-top:8px}
 .calbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .calstat{font-size:13px;color:var(--tx2)}
 .calstat b{color:var(--tx)}
@@ -565,6 +566,10 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   background:var(--zhu);color:#fff;box-shadow:0 2px 8px #14201f1f}
 .calbloc:active{cursor:grabbing}
 .calbloc.porte{opacity:.4}
+.calbloc.atterri{animation:calPose 1.4s cubic-bezier(.2,.7,.3,1)}
+@keyframes calPose{0%{box-shadow:0 0 0 0 #3C638200}
+  18%{box-shadow:0 0 0 5px #3C638259;transform:scale(1.015)}
+  100%{box-shadow:0 2px 8px #14201f1f;transform:none}}
 .calbloc img{width:38px;height:30px;object-fit:cover;border-radius:6px;flex:none}
 .calbloc .bn{font-size:14px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
 .calbloc .bm{font-size:10.5px;opacity:.85}
@@ -762,7 +767,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
   <div class="panel" id="p-calendrier">
     <div class="bh"><span class="lbl">Jour par jour</span><h2>Le calendrier</h2>
-      <p>Glissez une destination sur un jour. Tirez un séjour pour le déplacer, les boutons − et + changent le nombre de nuits. Tout se répercute dans « Ma route ».</p></div>
+      <p>Glissez une destination sur un jour. Tirez un séjour pour le déplacer, les boutons − et + changent le nombre de nuits. Tout se répercute dans « Ma route ».</p>
+      <p class="calregle"><b>Les séjours s'enchaînent sans trou</b>, depuis le 13 novembre : on dort quelque part chaque nuit. Déposer sur un jour vide ajoute donc à la suite du dernier séjour, pas à la date visée.</p></div>
     <div id="calbar" class="calbar"></div>
     <div id="calpartage" class="calbar"></div>
     <input id="calurl" class="calsearch" hidden readonly aria-label="Lien du plan">
@@ -2111,11 +2117,17 @@ function calBloc(c){
   return b;
 }
 
-/* dépose : on convertit un n° de jour en position dans la route */
+/* dépose : on convertit un n° de jour en position dans la route.
+   Les séjours sont tassés depuis le premier jour, sans trou : déposer sur un jour
+   déjà occupé insère avant ce séjour, sauf si on vise sa seconde moitié, auquel cas
+   on insère après. Déposer au-delà du dernier jour occupé ajoute à la suite.        */
 function calDepose(charge, jour){
   if(!charge) return;
   var plan = calPlan();
-  var pos  = plan[jour] ? plan[jour].etape : sel.length;
+  var c    = plan[jour];
+  var pos;
+  if(!c){ pos = sel.length; }
+  else { pos = c.etape + (c.nuit > c.total / 2 ? 1 : 0); }
 
   if(charge.indexOf("deplace:") === 0){
     var id = charge.slice(8);
@@ -2130,7 +2142,16 @@ function calDepose(charge, jour){
     sel.splice(pos, 0, charge);
   }
   render();
-  /* un déplacement manuel prime : on ne réordonne pas derrière l'utilisateur */
+  /* un déplacement manuel prime : on ne réordonne pas derrière l'utilisateur.
+     En revanche on montre où le bloc a atterri, sinon on le cherche.              */
+  var vise = charge.indexOf("deplace:") === 0 ? charge.slice(8) : charge;
+  setTimeout(function(){
+    var b = document.querySelector('.calbloc[data-id="' + vise + '"]');
+    if(!b) return;
+    b.scrollIntoView({behavior:"smooth", block:"center"});
+    b.classList.add("atterri");
+    setTimeout(function(){ b.classList.remove("atterri"); }, 1400);
+  }, 30);
 }
 
 function calNote(cle){
