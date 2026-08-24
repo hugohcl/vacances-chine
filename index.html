@@ -620,8 +620,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
       <p>Les nuits sont un plafond, pas un réglage : rien ne se redistribue, on vous prévient si la route dépasse.</p></div>
     <div class="params">
       <div class="par"><span class="lbl">Plafond de nuits</span>
-        <div><span class="big" id="nn">24</span><span class="u">nuits visées</span></div>
-        <input type="range" id="dial" min="10" max="30" value="24" aria-label="Nombre de nuits">
+        <div><span class="big" id="nn">25</span><span class="u">nuits visées</span></div>
+        <input type="range" id="dial" min="10" max="30" value="25" aria-label="Nombre de nuits">
         <small id="nnote"></small></div>
       <div class="par"><span class="lbl">Arrivée en Chine</span>
         <select id="ain"></select>
@@ -681,7 +681,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <div class="prat">
       <section><span class="lbl">Entrée</span><h3>Aucun visa</h3><ul>
         <li>Exemption de <b>30 jours</b> pour les passeports ordinaires français, <b>jusqu'au 31 décembre 2026</b>.</li>
-        <li>Le compteur démarre à minuit le lendemain de l'entrée. Entrée le 14 novembre, <b>sortie au plus tard le 14 décembre</b>.</li>
+        <li>Le compteur démarre à minuit le lendemain de l'entrée. Entrée le 14 novembre, <b>sortie au plus tard le 14 décembre</b>. Pour un retour le 8 ou 9 décembre, il reste 5 à 6 jours de marge.</li>
         <li>Passeport <b>ordinaire</b> valide au-delà de six mois après le retour. À vérifier en priorité.</li>
         <li><b>Carte d'arrivée numérique</b> obligatoire, à remplir dans les 72 h. C'est gratuit.</li></ul></section>
       <section><span class="lbl">Se déplacer</span><h3>Trains et vols</h3><ul>
@@ -1111,8 +1111,10 @@ function miniMap(id){
 }
 
 /* ══ état ══ */
-var sel=[], nights={}, target=24, pace="med", filt="Nord", vb=null;
+var sel=[], nights={}, target=25, pace="med", filt="Nord", vb=null;
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+/* Départ CDG le 13 novembre, arrivée en Chine le 14 au matin.
+   Le compteur des 30 nuits démarre à minuit le lendemain de l'entrée. */
 var START=new Date(Date.UTC(2026,10,14)),VISA=new Date(Date.UTC(2026,11,14));
 function addD(d,n){var x=new Date(d.getTime());x.setUTCDate(x.getUTCDate()+n);return x;}
 function fmt(d){return d.getUTCDate()+" "+MOIS[d.getUTCMonth()];}
@@ -1728,7 +1730,7 @@ function drawLeaflet(){
 function render(){
   document.getElementById("cnt").textContent=sel.length;
   document.getElementById("nn").textContent=target;
-  document.getElementById("nnote").textContent="Arrivée le 14 novembre, retour le "+fmt(addD(START,target))+". Le visa autorise 30 nuits, soit une sortie le 14 décembre au plus tard.";
+  document.getElementById("nnote").textContent="Départ de Paris le 13 novembre, arrivée en Chine le 14. Retour le "+fmt(addD(START,target))+". Le visa autorise 30 nuits, soit une sortie le 14 décembre au plus tard.";
   document.getElementById("pnote").textContent="Change les nuits attribuées quand vous ajoutez une destination. Vous pouvez toujours ajuster étape par étape.";
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
