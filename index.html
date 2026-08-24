@@ -935,11 +935,6 @@ function nouvelleCle(id){
   while(sel.indexOf(id + "#" + n) >= 0) n++;
   return id + "#" + n;
 }
-if(typeof Proxy === "function"){
-  var resoud = { get: function(t, k){ return t[bid(k)]; }, has: function(t, k){ return bid(k) in t; } };
-  D  = new Proxy(D,  resoud);
-  PH = new Proxy(PH, resoud);
-}
 
 var REG=["Nord","Delta","Centre","Sichuan","Yunnan","Karst","Sud","Ouest"];
 var REGD={Nord:"Pékin et la Chine du Nord",Delta:"Shanghai et le bas Yangtsé",Centre:"Hunan, les pitons",
@@ -1177,6 +1172,14 @@ var D={
    jour  : on dort dans la base et on visite l'autre dans la journée, sans chambre
    route : l'une est sur le chemin entre deux autres, presque aucun transport en plus
    paire : deux villes voisines qu'on enchaîne naturellement                        */
+/* D et PH sont maintenant remplis : on peut poser le résolveur de clés.
+   Il doit venir APRÈS leur définition, sinon la cible du Proxy est undefined. */
+if(typeof Proxy === "function"){
+  var resoud = { get: function(t, k){ return t[bid(k)]; }, has: function(t, k){ return bid(k) in t; } };
+  D  = new Proxy(D,  resoud);
+  PH = new Proxy(PH, resoud);
+}
+
 var LINKS=[
  {b:"chengdu",x:"leshan",t:"jour",d:"1 h de train",p:"Le Grand Bouddha se fait très bien dans la journée. Inutile de dormir à Leshan."},
  {b:"chengdu",x:"emeishan",t:"jour",d:"1 h 30 de train",p:"Faisable à la journée, mais une nuit au sommet pour le lever du jour vaut nettement mieux."},
