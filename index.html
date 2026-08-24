@@ -519,6 +519,89 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   border:1px solid #E8C36A66;cursor:pointer;transition:background .16s}
 .chix:hover{background:#E8C36A;color:#6E0F0D}
 
+/* ══ Calendrier : l'agenda du voyage, source unique avec « Ma route » ══ */
+.calwrap{display:grid;grid-template-columns:250px 1fr;gap:20px;align-items:start}
+@media (max-width:900px){.calwrap{grid-template-columns:1fr}}
+
+/* la palette qu'on fait glisser */
+.calpal{position:sticky;top:calc(var(--hmini) + var(--tabsh) + 12px);
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;
+  max-height:calc(100vh - var(--hmini) - var(--tabsh) - 40px);display:flex;flex-direction:column}
+.calpal h4{margin:0 0 3px;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx2)}
+.calpal .hint{font-size:11.5px;color:var(--tx2);line-height:1.4;margin-bottom:9px}
+.calsearch{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+  font-family:inherit;font-size:13px;background:var(--pap);color:var(--tx);margin-bottom:8px}
+.calsearch:focus{outline:2px solid var(--zhu);outline-offset:-1px}
+.calplist{overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-right:3px}
+.calpitem{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:grab;
+  background:var(--pap);border:1px solid transparent;transition:background .14s,border-color .14s}
+.calpitem:hover{background:var(--line);border-color:var(--zhu)}
+.calpitem:active{cursor:grabbing}
+.calpitem.dedans{opacity:.42}
+.calpitem img{width:34px;height:26px;object-fit:cover;border-radius:5px;flex:none;background:var(--deep2)}
+.calpitem .pn{font-size:13px;font-weight:700;line-height:1.1}
+.calpitem .pm{font-size:10.5px;color:var(--tx2)}
+
+/* l'agenda */
+.calbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.calstat{font-size:13px;color:var(--tx2)}
+.calstat b{color:var(--tx)}
+.calstat.trop b{color:var(--rouge)}
+.calgrid{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.calday{display:grid;grid-template-columns:74px 1fr;border-top:1px solid var(--line);min-height:52px}
+.calday:first-child{border-top:0}
+.calday.wknd .caldate{background:var(--pap)}
+.calday.survol .calslot{background:#3C63820f}
+.caldate{padding:8px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;
+  justify-content:center;line-height:1.05;user-select:none}
+.cdj{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--tx2);font-weight:700}
+.cdn{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.cdm{font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em}
+.calslot{padding:6px 8px;display:flex;flex-direction:column;gap:5px;justify-content:center;
+  transition:background .14s;position:relative}
+
+/* un séjour */
+.calbloc{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:grab;
+  background:var(--zhu);color:#fff;box-shadow:0 2px 8px #14201f1f}
+.calbloc:active{cursor:grabbing}
+.calbloc.porte{opacity:.4}
+.calbloc img{width:38px;height:30px;object-fit:cover;border-radius:6px;flex:none}
+.calbloc .bn{font-size:14px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.calbloc .bm{font-size:10.5px;opacity:.85}
+.calbloc .btx{flex:1;min-width:0}
+.calnuits{flex:none;display:flex;align-items:center;gap:2px}
+.calnuits button{width:22px;height:22px;border-radius:50%;background:#ffffff2e;color:#fff;
+  font-size:14px;font-weight:800;display:grid;place-items:center;line-height:1}
+.calnuits button:hover{background:#ffffff52}
+.calnuits span{font-size:11.5px;font-weight:800;min-width:30px;text-align:center}
+.calsup{flex:none;width:22px;height:22px;border-radius:50%;background:#ffffff2e;color:#fff;font-size:13px;
+  display:grid;place-items:center}
+.calsup:hover{background:var(--rouge)}
+
+/* jour de continuation d'un séjour */
+.calsuite{display:flex;align-items:center;gap:8px;padding-left:4px;color:var(--tx2);font-size:12px}
+.calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--zhu);opacity:.32;flex:none}
+
+/* jours particuliers */
+.calvol{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--tx2)}
+.calvol .ic{width:22px;height:22px;border-radius:6px;background:var(--deep);color:#fff;
+  display:grid;place-items:center;font-size:11px;flex:none}
+.calvide{font-size:12px;color:var(--tx2);opacity:.6;font-style:italic}
+
+/* annotations */
+.calnote{width:100%;border:0;background:transparent;font-family:inherit;font-size:12.5px;color:var(--tx);
+  resize:none;padding:2px 0;line-height:1.35;overflow:hidden}
+.calnote::placeholder{color:var(--tx2);opacity:.5}
+.calnote:focus{outline:0;border-bottom:1px dashed var(--zhu)}
+.caltags{display:flex;gap:3px;flex-wrap:wrap}
+.caltag{font-size:13px;line-height:1;padding:2px 4px;border-radius:6px;background:var(--pap);cursor:pointer}
+.caltag:hover{background:var(--line)}
+.calplus{font-size:11px;color:var(--tx2);opacity:.55;padding:1px 5px;border-radius:6px}
+.calday:hover .calplus{opacity:1;background:var(--line)}
+.calpicker{position:absolute;z-index:50;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:7px;display:flex;gap:3px;box-shadow:0 10px 30px #14201f26}
+.calpicker button{font-size:17px;padding:3px 5px;border-radius:7px;line-height:1}
+.calpicker button:hover{background:var(--line)}
 </style>
 
 <div class="top">
@@ -611,6 +694,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <button data-t="inspirations">Inspirations</button>
     <button data-t="destinations">Destinations</button>
     <button data-t="route">Ma route<span class="cnt" id="cnt">0</span></button>
+    <button data-t="calendrier">Calendrier</button>
     <button data-t="pratique">Pratique</button>
     <button data-t="vols">Prix des vols</button>
   </nav>
@@ -673,6 +757,21 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <svg id="carte" role="img" aria-label="Carte de la route"></svg>
         <div class="zoom"><button id="zin">+</button><button id="zout">−</button><button id="zfit" style="font-size:10px">FIT</button></div>
       </div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-calendrier">
+    <div class="bh"><span class="lbl">Jour par jour</span><h2>Le calendrier</h2>
+      <p>Glissez une destination sur un jour. Tirez un séjour pour le déplacer, les boutons − et + changent le nombre de nuits. Tout se répercute dans « Ma route ».</p></div>
+    <div id="calbar" class="calbar"></div>
+    <div class="calwrap">
+      <aside class="calpal">
+        <h4>À poser</h4>
+        <div class="hint">Glissez sur un jour, ou double-cliquez pour ajouter à la suite.</div>
+        <input type="search" id="calsearch" class="calsearch" placeholder="Chercher une destination…" aria-label="Chercher une destination">
+        <div id="calplist" class="calplist"></div>
+      </aside>
+      <div id="calgrid" class="calgrid"></div>
     </div>
   </div>
 
@@ -1727,6 +1826,277 @@ function drawLeaflet(){
 }
 
 /* ══ rendu ══ */
+/* ══ Calendrier ══
+   L'agenda n'est pas une vue à part : il écrit dans `sel` et `nights`, exactement
+   comme « Ma route ». Déplacer un bloc réordonne la route, l'étirer change les nuits.
+   Les annotations, elles, vivent dans CAL et survivent au rechargement.          */
+
+var CAL = (function(){
+  try { return JSON.parse(localStorage.getItem("robeb-cal") || "{}"); }
+  catch(e){ return {}; }
+})();
+function calSave(){
+  try { localStorage.setItem("robeb-cal", JSON.stringify(CAL)); } catch(e){}
+}
+/* la route aussi, sinon on perd tout en fermant l'onglet */
+function routeSave(){
+  try { localStorage.setItem("robeb-route", JSON.stringify({sel:sel,nights:nights,target:target,pace:pace})); }
+  catch(e){}
+}
+function routeLoad(){
+  try {
+    var r = JSON.parse(localStorage.getItem("robeb-route") || "null");
+    if(!r || !r.sel || !r.sel.length) return false;
+    sel = r.sel.filter(function(id){ return D[id]; });
+    nights = r.nights || {};
+    if(r.target) target = r.target;
+    if(r.pace) pace = r.pace;
+    return true;
+  } catch(e){ return false; }
+}
+
+var JOURS = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."];
+var MOIS  = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+var PASTILLES = ["📷","🍜","🚄","✈️","🏔️","🐼","🎒","💤","☕","🎋","💰","❤️","⚠️","✅"];
+
+function cleJour(d){ return d.toISOString().slice(0,10); }
+
+/* quelle étape occupe le jour n° i, et est-ce sa première nuit ? */
+function calPlan(){
+  var plan = [], j = 0;
+  sel.forEach(function(id, k){
+    var n = Math.max(1, nights[id] || 1);
+    for(var x = 0; x < n; x++){
+      plan[j + x] = { id:id, etape:k, premiere:(x === 0), nuit:(x + 1), total:n };
+    }
+    j += n;
+  });
+  return plan;
+}
+
+function drawCal(){
+  var grille = document.getElementById("calgrid");
+  if(!grille) return;
+  grille.innerHTML = "";
+
+  var plan   = calPlan();
+  var total  = totalNights();
+  var lignes = Math.max(target, total) + 1;   /* +1 : le jour du vol retour */
+
+  for(var i = 0; i < lignes; i++){
+    var date = addD(START, i);
+    var cle  = cleJour(date);
+    var jour = el("div", "calday" + ((date.getUTCDay() === 0 || date.getUTCDay() === 6) ? " wknd" : ""));
+    jour.dataset.i = i;
+
+    var dt = el("div", "caldate");
+    dt.appendChild(el("span", "cdj", JOURS[date.getUTCDay()]));
+    dt.appendChild(el("span", "cdn", String(date.getUTCDate())));
+    dt.appendChild(el("span", "cdm", MOIS[date.getUTCMonth()]));
+    jour.appendChild(dt);
+
+    var slot = el("div", "calslot");
+
+    /* premier jour : on arrive */
+    if(i === 0){
+      var arr = el("div", "calvol");
+      arr.appendChild(el("span", "ic", "✈"));
+      arr.appendChild(el("span", null, "Arrivée à Shanghai, 19 h 05. Vol parti de Paris la veille à 23 h 30."));
+      slot.appendChild(arr);
+    }
+
+    var c = plan[i];
+    if(c && c.premiere){
+      slot.appendChild(calBloc(c));
+    } else if(c){
+      var suite = el("div", "calsuite");
+      suite.appendChild(el("div", "calrail"));
+      suite.appendChild(el("span", null, D[c.id].fr + " · nuit " + c.nuit + " sur " + c.total));
+      slot.appendChild(suite);
+    } else if(i < lignes - 1 && i > 0){
+      slot.appendChild(el("div", "calvide", "Rien de posé. Glissez une destination ici."));
+    }
+
+    /* dernier jour : on repart */
+    if(i === lignes - 1){
+      var ret = el("div", "calvol");
+      ret.appendChild(el("span", "ic", "✈"));
+      ret.appendChild(el("span", null, "Vol retour à 22 h 15, la journée est entière. Paris le lendemain à 6 h."));
+      slot.appendChild(ret);
+    }
+
+    slot.appendChild(calTags(cle, slot));
+    slot.appendChild(calNote(cle));
+
+    /* dépose */
+    jour.addEventListener("dragover", function(e){
+      e.preventDefault(); this.classList.add("survol");
+    });
+    jour.addEventListener("dragleave", function(){ this.classList.remove("survol"); });
+    jour.addEventListener("drop", function(e){
+      e.preventDefault(); this.classList.remove("survol");
+      calDepose(e.dataTransfer.getData("text/plain"), +this.dataset.i);
+    });
+
+    jour.appendChild(slot);
+    grille.appendChild(jour);
+  }
+
+  /* bandeau de contrôle */
+  var bar = document.getElementById("calbar");
+  if(bar){
+    bar.innerHTML = "";
+    var s = el("div", "calstat" + (total > target ? " trop" : ""));
+    s.innerHTML = "<b>" + total + "</b> nuits posées sur <b>" + target + "</b> disponibles"
+      + (total > target ? " · <b>" + (total - target) + " de trop</b>"
+         : total < target ? " · " + (target - total) + " encore libres" : " · pile poil");
+    bar.appendChild(s);
+    if(sel.length){
+      var vider = el("button", "btn ghost", "Vider le calendrier");
+      vider.addEventListener("click", function(){
+        if(!confirm("Retirer toutes les destinations ? Les notes sont conservées.")) return;
+        sel = []; nights = {}; render();
+      });
+      bar.appendChild(vider);
+    }
+  }
+}
+
+function calBloc(c){
+  var d = D[c.id];
+  var b = el("div", "calbloc");
+  b.draggable = true;
+  b.dataset.id = c.id;
+
+  var im = img(c.id, 0, 330);
+  if(im){ var g = document.createElement("img"); g.src = im.u; g.alt = ""; g.loading = "lazy"; b.appendChild(g); }
+
+  var tx = el("div", "btx");
+  tx.appendChild(el("div", "bn", d.fr));
+  tx.appendChild(el("div", "bm", temp(d) + "  ·  " + c.total + (c.total > 1 ? " nuits" : " nuit")));
+  b.appendChild(tx);
+
+  var nu = el("div", "calnuits");
+  var mo = el("button", null, "−"); mo.title = "Une nuit de moins";
+  mo.addEventListener("click", function(e){
+    e.stopPropagation();
+    if((nights[c.id] || 1) > 1){ nights[c.id]--; render(); }
+  });
+  var nb = el("span", null, c.total + "n");
+  var pl = el("button", null, "+"); pl.title = "Une nuit de plus";
+  pl.addEventListener("click", function(e){ e.stopPropagation(); nights[c.id] = (nights[c.id] || 1) + 1; render(); });
+  nu.appendChild(mo); nu.appendChild(nb); nu.appendChild(pl);
+  b.appendChild(nu);
+
+  var sup = el("button", "calsup", "×"); sup.title = "Retirer de la route";
+  sup.addEventListener("click", function(e){ e.stopPropagation(); toggle(c.id); });
+  b.appendChild(sup);
+
+  b.addEventListener("dragstart", function(e){
+    e.dataTransfer.setData("text/plain", "deplace:" + c.id);
+    e.dataTransfer.effectAllowed = "move";
+    var self = this; setTimeout(function(){ self.classList.add("porte"); }, 0);
+  });
+  b.addEventListener("dragend", function(){ this.classList.remove("porte"); });
+  b.addEventListener("click", function(){ openSheet(c.id); });
+  return b;
+}
+
+/* dépose : on convertit un n° de jour en position dans la route */
+function calDepose(charge, jour){
+  if(!charge) return;
+  var plan = calPlan();
+  var pos  = plan[jour] ? plan[jour].etape : sel.length;
+
+  if(charge.indexOf("deplace:") === 0){
+    var id = charge.slice(8);
+    var de = sel.indexOf(id);
+    if(de < 0 || de === pos) return;
+    sel.splice(de, 1);
+    if(de < pos) pos--;
+    sel.splice(pos, 0, id);
+  } else {
+    if(sel.indexOf(charge) >= 0 || !D[charge]) return;
+    nights[charge] = Math.min(D[charge].n, paceN() + 1);
+    sel.splice(pos, 0, charge);
+  }
+  render();
+  /* un déplacement manuel prime : on ne réordonne pas derrière l'utilisateur */
+}
+
+function calNote(cle){
+  var t = document.createElement("textarea");
+  t.className = "calnote"; t.rows = 1;
+  t.placeholder = "Une note…";
+  t.value = (CAL[cle] && CAL[cle].note) || "";
+  function haut(){ t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }
+  t.addEventListener("input", function(){
+    haut();
+    CAL[cle] = CAL[cle] || {}; CAL[cle].note = t.value;
+    if(!t.value) delete CAL[cle].note;
+    calSave();
+  });
+  setTimeout(haut, 0);
+  return t;
+}
+
+function calTags(cle, slot){
+  var box = el("div", "caltags");
+  var liste = (CAL[cle] && CAL[cle].tags) || [];
+  liste.forEach(function(p, k){
+    var b = el("button", "caltag", p);
+    b.title = "Retirer";
+    b.addEventListener("click", function(){
+      CAL[cle].tags.splice(k, 1); calSave(); drawCal();
+    });
+    box.appendChild(b);
+  });
+  var plus = el("button", "calplus", "+ pastille");
+  plus.addEventListener("click", function(e){
+    e.stopPropagation();
+    var ouvert = slot.querySelector(".calpicker");
+    if(ouvert){ ouvert.remove(); return; }
+    var p = el("div", "calpicker");
+    PASTILLES.forEach(function(x){
+      var b = el("button", null, x);
+      b.addEventListener("click", function(){
+        CAL[cle] = CAL[cle] || {};
+        CAL[cle].tags = (CAL[cle].tags || []).concat([x]);
+        calSave(); drawCal();
+      });
+      p.appendChild(b);
+    });
+    slot.appendChild(p);
+  });
+  box.appendChild(plus);
+  return box;
+}
+
+function drawPalette(){
+  var box = document.getElementById("calplist");
+  if(!box) return;
+  var q = (document.getElementById("calsearch").value || "").toLowerCase().trim();
+  box.innerHTML = "";
+  Object.keys(D).forEach(function(id){
+    var d = D[id];
+    if(q && d.fr.toLowerCase().indexOf(q) < 0 && d.reg.toLowerCase().indexOf(q) < 0) return;
+    var it = el("div", "calpitem" + (sel.indexOf(id) >= 0 ? " dedans" : ""));
+    it.draggable = true;
+    var im = img(id, 0, 330);
+    if(im){ var g = document.createElement("img"); g.src = im.u; g.alt = ""; g.loading = "lazy"; it.appendChild(g); }
+    var tx = el("div");
+    tx.appendChild(el("div", "pn", d.fr));
+    tx.appendChild(el("div", "pm", d.reg + " · " + temp(d)));
+    it.appendChild(tx);
+    it.addEventListener("dragstart", function(e){
+      e.dataTransfer.setData("text/plain", id);
+      e.dataTransfer.effectAllowed = "copy";
+    });
+    it.addEventListener("dblclick", function(){ if(sel.indexOf(id) < 0) toggle(id); });
+    box.appendChild(it);
+  });
+}
+
 function render(){
   document.getElementById("cnt").textContent=sel.length;
   document.getElementById("nn").textContent=target;
@@ -1735,7 +2105,7 @@ function render(){
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
   if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
-  drawGrid(); drawRoute(); drawSum(); drawInsp();
+  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); routeSave();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 (function(){
@@ -1751,6 +2121,8 @@ function render(){
     "Photographies : Wikimedia Commons, sous licences libres (CC BY, CC BY-SA, domaine public). "+list.length+" auteurs : "+list.join(" · ")+".";
 })();
 drawFilters(); drawInsp();
+(function(){ var s=document.getElementById("calsearch"); if(s) s.addEventListener("input",drawPalette); })();
+routeLoad();   /* on rend la route telle qu'elle a ete laissee */
 initLeaflet(); initCatMap();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
 /* ── l'en-tête se réduit au scroll, avec hystérésis pour ne pas clignoter ── */
