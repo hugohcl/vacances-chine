@@ -537,7 +537,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   background:var(--pap);border:1px solid transparent;transition:background .14s,border-color .14s}
 .calpitem:hover{background:var(--line);border-color:var(--zhu)}
 .calpitem:active{cursor:grabbing}
-.calpitem.dedans{opacity:.42}
+.calpitem.dedans{opacity:.5;box-shadow:inset 3px 0 0 var(--c,var(--zhu))}
 .calpitem img{width:34px;height:26px;object-fit:cover;border-radius:5px;flex:none;background:var(--deep2)}
 .calpitem .pn{font-size:13px;font-weight:700;line-height:1.1}
 .calpitem .pm{font-size:10.5px;color:var(--tx2)}
@@ -551,7 +551,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calgrid{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
 .calday{display:grid;grid-template-columns:74px 1fr;border-top:1px solid var(--line);min-height:52px}
 .calday:first-child{border-top:0}
-.calday.wknd .caldate{background:var(--pap)}
+.calday.wknd .cdj{color:var(--zhu);opacity:.75}
 .calday.survol .calslot{background:#3C63820f}
 .caldate{padding:8px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;
   justify-content:center;line-height:1.05;user-select:none}
@@ -560,10 +560,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .cdm{font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em}
 .calslot{padding:6px 8px;display:flex;flex-direction:column;gap:5px;justify-content:center;
   transition:background .14s;position:relative}
+/* la couleur du séjour teinte le jour, et une barre marque le changement de ville */
+.calday.sej{background:color-mix(in srgb,var(--c) 7%,transparent)}
+.calday.sej .caldate{box-shadow:inset 3px 0 0 var(--c)}
+.calday.debut{border-top:2px solid var(--c)}
+.calday.debut .cdn{color:var(--c)}
 
 /* un séjour */
 .calbloc{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:grab;
-  background:var(--zhu);color:#fff;box-shadow:0 2px 8px #14201f1f}
+  background:var(--c,var(--zhu));color:#fff;box-shadow:0 2px 8px #14201f1f}
 .calbloc:active{cursor:grabbing}
 .calbloc.porte{opacity:.4}
 .calbloc.atterri{animation:calPose 1.4s cubic-bezier(.2,.7,.3,1)}
@@ -585,7 +590,7 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 
 /* jour de continuation d'un séjour */
 .calsuite{display:flex;align-items:center;gap:8px;padding-left:4px;color:var(--tx2);font-size:12px}
-.calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--zhu);opacity:.32;flex:none}
+.calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--c,var(--zhu));opacity:.55;flex:none}
 
 /* jours particuliers */
 .calvol{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--tx2)}
@@ -1865,6 +1870,10 @@ function routeLoad(){
 
 var JOURS = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."];
 var MOIS  = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+var TEINTES = ["#3C6382","#2A7365","#9A4F49","#5F5080","#46703F",
+               "#35688A","#8C6224","#7E4F66","#4F6C7D","#6B5C33"];
+function teinte(k){ return TEINTES[k % TEINTES.length]; }
+
 var PASTILLES = ["📷","🍜","🚄","✈️","🏔️","🐼","🎒","💤","☕","🎋","💰","❤️","⚠️","✅"];
 
 function cleJour(d){ return d.toISOString().slice(0,10); }
@@ -2001,7 +2010,11 @@ function drawCal(){
   for(var i = 0; i < lignes; i++){
     var date = addD(START, i);
     var cle  = cleJour(date);
-    var jour = el("div", "calday" + ((date.getUTCDay() === 0 || date.getUTCDay() === 6) ? " wknd" : ""));
+    var cc = plan[i];
+    var classes = "calday" + ((date.getUTCDay() === 0 || date.getUTCDay() === 6) ? " wknd" : "");
+    if(cc) classes += " sej" + (cc.premiere ? " debut" : "");
+    var jour = el("div", classes);
+    if(cc) jour.style.setProperty("--c", teinte(cc.etape));
     jour.dataset.i = i;
 
     var dt = el("div", "caldate");
@@ -2080,6 +2093,7 @@ function drawCal(){
 function calBloc(c){
   var d = D[c.id];
   var b = el("div", "calbloc");
+  b.style.setProperty("--c", teinte(c.etape));
   b.draggable = true;
   b.dataset.id = c.id;
 
@@ -2210,7 +2224,9 @@ function drawPalette(){
   Object.keys(D).forEach(function(id){
     var d = D[id];
     if(q && d.fr.toLowerCase().indexOf(q) < 0 && d.reg.toLowerCase().indexOf(q) < 0) return;
-    var it = el("div", "calpitem" + (sel.indexOf(id) >= 0 ? " dedans" : ""));
+    var pos = sel.indexOf(id);
+    var it = el("div", "calpitem" + (pos >= 0 ? " dedans" : ""));
+    if(pos >= 0) it.style.setProperty("--c", teinte(pos));
     it.draggable = true;
     var im = img(id, 0, 330);
     if(im){ var g = document.createElement("img"); g.src = im.u; g.alt = ""; g.loading = "lazy"; it.appendChild(g); }
