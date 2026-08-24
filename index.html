@@ -1954,21 +1954,19 @@ function drawPartage(){
   var copier = el("button", "btn", "Copier le lien du plan");
   copier.addEventListener("click", function(){
     var url = lienPartage();
-    function ok(){
-      copier.textContent = "Lien copié, envoyez-le lui";
-      setTimeout(function(){ copier.textContent = "Copier le lien du plan"; }, 2600);
-    }
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(url).then(ok, function(){ demander(url); });
-    } else { demander(url); }
-  });
-  b.appendChild(copier);
-
-  function demander(url){
-    /* le presse-papier est refusé hors HTTPS ou sans geste reconnu : on montre le lien */
+    /* on montre TOUJOURS le lien : si le presse-papier échoue, rien n'est perdu */
     var z = document.getElementById("calurl");
     z.value = url; z.hidden = false; z.select();
-  }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){
+        copier.textContent = "Lien copié, envoyez-le lui";
+        setTimeout(function(){ copier.textContent = "Copier le lien du plan"; }, 2600);
+      }, function(){
+        copier.textContent = "Copiez le lien ci-dessous";
+      });
+    } else { copier.textContent = "Copiez le lien ci-dessous"; }
+  });
+  b.appendChild(copier);
 
   var raz = el("button", "btn ghost", "Repartir de zéro");
   raz.addEventListener("click", function(){
