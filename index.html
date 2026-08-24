@@ -764,6 +764,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <div class="bh"><span class="lbl">Jour par jour</span><h2>Le calendrier</h2>
       <p>Glissez une destination sur un jour. Tirez un séjour pour le déplacer, les boutons − et + changent le nombre de nuits. Tout se répercute dans « Ma route ».</p></div>
     <div id="calbar" class="calbar"></div>
+    <div id="calpartage" class="calbar"></div>
+    <input id="calurl" class="calsearch" hidden readonly aria-label="Lien du plan">
     <div class="calwrap">
       <aside class="calpal">
         <h4>À poser</h4>
@@ -1874,6 +1876,115 @@ function calPlan(){
   return plan;
 }
 
+/* ══ Partage et persistance ══
+   Deux mécanismes distincts :
+   - localStorage  : le plan revient tout seul sur VOTRE navigateur.
+   - lien partagé  : tout l'état tient dans l'URL, donc l'autre personne
+                     ouvre exactement le même plan et peut le modifier.
+   Pas de compte, pas de serveur, rien qui puisse tomber.               */
+
+function etatCompact(){
+  var e = { v:1, t:target, p:pace, s:[], n:{}, g:{} };
+  sel.forEach(function(id){ e.s.push(id + ":" + (nights[id] || 1)); });
+  Object.keys(CAL).forEach(function(k){
+    var c = CAL[k];
+    if(c && c.note) e.n[k] = c.note;
+    if(c && c.tags && c.tags.length) e.g[k] = c.tags.join("");
+  });
+  return e;
+}
+
+/* base64 compatible URL, sûr avec les accents et les emoji */
+function versB64(s){
+  var o = new TextEncoder().encode(s), b = "";
+  for(var i = 0; i < o.length; i++) b += String.fromCharCode(o[i]);
+  return btoa(b).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function depuisB64(s){
+  s = s.replace(/-/g, "+").replace(/_/g, "/");
+  while(s.length % 4) s += "=";
+  var b = atob(s), o = new Uint8Array(b.length);
+  for(var i = 0; i < b.length; i++) o[i] = b.charCodeAt(i);
+  return new TextDecoder().decode(o);
+}
+
+function lienPartage(){
+  var base = location.origin + location.pathname;
+  return base + "#p=" + versB64(JSON.stringify(etatCompact()));
+}
+
+function appliquerEtat(e){
+  if(!e || e.v !== 1) return false;
+  sel = []; nights = {};
+  (e.s || []).forEach(function(x){
+    var p = x.split(":"), id = p[0], n = parseInt(p[1], 10) || 1;
+    if(D[id]){ sel.push(id); nights[id] = n; }
+  });
+  if(e.t) target = e.t;
+  if(e.p) pace = e.p;
+  CAL = {};
+  Object.keys(e.n || {}).forEach(function(k){ CAL[k] = CAL[k] || {}; CAL[k].note = e.n[k]; });
+  Object.keys(e.g || {}).forEach(function(k){
+    CAL[k] = CAL[k] || {};
+    CAL[k].tags = Array.from(e.g[k]);   /* Array.from découpe correctement les emoji */
+  });
+  return true;
+}
+
+/* au chargement : un lien partagé l'emporte sur la sauvegarde locale */
+function chargerEtat(){
+  var h = location.hash || "";
+  if(h.indexOf("#p=") === 0){
+    try {
+      if(appliquerEtat(JSON.parse(depuisB64(h.slice(3))))){
+        calSave(); routeSave();
+        history.replaceState(null, "", location.pathname);   /* URL propre, état gardé */
+        return "lien";
+      }
+    } catch(err){}
+  }
+  return routeLoad() ? "local" : "vide";
+}
+
+function drawPartage(){
+  var b = document.getElementById("calpartage");
+  if(!b) return;
+  b.innerHTML = "";
+
+  var copier = el("button", "btn", "Copier le lien du plan");
+  copier.addEventListener("click", function(){
+    var url = lienPartage();
+    function ok(){
+      copier.textContent = "Lien copié, envoyez-le lui";
+      setTimeout(function(){ copier.textContent = "Copier le lien du plan"; }, 2600);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(ok, function(){ demander(url); });
+    } else { demander(url); }
+  });
+  b.appendChild(copier);
+
+  function demander(url){
+    /* le presse-papier est refusé hors HTTPS ou sans geste reconnu : on montre le lien */
+    var z = document.getElementById("calurl");
+    z.value = url; z.hidden = false; z.select();
+  }
+
+  var raz = el("button", "btn ghost", "Repartir de zéro");
+  raz.addEventListener("click", function(){
+    if(!confirm("Effacer le plan, les notes et les pastilles ? C'est définitif.")) return;
+    sel = []; nights = {}; CAL = {};
+    try { localStorage.removeItem("robeb-cal"); localStorage.removeItem("robeb-route"); } catch(e){}
+    render();
+  });
+  b.appendChild(raz);
+
+  var etat = el("span", "calstat", document.getElementById("calgrid") && sel.length
+    ? "Enregistré sur cet appareil, ça revient tout seul."
+    : "Rien d'enregistré pour l'instant.");
+  b.appendChild(etat);
+}
+
 function drawCal(){
   var grille = document.getElementById("calgrid");
   if(!grille) return;
@@ -2105,7 +2216,7 @@ function render(){
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
   if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
-  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); routeSave();
+  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); drawPartage(); routeSave();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 (function(){
@@ -2122,7 +2233,7 @@ function render(){
 })();
 drawFilters(); drawInsp();
 (function(){ var s=document.getElementById("calsearch"); if(s) s.addEventListener("input",drawPalette); })();
-routeLoad();   /* on rend la route telle qu'elle a ete laissee */
+chargerEtat();   /* lien partagé, sinon sauvegarde locale */
 initLeaflet(); initCatMap();
 window.addEventListener("load",function(){ if(initLeaflet()) drawLeaflet(); if(initCatMap()) drawCatMap(); });
 /* ── l'en-tête se réduit au scroll, avec hystérésis pour ne pas clignoter ── */
