@@ -2529,7 +2529,7 @@ function render(){
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
   if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
-  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); drawPartage(); routeSave();
+  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); drawPartage(); routeSave(); calSave();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 (function(){
