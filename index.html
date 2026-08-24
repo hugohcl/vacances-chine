@@ -2012,6 +2012,20 @@ function appliquerEtat(e){
 }
 
 /* au chargement : un lien partagé l'emporte sur la sauvegarde locale */
+/* ══ Le plan inscrit dans le site ══
+   C'est ce que voit quelqu'un qui ouvre l'adresse nue, sans lien de partage
+   et sans rien en mémoire. Une modification locale prend ensuite le dessus.
+   Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
+var PLAN_DEFAUT = {
+  v:1, t:25, p:"med",
+  s:["shanghai:2","pekin:3","xian:3","chongqing:2","chengdu:3",
+     "dali:3","lijiang:4","shangrila:2","lijiang#2:1","shanghai#2:2"],
+  n:{},
+  g:{},
+  x:{ "2026-11-24":["leshan"], "2026-11-30":["tigerleaping"], "2026-12-07":["suzhou"] },
+  j:{}
+};
+
 function chargerEtat(){
   var h = location.hash || "";
   if(h.indexOf("#p=") === 0){
@@ -2023,7 +2037,9 @@ function chargerEtat(){
       }
     } catch(err){}
   }
-  return routeLoad() ? "local" : "vide";
+  if(routeLoad()) return "local";
+  appliquerEtat(PLAN_DEFAUT);          /* personne n'a rien touché : on montre le plan du site */
+  return "defaut";
 }
 
 function drawPartage(){
@@ -2048,12 +2064,11 @@ function drawPartage(){
   });
   b.appendChild(copier);
 
-  var raz = el("button", "btn ghost", "Repartir de zéro");
+  var raz = el("button", "btn ghost", "Revenir au plan de départ");
   raz.addEventListener("click", function(){
-    if(!confirm("Effacer le plan, les notes et les pastilles ? C'est définitif.")) return;
-    sel = []; nights = {}; CAL = {};
+    if(!confirm("Abandonner vos modifications et revenir au plan inscrit dans le site ?")) return;
     try { localStorage.removeItem("robeb-cal"); localStorage.removeItem("robeb-route"); } catch(e){}
-    render();
+    CAL = {}; appliquerEtat(PLAN_DEFAUT); render();
   });
   b.appendChild(raz);
 
