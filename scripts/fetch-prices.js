@@ -24,38 +24,46 @@ var OUT = path.join(__dirname, "..", "prices.json");
 /* Surchargeable pour tester le script contre un faux serveur, sans clé ni réseau. */
 var API = process.env.SERPAPI_API || "https://serpapi.com/search.json";
 
-/* Les dates du voyage. Un seul endroit à changer si elles bougent. */
-var ALLER = "2026-11-13";
+/* Les dates du voyage. Un seul endroit a changer si elles bougent.
+   Le vol retenu part le 12 novembre a 23 h 20 et arrive le 13 a Shanghai. */
+var ALLER = "2026-11-12";
 var RETOUR = "2026-12-08";
 
-/* Roissy et Orly ensemble : on cherche large, on lit le détail après.
-   Pékin a deux aéroports internationaux, Capital et Daxing : les deux comptent. */
+/* Roissy et Orly ensemble : on cherche large, on lit le detail apres.
+   Shanghai a deux aeroports ; l'international part de Pudong. */
 var PARIS = "CDG,ORY";
+var SHANGHAI = "PVG";
+var SHANGHAI2 = "PVG,SHA";
 var PEKIN = "PEK,PKX";
 var KUNMING = "KMG";
 
-/* Cinq relevés par jour, soit 155 par mois : le palier gratuit en autorise 250. */
+/* Deux voyageurs : c'est le prix reel qui nous interesse, pas le tarif unitaire. */
+var PAX = "2";
+
+/* Cinq releves par jour, soit 155 par mois : le palier gratuit en autorise 250. */
 var ROUTES = [
-  { id: "openjaw", label: "Paris → Pékin, Kunming → Paris",
-    note: "l'open-jaw réel, en un seul billet",
-    q: { type: "3", multi_city_json: JSON.stringify([
-      { departure_id: PARIS,   arrival_id: PEKIN, date: ALLER },
-      { departure_id: KUNMING, arrival_id: PARIS, date: RETOUR }
-    ]) } },
-  { id: "aller", label: "Paris → Pékin",
-    note: "aller simple, la première moitié de l'open-jaw",
-    q: { type: "2", departure_id: PARIS, arrival_id: PEKIN, outbound_date: ALLER } },
-  { id: "retour", label: "Kunming → Paris",
-    note: "aller simple, la seconde moitié de l'open-jaw",
-    q: { type: "2", departure_id: KUNMING, arrival_id: PARIS, outbound_date: RETOUR } },
-  { id: "ar_pekin", label: "Paris ↔ Pékin",
-    note: "aller-retour classique, pour comparer",
-    q: { type: "1", departure_id: PARIS, arrival_id: PEKIN,
-         outbound_date: ALLER, return_date: RETOUR } },
-  { id: "ar_kunming", label: "Paris ↔ Kunming",
-    note: "aller-retour classique, relevé à 571 € en août 2026",
-    q: { type: "1", departure_id: PARIS, arrival_id: KUNMING,
-         outbound_date: ALLER, return_date: RETOUR } }
+  { id: "ar_shanghai", label: "Paris ↔ Shanghai, 2 passagers",
+    note: "le vol retenu : CDG-PVG le 12 nov., PVG-CDG le 8 dec., sans escale",
+    q: { type: "1", departure_id: PARIS, arrival_id: SHANGHAI,
+         outbound_date: ALLER, return_date: RETOUR, adults: PAX } },
+  { id: "ar_shanghai_souple", label: "Paris ↔ Shanghai, les deux aeroports",
+    note: "meme trajet, Hongqiao accepte : garde-fou si Pudong grimpe",
+    q: { type: "1", departure_id: PARIS, arrival_id: SHANGHAI2,
+         outbound_date: ALLER, return_date: RETOUR, adults: PAX } },
+  { id: "aller_shanghai", label: "Paris → Shanghai, aller simple",
+    note: "pour voir laquelle des deux moities bouge",
+    q: { type: "2", departure_id: PARIS, arrival_id: SHANGHAI,
+         outbound_date: ALLER, adults: PAX } },
+  { id: "retour_shanghai", label: "Shanghai → Paris, aller simple",
+    note: "l'autre moitie",
+    q: { type: "2", departure_id: SHANGHAI, arrival_id: PARIS,
+         outbound_date: RETOUR, adults: PAX } },
+  { id: "openjaw_temoin", label: "Paris → Pekin, Kunming → Paris",
+    note: "l'open-jaw ecarte : garde comme temoin, il valait 1 000 EUR de plus",
+    q: { type: "3", adults: PAX, multi_city_json: JSON.stringify([
+      { departure_id: PARIS,   arrival_id: PEKIN,   date: ALLER },
+      { departure_id: KUNMING, arrival_id: PARIS,   date: RETOUR }
+    ]) } }
 ];
 
 function today() {
