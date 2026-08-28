@@ -545,9 +545,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .restx{flex:1;min-width:0}
 .resnom{font-size:13px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
 .resdt{font-size:10.5px;color:var(--tx2);margin-top:1px}
+.resbil{font-size:10px;color:var(--tx2);opacity:.85;margin-top:2px;line-height:1.25}
+.restrop{flex:none;font-size:10.5px;font-weight:800;color:#fff;background:#C4761F;
+  border-radius:100px;padding:1px 7px}
+.restrop:before{content:""}
 .respt{flex:none;font-size:10px;font-weight:800;color:var(--tx2);background:var(--card);
   border:1px solid var(--line);border-radius:100px;padding:1px 6px}
 .resit:hover .respt{border-color:var(--c,var(--zhu))}
+.restropfin{margin-top:6px;padding:8px 9px;border-radius:8px;background:#C4761F1a;
+  border-left:3px solid #C4761F;font-size:11px;line-height:1.4;color:var(--tx)}
 .resfin{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);
   font-size:11.5px;color:var(--tx2);text-align:center}
 
@@ -612,6 +618,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   font-size:14px;font-weight:800;display:grid;place-items:center;line-height:1}
 .calnuits button:hover{background:#ffffff52}
 .calnuits span{font-size:11.5px;font-weight:800;min-width:30px;text-align:center}
+.caltrop{flex:none;font-size:10px;font-weight:800;letter-spacing:.02em;background:#ffffff33;
+  color:#fff;border-radius:100px;padding:2px 8px;cursor:help}
 .calsup{flex:none;width:22px;height:22px;border-radius:50%;background:#ffffff2e;color:#fff;font-size:13px;
   display:grid;place-items:center}
 .calsup:hover{background:var(--rouge)}
@@ -2661,6 +2669,54 @@ function totalActivites(){
    décidée, ce qui manque c'est la vue d'ensemble : les étapes, leurs dates,
    leurs nuits, et un clic pour sauter au bon jour. */
 
+/* ══ Le trop-plein ══
+   Pour chaque étape : combien de journées vraiment exploitables, combien de choses
+   à y voir, et combien ne rentrent pas. Le but est de rendre l'arbitrage visible
+   au lieu de le laisser se produire en silence. */
+
+function bilanEtape(i){
+  var k = sel[i], n = Math.max(1, nights[k] || 1), b = bid(k);
+  var d = D[k];
+
+  /* la journée d'arrivée est-elle mangée par le trajet ? */
+  var mange = 0;
+  if(i > 0){
+    var t = trajetDe(sel[i - 1], k);
+    var pp = t ? porteAPorte(t.m, t.d) : null;
+    if(pp && pp.total >= 300) mange = 1;
+  }
+  var pleines = Math.max(0, n - mange);
+
+  /* ce qu'il y a à voir, et ce qui est déjà calé sur ces jours */
+  var aVoir = (d && d.ok) ? d.ok.length : 0;
+  var debut = jourDeDepart(i), cales = 0, exc = 0;
+  for(var x = 0; x < n; x++){
+    var cle = cleJour(addD(START, debut + x));
+    CRENEAUX.forEach(function(c){ cales += activitesDuJour(cle, c.k).length; });
+    exc += excursionsDuJour(cle).length;
+  }
+
+  /* une journée pleine porte raisonnablement 2 choses, une demi-journée 1 */
+  var capacite = pleines * 2 + (mange ? 1 : 0) - exc * 2;
+  var reste = Math.max(0, aVoir - cales);
+
+  return {
+    n:n, pleines:pleines, mange:mange, aVoir:aVoir, cales:cales, exc:exc,
+    reste:reste,
+    reco:(d && d.n) || n,
+    manque:Math.max(0, ((d && d.n) || n) - n),
+    sature:reste > 0 && capacite <= cales
+  };
+}
+
+/* la liste de ce qui ne rentre pas, pour l'afficher */
+function nonCases(i){
+  var k = sel[i], n = Math.max(1, nights[k] || 1), d = D[k];
+  if(!d || !d.ok) return [];
+  var vues = activitesDejaPosees();
+  return d.ok.filter(function(t){ return vues.indexOf(t) < 0; });
+}
+
 function drawResume(){
   var box = document.getElementById("calresume");
   if(!box) return;
@@ -2688,14 +2744,12 @@ function drawResume(){
     tx.appendChild(el("div", "resdt", dates + "  ·  " + n + (n > 1 ? " nuits" : " nuit")));
     it.appendChild(tx);
 
-    /* combien de choses sont déjà calées sur ce séjour */
-    var pose = 0;
-    for(var x = 0; x < n; x++){
-      var c = cleJour(addD(START, jour + x));
-      CRENEAUX.forEach(function(cr){ pose += activitesDuJour(c, cr.k).length; });
-      pose += excursionsDuJour(c).length;
-    }
-    if(pose) it.appendChild(el("span", "respt", String(pose)));
+    var bi = bilanEtape(i);
+    tx.appendChild(el("div", "resbil",
+      bi.pleines + (bi.pleines > 1 ? " journées pleines" : " journée pleine")
+      + (bi.mange ? ", arrivée mangée par le trajet" : "")
+      + "  ·  " + bi.cales + " sur " + bi.aVoir + " calé" + (bi.cales > 1 ? "s" : "")));
+    if(bi.reste) it.appendChild(el("span", "restrop", "−" + bi.reste));
 
     it.addEventListener("click", function(){
       var lignes = document.querySelectorAll(".calday");
@@ -2710,9 +2764,19 @@ function drawResume(){
     jour += n;
   });
 
+  var trop = 0, manque = 0;
+  sel.forEach(function(k, i){ var b = bilanEtape(i); trop += b.reste; manque += b.manque; });
+
   var pied = el("div", "resfin");
   pied.innerHTML = "<b>" + total + "</b> nuits · <b>" + sel.length + "</b> étapes";
   box.appendChild(pied);
+
+  if(trop || manque){
+    var al = el("div", "restropfin");
+    al.innerHTML = (manque ? "<b>" + manque + " nuits</b> manquent par rapport à ce que l'outil recommande pour ces étapes.<br>" : "")
+      + (trop ? "<b>" + trop + " choses</b> à voir ne sont calées nulle part." : "");
+    box.appendChild(al);
+  }
 }
 
 /* le n° de ligne où commence l'étape i */
@@ -2871,6 +2935,13 @@ function calBloc(c){
   nu.appendChild(mo); nu.appendChild(nb); nu.appendChild(pl);
   b.appendChild(nu);
 
+  var bi = bilanEtape(c.etape);
+  if(bi.manque || bi.reste){
+    var av = el("span", "caltrop", (bi.manque ? "−" + bi.manque + " nuit" + (bi.manque>1?"s":"") : "") +
+      (bi.manque && bi.reste ? " · " : "") + (bi.reste ? bi.reste + " à caser" : ""));
+    av.title = "L'outil recommande " + bi.reco + " nuits ici. " + bi.aVoir + " choses à voir, " + bi.cales + " calées.";
+    b.appendChild(av);
+  }
   var sup = el("button", "calsup", "×"); sup.title = "Retirer de la route";
   sup.addEventListener("click", function(e){ e.stopPropagation(); toggle(c.id); });
   b.appendChild(sup);
