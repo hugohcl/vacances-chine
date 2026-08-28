@@ -532,7 +532,32 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calsearch{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
   font-family:inherit;font-size:13px;background:var(--pap);color:var(--tx);margin-bottom:8px}
 .calsearch:focus{outline:2px solid var(--zhu);outline-offset:-1px}
-.calplist{overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-right:3px}
+.calplist{overflow-y:auto;max-height:320px;display:flex;flex-direction:column;gap:4px;padding-right:3px;margin-top:6px}
+
+/* le résumé de la route */
+.calresume{display:flex;flex-direction:column;gap:2px;overflow-y:auto;margin-bottom:10px}
+.resit{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:6px 8px;
+  border-radius:8px;box-shadow:inset 3px 0 0 var(--c,var(--zhu));background:var(--pap);
+  transition:background .14s,transform .14s}
+.resit:hover{background:var(--line);transform:translateX(2px)}
+.resnum{flex:none;width:20px;height:20px;border-radius:50%;background:var(--c,var(--zhu));color:#fff;
+  font-size:10.5px;font-weight:800;display:grid;place-items:center}
+.restx{flex:1;min-width:0}
+.resnom{font-size:13px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.resdt{font-size:10.5px;color:var(--tx2);margin-top:1px}
+.respt{flex:none;font-size:10px;font-weight:800;color:var(--tx2);background:var(--card);
+  border:1px solid var(--line);border-radius:100px;padding:1px 6px}
+.resit:hover .respt{border-color:var(--c,var(--zhu))}
+.resfin{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--tx2);text-align:center}
+
+/* le tiroir d'ajout */
+.calajout{margin-top:2px;border-top:1px solid var(--line);padding-top:8px}
+.calajout summary{font-size:12px;font-weight:800;letter-spacing:.02em;cursor:pointer;
+  color:var(--zhu);padding:3px 0;list-style:none}
+.calajout summary::-webkit-details-marker{display:none}
+.calajout summary::before{content:"+ ";font-weight:900}
+.calajout[open] summary::before{content:"− "}
 .calpitem{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:grab;
   background:var(--pap);border:1px solid transparent;transition:background .14s,border-color .14s}
 .calpitem:hover{background:var(--line);border-color:var(--zhu)}
@@ -832,10 +857,14 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <input id="calurl" class="calsearch" hidden readonly aria-label="Lien du plan">
     <div class="calwrap">
       <aside class="calpal">
-        <h4>À poser</h4>
-        <div class="hint">Glissez sur un jour, ou double-cliquez pour ajouter à la suite.</div>
-        <input type="search" id="calsearch" class="calsearch" placeholder="Chercher une destination…" aria-label="Chercher une destination">
-        <div id="calplist" class="calplist"></div>
+        <h4>La route</h4>
+        <div id="calresume" class="calresume"></div>
+        <details class="calajout">
+          <summary>Ajouter une destination</summary>
+          <div class="hint">Glissez sur un jour, ou double-cliquez pour ajouter à la suite.</div>
+          <input type="search" id="calsearch" class="calsearch" placeholder="Chercher…" aria-label="Chercher une destination">
+          <div id="calplist" class="calplist"></div>
+        </details>
       </aside>
       <div id="calgrid" class="calgrid"></div>
     </div>
@@ -2396,6 +2425,76 @@ function totalActivites(){
   return n;
 }
 
+/* ══ Le résumé de la route ══
+   La colonne de gauche montrait 45 destinations à poser. Une fois la route
+   décidée, ce qui manque c'est la vue d'ensemble : les étapes, leurs dates,
+   leurs nuits, et un clic pour sauter au bon jour. */
+
+function drawResume(){
+  var box = document.getElementById("calresume");
+  if(!box) return;
+  box.innerHTML = "";
+
+  if(!sel.length){
+    box.appendChild(el("div", "hint", "Rien de posé. Ouvrez « Ajouter une destination » ci-dessous."));
+    return;
+  }
+
+  var jour = 0, total = totalNights();
+  sel.forEach(function(k, i){
+    var d = D[k], n = Math.max(1, nights[k] || 1);
+    var deb = addD(START, jour), fin = addD(START, jour + n - 1);
+
+    var it = el("button", "resit");
+    it.style.setProperty("--c", teinte(i));
+    it.appendChild(el("span", "resnum", String(i + 1)));
+
+    var tx = el("div", "restx");
+    tx.appendChild(el("div", "resnom", d.fr));
+    var dates = (n === 1)
+      ? fmtCourt(deb)
+      : fmtCourt(deb) + " au " + fmtCourt(fin);
+    tx.appendChild(el("div", "resdt", dates + "  ·  " + n + (n > 1 ? " nuits" : " nuit")));
+    it.appendChild(tx);
+
+    /* combien de choses sont déjà calées sur ce séjour */
+    var pose = 0;
+    for(var x = 0; x < n; x++){
+      var c = cleJour(addD(START, jour + x));
+      CRENEAUX.forEach(function(cr){ pose += activitesDuJour(c, cr.k).length; });
+      pose += excursionsDuJour(c).length;
+    }
+    if(pose) it.appendChild(el("span", "respt", String(pose)));
+
+    it.addEventListener("click", function(){
+      var lignes = document.querySelectorAll(".calday");
+      var cible = lignes[jourDeDepart(i)];
+      if(!cible) return;
+      cible.scrollIntoView({ behavior:"smooth", block:"center" });
+      var b = cible.querySelector(".calbloc");
+      if(b){ b.classList.add("atterri"); setTimeout(function(){ b.classList.remove("atterri"); }, 1400); }
+    });
+
+    box.appendChild(it);
+    jour += n;
+  });
+
+  var pied = el("div", "resfin");
+  pied.innerHTML = "<b>" + total + "</b> nuits · <b>" + sel.length + "</b> étapes";
+  box.appendChild(pied);
+}
+
+/* le n° de ligne où commence l'étape i */
+function jourDeDepart(i){
+  var j = 0;
+  for(var k = 0; k < i; k++) j += Math.max(1, nights[sel[k]] || 1);
+  return j;
+}
+
+function fmtCourt(d){
+  return d.getUTCDate() + " " + MOIS[d.getUTCMonth()];
+}
+
 function drawCal(){
   migrerActivites();
   var grille = document.getElementById("calgrid");
@@ -2673,7 +2772,7 @@ function render(){
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
   if(im&&h.src!==im.u){ h.src=im.u; h.alt="La Grande Muraille de Chine"; h.onerror=function(){h.style.display="none";}; }
-  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawPalette(); drawPartage(); routeSave(); calSave();
+  drawGrid(); drawRoute(); drawSum(); drawInsp(); drawCal(); drawResume(); drawPalette(); drawPartage(); routeSave(); calSave();
   if(LMAP) drawLeaflet(); else drawCarte(true);
 }
 (function(){
