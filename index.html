@@ -2063,40 +2063,39 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* 11 étapes sur 25 nuits : c'est dense, et assumé. Zhangjiajie garde 3 nuits
-     parce que les téléphériques ferment par givre : trois nuits, trois chances
-     d'avoir une journée dégagée. Xi'an et Lijiang paient la différence. */
-  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:2","chengdu:3",
-     "dali:2","shaxi:2","lijiang:2","shangrila:2","shanghai#2:2"],
+  /* Chaque durée a une raison, aucune n'est un réglage par défaut :
+       Shanghai 1  · on atterrit à 19 h, la nuit ne sert qu'à dormir
+       Pékin 3     · trois sites d'une journée chacun
+       Xi'an 2     · l'Armée de terre cuite, puis remparts et quartier musulman
+       Zhangjiajie 3 · MÉTÉO : les téléphériques ferment par givre, il faut une marge
+       Chongqing 1 · tout s'y fait le soir, une soirée suffit, Chengdu est à 1 h 30
+       Chengdu 3   · pandas le matin, Leshan mange une journée, opéra le soir
+       Dali 2      · les Trois Pagodes, puis le tour du lac Erhai
+       Shaxi 2     · un village : une journée pleine entre deux demi-journées
+       Lijiang 3   · Dragon de Jade et Saut du Tigre sont deux journées entières
+       Shangri-La 3 · ALTITUDE : 3 200 m, le troisième jour est le premier confortable
+       Shanghai 2  · retour du Yunnan, Suzhou, et la journée du 8 avant le vol      */
+  s:["shanghai:1","pekin:3","xian:2","zhangjiajie:3","chongqing:1","chengdu:3",
+     "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:2"],
   n:{},
   g:{},
-  x:{ "2026-11-26":["leshan"], "2026-12-03":["tigerleaping"], "2026-12-07":["suzhou"] },
-  /* Les journées vides le sont exprès : arrivée, excursions, marges météo, temps libre. */
+  x:{ "2026-11-24":["leshan"], "2026-12-02":["tigerleaping"], "2026-12-07":["suzhou"] },
   a:{
     "2026-11-14": {
-      "m": [
-        "Le marché aux célibataires de People's Park le week-end"
-      ],
-      "a": [],
-      "s": [
-        "Le Bund et la skyline de Pudong"
-      ]
-    },
-    "2026-11-15": {
       "m": [
         "Cité Interdite, puis la colline de Jingshan au couchant"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-16": {
+    "2026-11-15": {
       "m": [
         "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-17": {
+    "2026-11-16": {
       "m": [
         "Temple du Ciel au petit matin, à l'heure du tai-chi"
       ],
@@ -2105,7 +2104,7 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-18": {
+    "2026-11-17": {
       "m": [
         "Armée de terre cuite"
       ],
@@ -2114,7 +2113,7 @@ var PLAN_DEFAUT = {
         "Le quartier musulman le soir"
       ]
     },
-    "2026-11-19": {
+    "2026-11-18": {
       "m": [
         "Les remparts à vélo"
       ],
@@ -2123,14 +2122,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-20": {
+    "2026-11-19": {
       "m": [
         "Parc national de Wulingyuan, les montagnes d'Avatar"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-21": {
+    "2026-11-20": {
       "m": [
         "Tianmen Shan, téléphérique et route aux 99 virages"
       ],
@@ -2139,30 +2138,30 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-22": {
+    "2026-11-21": {
       "m": [],
       "a": [],
       "s": [
         "Le spectacle sur la minorité Tujia, en salle"
       ]
     },
-    "2026-11-23": {
+    "2026-11-22": {
       "m": [],
       "a": [
         "Le métro de Liziba qui traverse un immeuble d'habitation"
       ],
       "s": [
-        "Hongyadong et Jiefangbei de nuit"
+        "Hongyadong et Jiefangbei de nuit",
+        "Hotpot à marmite compartimentée"
       ]
     },
-    "2026-11-24": {
-      "m": [
-        "Les abris anti-aériens reconvertis"
+    "2026-11-23": {
+      "m": [],
+      "a": [
+        "Le quartier de Kuanzhai"
       ],
-      "a": [],
       "s": [
-        "Téléphérique du Yangtsé et croisière de nuit",
-        "Hotpot à marmite compartimentée"
+        "Opéra du Sichuan et changement de masques"
       ]
     },
     "2026-11-25": {
@@ -2170,27 +2169,18 @@ var PLAN_DEFAUT = {
         "Base de recherche sur le panda géant, tôt le matin"
       ],
       "a": [
-        "Le quartier de Kuanzhai"
+        "Maisons de thé du parc du Peuple"
+      ],
+      "s": []
+    },
+    "2026-11-26": {
+      "m": [],
+      "a": [
+        "Les Trois Pagodes du temple Chongsheng"
       ],
       "s": []
     },
     "2026-11-27": {
-      "m": [
-        "Maisons de thé du parc du Peuple"
-      ],
-      "a": [],
-      "s": [
-        "Opéra du Sichuan et changement de masques"
-      ]
-    },
-    "2026-11-28": {
-      "m": [
-        "Les Trois Pagodes du temple Chongsheng"
-      ],
-      "a": [],
-      "s": []
-    },
-    "2026-11-29": {
       "m": [
         "Le tour du lac Erhai à vélo ou en scooter"
       ],
@@ -2199,14 +2189,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-30": {
+    "2026-11-28": {
       "m": [],
       "a": [
         "La place de Sideng et son théâtre"
       ],
       "s": []
     },
-    "2026-12-01": {
+    "2026-11-29": {
       "m": [
         "Les temples de Shibaoshan à flanc de montagne"
       ],
@@ -2215,13 +2205,18 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-02": {
-      "m": [
-        "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
-      ],
+    "2026-11-30": {
+      "m": [],
       "a": [
         "La vieille ville de Dayan, classée"
       ],
+      "s": []
+    },
+    "2026-12-01": {
+      "m": [
+        "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
+      ],
+      "a": [],
       "s": []
     },
     "2026-12-04": {
@@ -2241,13 +2236,24 @@ var PLAN_DEFAUT = {
       "s": []
     },
     "2026-12-06": {
-      "m": [],
+      "m": [
+        "Le marché aux célibataires de People's Park le week-end"
+      ],
       "a": [
         "Yu Garden et la vieille ville"
       ],
       "s": [
-        "Nanjing Road de nuit"
+        "Le Bund et la skyline de Pudong"
       ]
+    },
+    "2026-12-08": {
+      "m": [
+        "L'ancienne concession française à pied"
+      ],
+      "a": [
+        "Nanjing Road de nuit"
+      ],
+      "s": []
     }
   },
   j:{}
