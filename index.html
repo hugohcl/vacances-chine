@@ -599,6 +599,19 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calday.sej .caldate{box-shadow:inset 3px 0 0 var(--c)}
 .calday.debut{border-top:2px solid var(--c)}
 .calday.debut .cdn{color:var(--c)}
+.calday.transit .caldate{box-shadow:none;
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--cd) 22%,transparent) 0%,
+    color-mix(in srgb,var(--cd) 22%,transparent) 45%,
+    transparent 45%);
+  border-left:3px solid var(--c)}
+.calday.transit .caldate:before{content:"";position:absolute;left:0;top:0;width:3px;height:45%;
+  background:var(--cd)}
+.calday.transit .caldate{position:relative}
+.calcr.enroute .calcrt{opacity:.55}
+.calcr.enroute .calact{color:var(--tx2);font-style:italic;text-decoration:line-through;
+  text-decoration-color:var(--tx2);opacity:.75;background:repeating-linear-gradient(135deg,
+  transparent,transparent 5px,var(--line) 5px,var(--line) 6px);border-radius:6px;padding:3px 7px}
 
 /* un séjour */
 .calbloc{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:grab;
@@ -2601,7 +2614,15 @@ function retirerActivite(cle, cr, txt){
   calSave(); drawCal();
 }
 
-function drawAct(cle, base, slot){
+/* Un trajet occupe des créneaux : on les montre barrés plutôt que vides,
+   sinon la couleur de la ville d'arrivée laisse croire que la journée est libre. */
+function creneauxTrajet(pp){
+  if(!pp) return [];
+  if(pp.total >= 480) return ["m", "a"];      /* la journée entière y passe */
+  return ["m"];                                /* le matin est en route */
+}
+
+function drawAct(cle, base, slot, transit){
   var box   = el("div", "calacts");
   var deja  = activitesDejaPosees();
   var dispo = activitesPossibles(base).filter(function(t){ return deja.indexOf(t) < 0; });
@@ -2619,9 +2640,24 @@ function drawAct(cle, base, slot){
     slot.appendChild(p);
   }
 
+  var pris = transit ? creneauxTrajet(transit.pp) : [];
+
   var vides = [];
   CRENEAUX.forEach(function(c){
     var pose = activitesDuJour(cle, c.k);
+
+    /* créneau avalé par le trajet : on l'affiche, barré */
+    if(pris.indexOf(c.k) >= 0){
+      var lr = el("div", "calcr enroute");
+      lr.appendChild(el("span", "calcrt", c.t));
+      var lc = el("div", "calcrl");
+      lc.appendChild(el("div", "calact",
+        "En route vers " + D[transit.vers].fr + ", depuis " + D[transit.de].fr));
+      lr.appendChild(lc);
+      box.appendChild(lr);
+      return;
+    }
+
     if(!pose.length){ vides.push(c); return; }   /* un créneau vide n'occupe pas de place */
 
     var l = el("div", "calcr");
@@ -2848,6 +2884,8 @@ function drawCal(){
     var venant = (c && c.premiere && i > 0 && plan[i - 1] && plan[i - 1].id !== c.id)
                ? plan[i - 1].id : null;
     if(venant){
+      jour.classList.add("transit");
+      jour.style.setProperty("--cd", teinte(cc.etape - 1));
       slot.appendChild(drawTrajet(venant, c.id));
       var tr = trajetDe(venant, c.id);
       var ppj = tr ? porteAPorte(tr.m, tr.d) : null;
@@ -2885,7 +2923,13 @@ function drawCal(){
     /* le dernier jour n'a pas de nuit, mais c'est une vraie journée : on lui
        rattache la dernière étape pour pouvoir y caler quelque chose */
     var base = c ? c.id : (i === lignes - 1 && sel.length ? sel[sel.length - 1] : null);
-    if(base) slot.appendChild(drawAct(cle, base, slot));
+    var infoTransit = null;
+    if(venant){
+      var tt = trajetDe(venant, c.id);
+      var pt = tt ? porteAPorte(tt.m, tt.d) : null;
+      if(pt) infoTransit = { de:venant, vers:c.id, pp:pt };
+    }
+    if(base) slot.appendChild(drawAct(cle, base, slot, infoTransit));
     if(c)    slot.appendChild(drawExc(cle, c.id, slot));
     slot.appendChild(calTags(cle, slot));
     slot.appendChild(calNote(cle));
