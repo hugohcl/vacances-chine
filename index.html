@@ -596,6 +596,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--c,var(--zhu));opacity:.55;flex:none}
 
 .fige{border-left:3px solid var(--zhu);background:var(--pap)}
+.par.fixe .val{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:2px 0 4px}
+.par.fixe{opacity:1}
 .fige .lbl{color:var(--zhu)}
 
 /* excursions, sans nuit */
@@ -749,20 +751,19 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   </nav>
 
   <div class="panel" id="p-param">
-    <div class="bh"><span class="lbl">Le cadre</span><h2>Vos paramètres</h2>
-      <p>Les nuits sont un plafond, pas un réglage : rien ne se redistribue, on vous prévient si la route dépasse.</p></div>
+    <div class="bh"><span class="lbl">Le cadre</span><h2>Ce qui est figé</h2>
+      <p>Les billets sont achetés : les dates, la durée et les deux extrémités du voyage ne bougent plus. Seul le rythme reste réglable.</p></div>
     <div class="params">
-      <div class="par"><span class="lbl">Plafond de nuits</span>
-        <div><span class="big" id="nn">25</span><span class="u">nuits visées</span></div>
-        <input type="range" id="dial" min="10" max="30" value="25" aria-label="Nombre de nuits">
+      <div class="par fixe"><span class="lbl">Nuits sur place</span>
+        <div><span class="big" id="nn">25</span><span class="u">nuits</span></div>
         <small id="nnote"></small></div>
-      <div class="par"><span class="lbl">Arrivée en Chine</span>
-        <select id="ain"></select>
-        <small>Les villes marquées d'un point sont desservies sans escale depuis Paris.</small></div>
-      <div class="par"><span class="lbl">Départ de Chine</span>
-        <select id="aout"></select>
-        <small>Laissez sur « à déterminer » tant que la route n'est pas arrêtée : l'outil déduira l'aéroport le plus proche de votre dernière étape.</small></div>
-      <div class="par"><span class="lbl">Rythme</span>
+      <div class="par fixe"><span class="lbl">Arrivée en Chine</span>
+        <div class="val">Shanghai-Pudong</div>
+        <small><b>AF116</b>, ven. 13 nov. à 19 h 00, terminal 1. Parti de Roissy 2E la veille à 23 h 20.</small></div>
+      <div class="par fixe"><span class="lbl">Départ de Chine</span>
+        <div class="val">Shanghai-Pudong</div>
+        <small><b>AF111</b>, mar. 8 déc. à 22 h 15, terminal 1. Roissy 2E le 9 à 5 h 50.</small></div>
+      <div class="par"><span class="lbl">Rythme · le seul réglage</span>
         <select id="pace">
           <option value="slow">Lent — 4 nuits par étape</option>
           <option value="med" selected>Moyen — 3 nuits par étape</option>
@@ -1285,6 +1286,8 @@ function miniMap(id){
 }
 
 /* ══ état ══ */
+/* Imposé par les billets achetés le 2026-08-28. Ne pas rendre modifiable. */
+var ARRIVEE="shanghai", SORTIE="shanghai";
 var sel=[], nights={}, target=25, pace="med", filt="Nord", vb=null;
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 /* Vol AF/China Eastern relevé : CDG 12 nov 23h30 -> Shanghai 13 nov 19h05.
@@ -1505,7 +1508,7 @@ function toggle(id){
 /* ordre geographique : plus proche voisin depuis l'aeroport d'arrivee */
 function order(){
   if(sel.length<3) return;
-  var start=document.getElementById("ain").value;
+  var start=ARRIVEE;
   if(start==="auto") start=sel[0];
   var rest=sel.slice(), out=[];
   var cur = rest.indexOf(start)>=0 ? start : rest[0];
@@ -1533,7 +1536,9 @@ function nearestAir(id){
   return {id:best,km:Math.round(bd)};
 }
 function exitAir(){
-  var v=document.getElementById("aout").value;
+  var v=SORTIE;
+  return {id:v,auto:false};   /* le vol retour part de Shanghai, il n'y a rien à déduire */
+  /* eslint-disable-next-line no-unreachable */
   if(v!=="auto") return {id:v,auto:false};
   if(!sel.length) return null;
   var n=nearestAir(sel[sel.length-1]);
@@ -1670,11 +1675,10 @@ function drawSum(){
       alert("warn","Vous dormez à "+D[id].fr+" alors que "+D[b[0]].fr+" est dans votre route, à "+L2.d+". "+L2.p+" Passer "+D[id].fr+" à zéro nuit vous épargne un changement d hôtel.");
     }
   });
-  var ain=document.getElementById("ain").value;
-  if(ain!=="auto"&&sel.length&&sel[0]!==ain) alert("warn","Votre route commence par "+D[sel[0]].fr+" mais vous arrivez à "+D[ain].fr+". Ajoutez la ville d'arrivée, ou changez le paramètre.");
+  if(sel.length&&bid(sel[0])!==ARRIVEE) alert("warn","Vous atterrissez à Shanghai le 13 novembre à 19 h 00, mais votre route commence par "+D[sel[0]].fr+". Mettez Shanghai en première étape.");
+  if(sel.length&&bid(sel[sel.length-1])!==SORTIE) alert("warn","Votre vol repart de Shanghai le 8 décembre à 22 h 15, mais votre route finit à "+D[sel[sel.length-1]].fr+". Il faut revenir à Shanghai.");
   var ex=exitAir();
-  if(ex&&ex.auto) alert("good","Sortie déduite de votre route : "+D[ex.id].fr+", l'aéroport le plus proche de "+D[ex.from].fr+
-    (ex.km>60?" ("+ex.km+" km)":"")+". Vous pourrez la fixer une fois la route arrêtée.");
+
 }
 function fitBox(ids){
   var xs=ids.map(function(i){return px(D[i].lon);}),ys=ids.map(function(i){return py(D[i].lat);});
@@ -1767,22 +1771,6 @@ function drawInsp(){
 
 /* ══ parametres ══ */
 (function(){
-  var ai=document.getElementById("ain"),ao=document.getElementById("aout");
-  [ai,ao].forEach(function(s){
-    var o=document.createElement("option"); o.value="auto";
-    o.textContent="À déterminer, d'après ma route"; s.appendChild(o);
-  });
-  AIR.forEach(function(id){
-    [ai,ao].forEach(function(s){
-      var o=document.createElement("option"); o.value=id;
-      o.textContent=D[id].fr+(DIRECT.indexOf(id)>=0?" ·":"");
-      s.appendChild(o);
-    });
-  });
-  ai.value="pekin"; ao.value="auto";
-  ai.addEventListener("change",function(){order();render();});
-  ao.addEventListener("change",render);
-  document.getElementById("dial").addEventListener("input",function(e){target=+e.target.value;render();});
   document.getElementById("pace").addEventListener("change",function(e){
     pace=e.target.value;
     sel.forEach(function(id){nights[id]=Math.min(D[id].n,paceN()+1);});
@@ -2540,7 +2528,7 @@ function drawPalette(){
 function render(){
   document.getElementById("cnt").textContent=sel.length;
   document.getElementById("nn").textContent=target;
-  document.getElementById("nnote").textContent="Billets achetés. Départ le 12 novembre à 23 h 20, retour le 8 décembre à 22 h 15. 25 nuits sur place, 6 jours de marge avant la butée visa du 14 décembre.";
+  document.getElementById("nnote").textContent="Du 13 novembre au 8 décembre, imposé par les vols. Le visa autorise 30 nuits : 6 jours de marge avant la butée du 14 décembre.";
   document.getElementById("pnote").textContent="Change les nuits attribuées quand vous ajoutez une destination. Vous pouvez toujours ajuster étape par étape.";
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
