@@ -686,6 +686,10 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .caltform .btn{flex:none;padding:6px 13px;font-size:12.5px}
 
 /* jours particuliers */
+.caltransit{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--zhu);
+  background:#3C63821a;border-radius:8px;padding:5px 9px;margin-top:3px}
+.caltransit .ic{width:18px;height:18px;border-radius:50%;background:var(--zhu);color:#fff;
+  display:grid;place-items:center;font-size:11px;flex:none}
 .calvol{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--tx2)}
 .calvol .ic{width:22px;height:22px;border-radius:6px;background:var(--deep);color:#fff;
   display:grid;place-items:center;font-size:11px;flex:none}
@@ -2074,22 +2078,17 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* Xi'an est gardé, à la demande. Conséquence : avec les temps porte à porte,
-     11 étapes demandent 28 nuits et on n'en a que 25. Trois étapes sont donc
-     servies au minimum, et trois visites tombent :
-       Pékin 3      · le Temple du Ciel saute
-       Xi'an 2      · une seule journée pleine, l'Armée de terre cuite
-       Zhangjiajie 2 · Tianmen Shan et la passerelle sautent, on garde Wulingyuan
-     Le reste tient compte du transport réel :
-       Shanghai 3   · deux journées pleines avant 7 h de train
-       Chongqing 1  · une soirée, tout y est nocturne
-       Chengdu 3    · arrivée légère, puis Leshan et les pandas
-       Dali 2       · arrivée mangée par le vol, puis le lac Erhai
-       Shaxi 2      · trajet court, une journée au village
-       Lijiang 3    · Saut du Tigre et Dragon de Jade
-       Shangri-La 3 · altitude 3 200 m
-       Shanghai 1   · le retour du Yunnan prend 9 h, le 8 est une journée pleine */
-  s:["shanghai:3","pekin:3","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
+  /* Le jour de trajet appartient à la ville d'ARRIVÉE. On part le matin, on arrive
+     en début d'après-midi, et la fin de journée se passe déjà sur place.
+     Shanghai 2 · on dort le 13 et le 14, on part le dimanche 15 au matin.
+     Pékin 4    · dont le dimanche 15 en fin de journée, puis 3 journées pleines.
+     Xi'an 2    · arrivée le 19 en soirée, une journée pleine le 20.
+     Zhangjiajie 2 · arrivée le 21, une journée pleine le 22 pour Wulingyuan.
+     Chongqing 1 · arrivée le 23 en début d'après-midi, une soirée.
+     Chengdu 3  · arrivée légère, Leshan et les pandas.
+     Dali 2, Shaxi 2, Lijiang 3, Shangri-La 3 · voir le détail dans le calendrier.
+     Shanghai 1 · le retour du Yunnan prend 9 h, le 8 est une journée pleine. */
+  s:["shanghai:2","pekin:4","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
      "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:1"],
   n:{},
   g:{},
@@ -2107,26 +2106,29 @@ var PLAN_DEFAUT = {
       ]
     },
     "2026-11-15": {
-      "m": [
-        "Yu Garden et la vieille ville"
-      ],
+      "m": [],
       "a": [],
       "s": [
-        "Nanjing Road de nuit"
+        "Les hutongs de Dongcheng, à pied"
       ]
     },
-    "2026-11-17": {
+    "2026-11-16": {
       "m": [
         "Cité Interdite, puis la colline de Jingshan au couchant"
       ],
-      "a": [
-        "Les hutongs de Dongcheng, à pied"
+      "a": [],
+      "s": []
+    },
+    "2026-11-17": {
+      "m": [
+        "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
       ],
+      "a": [],
       "s": []
     },
     "2026-11-18": {
       "m": [
-        "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
+        "Temple du Ciel au petit matin, à l'heure du tai-chi"
       ],
       "a": [],
       "s": []
@@ -2838,6 +2840,28 @@ function drawCal(){
     }
 
     var c = plan[i];
+
+    /* LE JOUR DE TRANSITION.
+       On voyage le jour où l'on arrive, pas la veille. La ligne de trajet se pose
+       donc en tête de la première journée d'un séjour, et ce qui reste de la
+       journée appartient déjà à la ville d'arrivée. */
+    var venant = (c && c.premiere && i > 0 && plan[i - 1] && plan[i - 1].id !== c.id)
+               ? plan[i - 1].id : null;
+    if(venant){
+      slot.appendChild(drawTrajet(venant, c.id));
+      var tr = trajetDe(venant, c.id);
+      var ppj = tr ? porteAPorte(tr.m, tr.d) : null;
+      if(ppj){
+        var q = el("div", "caltransit");
+        q.appendChild(el("span", "ic", "→"));
+        q.appendChild(el("span", null,
+          "Départ de " + D[venant].fr + " le matin, arrivée à " + D[c.id].fr
+          + (ppj.total >= 480 ? " en soirée." : ppj.total >= 300 ? " en début d'après-midi." : " dans la matinée.")
+          + (ppj.total >= 480 ? " La journée est prise." : " L'après-midi et la soirée sont à vous.")));
+        slot.appendChild(q);
+      }
+    }
+
     if(c && c.premiere){
       slot.appendChild(calBloc(c));
     } else if(c){
@@ -2846,14 +2870,8 @@ function drawCal(){
       suite.appendChild(el("span", null, D[c.id].fr + " · nuit " + c.nuit + " sur " + c.total));
       slot.appendChild(suite);
     }
-    /* le message d'invite ne concerne QUE les journées sans séjour.
-       Il était accroché au mauvais « else » et s'affichait sur des jours pleins. */
     if(!c && i < lignes - 1 && i > 0){
       slot.appendChild(el("div", "calvide", "Rien de posé. Glissez une destination ici."));
-    }
-    /* dernière nuit d'un séjour suivi d'un autre : on montre le trajet */
-    if(c && c.nuit === c.total && plan[i + 1] && plan[i + 1].id !== c.id){
-      slot.appendChild(drawTrajet(c.id, plan[i + 1].id));
     }
 
     /* dernier jour : on repart */
