@@ -600,6 +600,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .par.fixe{opacity:1}
 .fige .lbl{color:var(--zhu)}
 
+/* le programme du jour */
+.calacts{display:flex;flex-direction:column;gap:2px}
+.calact{display:flex;align-items:flex-start;gap:7px;padding:2px 4px;border-radius:6px;font-size:12.5px;line-height:1.3}
+.calact:hover{background:var(--pap)}
+.cak{color:var(--c,var(--zhu));font-weight:800;flex:none;line-height:1.3}
+.cat{flex:1;min-width:0}
+.calact .cesup{opacity:0;width:18px;height:18px;font-size:11px}
+.calact:hover .cesup{opacity:1}
+
 /* excursions, sans nuit */
 .calexcs{display:flex;flex-direction:column;gap:4px}
 .calexc{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:8px;cursor:pointer;
@@ -1956,6 +1965,7 @@ function etatCompact(){
     if(c && c.note) e.n[k] = c.note;
     if(c && c.tags && c.tags.length) e.g[k] = c.tags.join("");
   });
+  if(CAL.act)     e.a = CAL.act;        /* programme du jour */
   if(CAL.exc)     e.x = CAL.exc;        /* excursions */
   if(CAL.trajets) e.j = CAL.trajets;    /* trajets renseignés */
   return e;
@@ -1995,6 +2005,7 @@ function appliquerEtat(e){
     CAL[k] = CAL[k] || {};
     CAL[k].tags = Array.from(e.g[k]);   /* Array.from découpe correctement les emoji */
   });
+  if(e.a) CAL.act     = e.a;
   if(e.x) CAL.exc     = e.x;
   if(e.j) CAL.trajets = e.j;
   return true;
@@ -2007,14 +2018,26 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* Lijiang une seule fois, 4 nuits d'affilée. Le 6 décembre est une journée de
-     transfert : train Shangri-La → Lijiang (1 h 20) puis vol Lijiang → Shanghai.
-     Pas besoin d'y dormir : 7 vols par jour et 2 nuits de battement à Shanghai. */
-  s:["shanghai:2","pekin:3","xian:3","chongqing:2","chengdu:3",
-     "dali:2","shaxi:2","lijiang:4","shangrila:2","shanghai#2:2"],
+  /* 11 étapes sur 25 nuits : c'est dense, et assumé. Zhangjiajie garde 3 nuits
+     parce que les téléphériques ferment par givre : trois nuits, trois chances
+     d'avoir une journée dégagée. Xi'an et Lijiang paient la différence. */
+  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:2","chengdu:3",
+     "dali:2","shaxi:2","lijiang:2","shangrila:2","shanghai#2:2"],
   n:{},
   g:{},
-  x:{ "2026-11-24":["leshan"], "2026-12-01":["tigerleaping"], "2026-12-07":["suzhou"] },
+  x:{ "2026-11-26":["leshan"], "2026-12-03":["tigerleaping"], "2026-12-07":["suzhou"] },
+  a:{
+    "2026-11-15":["Cité Interdite, puis la colline de Jingshan au couchant"],
+    "2026-11-16":["Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"],
+    "2026-11-17":["Temple du Ciel au petit matin, à l'heure du tai-chi","Les hutongs de Dongcheng, à pied"],
+    "2026-11-20":["Tianmen Shan, téléphérique et route aux 99 virages"],
+    "2026-11-21":["Parc national de Wulingyuan"],
+    "2026-11-22":["La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
+    "2026-11-25":["Base de recherche sur le panda géant, tôt le matin"],
+    "2026-11-27":["Opéra du Sichuan et changement de masques"],
+    "2026-12-02":["Montagne du Dragon de Jade, téléphérique à 4 506 mètres"],
+    "2026-12-04":["Monastère de Songzanlin"]
+  },
   j:{}
 };
 
@@ -2262,6 +2285,80 @@ function totalExcursions(){
   return n;
 }
 
+/* ══ Le programme du jour ══
+   Le calendrier disait où l'on dort, pas ce qu'on y fait. Chaque destination porte
+   déjà sa liste « sur place » : on peut désormais poser ces activités sur un jour
+   précis, comme les excursions. Ça ne consomme aucune nuit, ça remplit la journée. */
+
+function activitesPossibles(base){
+  var d = D[base];
+  return (d && d.ok) ? d.ok.slice() : [];
+}
+function activitesDuJour(cle){
+  return (CAL.act && CAL.act[cle]) || [];
+}
+/* une activité déjà posée ailleurs dans le même séjour ne doit plus être proposée */
+function activitesDejaPosees(base, plan){
+  var vues = [];
+  Object.keys(CAL.act || {}).forEach(function(k){
+    (CAL.act[k] || []).forEach(function(a){ if(vues.indexOf(a) < 0) vues.push(a); });
+  });
+  return vues;
+}
+function poserActivite(cle, txt){
+  CAL.act = CAL.act || {};
+  var l = CAL.act[cle] || [];
+  if(l.indexOf(txt) < 0) l.push(txt);
+  CAL.act[cle] = l; calSave(); drawCal();
+}
+function retirerActivite(cle, txt){
+  if(!CAL.act || !CAL.act[cle]) return;
+  CAL.act[cle] = CAL.act[cle].filter(function(x){ return x !== txt; });
+  if(!CAL.act[cle].length) delete CAL.act[cle];
+  calSave(); drawCal();
+}
+
+function drawAct(cle, base, slot){
+  var box  = el("div", "calacts");
+  var pose = activitesDuJour(cle);
+
+  pose.forEach(function(txt){
+    var a = el("div", "calact");
+    a.appendChild(el("span", "cak", "•"));
+    a.appendChild(el("span", "cat", txt));
+    var x = el("button", "cesup", "×"); x.title = "Retirer";
+    x.addEventListener("click", function(e){ e.stopPropagation(); retirerActivite(cle, txt); });
+    a.appendChild(x);
+    box.appendChild(a);
+  });
+
+  var deja  = activitesDejaPosees(base);
+  var dispo = activitesPossibles(base).filter(function(t){ return deja.indexOf(t) < 0; });
+  if(dispo.length){
+    var plus = el("button", "calplus", "+ à faire");
+    plus.addEventListener("click", function(e){
+      e.stopPropagation();
+      var ouvert = slot.querySelector(".calpicker");
+      if(ouvert){ ouvert.remove(); return; }
+      var p = el("div", "calpicker calpexc");
+      dispo.forEach(function(t){
+        var b = el("button", "cepick", t);
+        b.addEventListener("click", function(){ poserActivite(cle, t); });
+        p.appendChild(b);
+      });
+      slot.appendChild(p);
+    });
+    box.appendChild(plus);
+  }
+  return box;
+}
+
+function totalActivites(){
+  var n = 0;
+  Object.keys(CAL.act || {}).forEach(function(k){ n += CAL.act[k].length; });
+  return n;
+}
+
 function drawCal(){
   var grille = document.getElementById("calgrid");
   if(!grille) return;
@@ -2321,6 +2418,7 @@ function drawCal(){
       slot.appendChild(ret);
     }
 
+    if(c) slot.appendChild(drawAct(cle, c.id, slot));
     if(c) slot.appendChild(drawExc(cle, c.id, slot));
     slot.appendChild(calTags(cle, slot));
     slot.appendChild(calNote(cle));
