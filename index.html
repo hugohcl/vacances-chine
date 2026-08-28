@@ -631,6 +631,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calcrt{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
   color:var(--tx2);padding-top:3px;border-right:1px solid var(--line);min-height:16px}
 .calcrl{display:flex;flex-direction:column;gap:1px;align-items:flex-start}
+.calvides{display:flex;gap:4px;flex-wrap:wrap;padding-left:80px;opacity:0;transition:opacity .16s}
+.calday:hover .calvides{opacity:1}
 .calact{display:flex;align-items:flex-start;gap:6px;padding:2px 5px;border-radius:6px;font-size:12.5px;line-height:1.3;width:100%}
 .calact:hover{background:var(--pap)}
 .calpttl{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--tx2);padding:2px 6px 5px}
@@ -2289,9 +2291,9 @@ function drawPartage(){
   });
   b.appendChild(copier);
 
-  var raz = el("button", "btn ghost", "Revenir au plan de départ");
+  var raz = el("button", "btn", "Recharger le plan à jour");
   raz.addEventListener("click", function(){
-    if(!confirm("Abandonner vos modifications et revenir au plan inscrit dans le site ?")) return;
+    if(!confirm("Remplacer votre version par le plan à jour du site ? Vos modifications locales seront perdues.")) return;
     try { localStorage.removeItem("robeb-cal"); localStorage.removeItem("robeb-route"); } catch(e){}
     CAL = {}; appliquerEtat(PLAN_DEFAUT); render();
   });
@@ -2553,44 +2555,55 @@ function drawAct(cle, base, slot){
   var deja  = activitesDejaPosees();
   var dispo = activitesPossibles(base).filter(function(t){ return deja.indexOf(t) < 0; });
 
+  function ouvrirChoix(cr){
+    var ouvert = slot.querySelector(".calpicker");
+    if(ouvert){ ouvert.remove(); return; }
+    var p = el("div", "calpicker calpexc");
+    p.appendChild(el("div", "calpttl", cr.t));
+    dispo.forEach(function(t){
+      var b2 = el("button", "cepick", t);
+      b2.addEventListener("click", function(){ poserActivite(cle, cr.k, t); });
+      p.appendChild(b2);
+    });
+    slot.appendChild(p);
+  }
+
+  var vides = [];
   CRENEAUX.forEach(function(c){
     var pose = activitesDuJour(cle, c.k);
-    if(!pose.length && !dispo.length) return;      /* créneau muet si rien à y mettre */
+    if(!pose.length){ vides.push(c); return; }   /* un créneau vide n'occupe pas de place */
 
     var l = el("div", "calcr");
     l.appendChild(el("span", "calcrt", c.t));
-
     var liste = el("div", "calcrl");
     pose.forEach(function(txt){
-      var a = el("div", "calact");
-      a.appendChild(el("span", "cat", txt));
+      var a2 = el("div", "calact");
+      a2.appendChild(el("span", "cat", txt));
       var x = el("button", "cesup", "×"); x.title = "Retirer";
       x.addEventListener("click", function(e){ e.stopPropagation(); retirerActivite(cle, c.k, txt); });
-      a.appendChild(x);
-      liste.appendChild(a);
+      a2.appendChild(x);
+      liste.appendChild(a2);
     });
-
     if(dispo.length){
-      var plus = el("button", "calplus", pose.length ? "+" : "+ à faire");
-      plus.title = "Ajouter au " + c.t.toLowerCase();
-      plus.addEventListener("click", function(e){
-        e.stopPropagation();
-        var ouvert = slot.querySelector(".calpicker");
-        if(ouvert){ ouvert.remove(); return; }
-        var p = el("div", "calpicker calpexc");
-        p.appendChild(el("div", "calpttl", c.t));
-        dispo.forEach(function(t){
-          var b = el("button", "cepick", t);
-          b.addEventListener("click", function(){ poserActivite(cle, c.k, t); });
-          p.appendChild(b);
-        });
-        slot.appendChild(p);
-      });
-      liste.appendChild(plus);
+      var p2 = el("button", "calplus", "+");
+      p2.title = "Ajouter au " + c.t.toLowerCase();
+      p2.addEventListener("click", function(e){ e.stopPropagation(); ouvrirChoix(c); });
+      liste.appendChild(p2);
     }
     l.appendChild(liste);
     box.appendChild(l);
   });
+
+  /* les créneaux libres tiennent sur une seule ligne discrète */
+  if(dispo.length && vides.length){
+    var ligne = el("div", "calvides");
+    vides.forEach(function(c){
+      var b3 = el("button", "calplus", "+ " + c.t.toLowerCase());
+      b3.addEventListener("click", function(e){ e.stopPropagation(); ouvrirChoix(c); });
+      ligne.appendChild(b3);
+    });
+    box.appendChild(ligne);
+  }
   return box;
 }
 
