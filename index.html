@@ -2717,11 +2717,14 @@ function drawCal(){
       suite.appendChild(el("span", null, D[c.id].fr + " · nuit " + c.nuit + " sur " + c.total));
       slot.appendChild(suite);
     }
+    /* le message d'invite ne concerne QUE les journées sans séjour.
+       Il était accroché au mauvais « else » et s'affichait sur des jours pleins. */
+    if(!c && i < lignes - 1 && i > 0){
+      slot.appendChild(el("div", "calvide", "Rien de posé. Glissez une destination ici."));
+    }
     /* dernière nuit d'un séjour suivi d'un autre : on montre le trajet */
     if(c && c.nuit === c.total && plan[i + 1] && plan[i + 1].id !== c.id){
       slot.appendChild(drawTrajet(c.id, plan[i + 1].id));
-    } else if(i < lignes - 1 && i > 0){
-      slot.appendChild(el("div", "calvide", "Rien de posé. Glissez une destination ici."));
     }
 
     /* dernier jour : on repart */
