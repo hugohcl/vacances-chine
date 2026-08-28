@@ -692,6 +692,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .caltmange{font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;
   background:#C4761F;color:#fff;border-radius:100px;padding:2px 8px}
 .calts{font-size:10.5px;color:var(--tx2);opacity:.75;font-style:italic}
+.caltest{font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:#C4761F;border:1px solid #C4761F66;border-radius:100px;padding:1px 6px}
 .caltform{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;padding:8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
 .caltin{padding:6px 9px;border:1px solid var(--line);border-radius:7px;font-family:inherit;font-size:12.5px;
   background:var(--pap);color:var(--tx);min-width:120px;flex:1}
@@ -2332,7 +2334,6 @@ var TRAJETS_CONNUS = {
   "chengdu>chongqing":  { m:"train", d:"1 h 30",  s:"corpus" },
   "lijiang>shangrila":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
   "shangrila>lijiang":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
-  "shangrila>shanghai": { m:"train", d:"journée",  s:"train 1 h 20 jusqu'à Lijiang, puis vol. Aucun direct depuis Shangri-La" },
   "dali>kunming":       { m:"train", d:"2 h",     s:"corpus" },
   "kunming>dali":       { m:"train", d:"2 h",     s:"corpus" },
   "kunming>shanghai":   { m:"vol",   d:"2 h 55",  s:"sans escale, vérifié" },
@@ -2342,7 +2343,14 @@ var TRAJETS_CONNUS = {
   "lijiang>shaxi":      { m:"route", d:"2 h",     s:"corpus" },
   "shaxi>lijiang":      { m:"route", d:"2 h",     s:"corpus" },
   "kunming>yuanyang":   { m:"route", d:"4 h 30",  s:"corpus" },
-  "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" }
+  "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" },
+  /* Estimations, pas des horaires relevés. À corriger sur 12306 ou Trip.com
+     avant de réserver : le calendrier s'y adapte automatiquement. */
+  "pekin>xian":         { m:"train", d:"5 h",     s:"ESTIMATION, ligne à grande vitesse" },
+  "xian>zhangjiajie":   { m:"vol",   d:"1 h 45",  s:"ESTIMATION, pas de liaison ferroviaire directe rapide" },
+  "zhangjiajie>chongqing": { m:"vol", d:"1 h 30", s:"ESTIMATION" },
+  "chengdu>dali":       { m:"vol",   d:"1 h 30",  s:"ESTIMATION, l'alternative est le train via Kunming" },
+  "shangrila>shanghai": { m:"vol",   d:"4 h 15",  s:"train 1 h 20 jusqu'à Lijiang, puis vol 2 h 55. Aucun direct depuis Shangri-La" }
 };
 
 /* ══ Le temps réel d'un trajet ══
@@ -2427,6 +2435,7 @@ function drawTrajet(a, b){
     }
     if(t.p) corps.appendChild(el("span", "caltp", t.p));
     if(t.n) corps.appendChild(el("span", "caltn", t.n));
+    if(t.s && /ESTIMATION/.test(t.s)) corps.appendChild(el("span", "caltest", "estimé"));
     if(t.s && !t.p && !t.n) corps.appendChild(el("span", "calts", t.s));
   } else {
     corps.appendChild(el("span", "caltm", "Trajet à renseigner"));
