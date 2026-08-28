@@ -595,6 +595,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calsuite{display:flex;align-items:center;gap:8px;padding-left:4px;color:var(--tx2);font-size:12px}
 .calrail{width:4px;align-self:stretch;min-height:22px;border-radius:100px;background:var(--c,var(--zhu));opacity:.55;flex:none}
 
+.fige{border-left:3px solid var(--zhu);background:var(--pap)}
+.fige .lbl{color:var(--zhu)}
+
 /* excursions, sans nuit */
 .calexcs{display:flex;flex-direction:column;gap:4px}
 .calexc{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:8px;cursor:pointer;
@@ -743,7 +746,6 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
     <button data-t="route">Ma route<span class="cnt" id="cnt">0</span></button>
     <button data-t="calendrier">Calendrier</button>
     <button data-t="pratique">Pratique</button>
-    <button data-t="vols">Prix des vols</button>
   </nav>
 
   <div class="panel" id="p-param">
@@ -833,6 +835,11 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li>Le compteur démarre à minuit le lendemain de l'entrée. Entrée le 13 novembre, <b>sortie au plus tard le 14 décembre</b>. Avec le vol retour du 8 décembre, il reste <b>6 jours de marge</b>.</li>
         <li>Passeport <b>ordinaire</b> valide au-delà de six mois après le retour. À vérifier en priorité.</li>
         <li><b>Carte d'arrivée numérique</b> obligatoire, à remplir dans les 72 h. C'est gratuit.</li></ul></section>
+      <section class="fige"><span class="lbl">Acheté</span><h3>Nos vols</h3><ul>
+        <li><b>Aller · jeu. 12 nov. 2026</b><br><b>AF116</b>, Roissy <b>2E</b> 23 h 20 → Shanghai Pudong <b>T1</b> 19 h 00 le 13. Boeing 777-300, 12 h 40, direct.</li>
+        <li><b>Retour · mar. 8 déc. 2026</b><br><b>AF111</b>, Pudong <b>T1</b> 22 h 15 → Roissy <b>2E</b> 5 h 50 le 9. Boeing 777-300, 14 h 35, direct.</li>
+        <li><b>1 748,34 €</b> TTC pour deux, Economy.</li>
+        <li>Enregistrement ouvert <b>30 h avant</b> le départ, fermé <b>1 h avant</b>.</li></ul></section>
       <section><span class="lbl">Se déplacer</span><h3>Trains et vols</h3><ul>
         <li><b>Fenêtre de vente des trains : 15 jours.</b> Rien ne se réserve depuis la France.</li>
         <li><b>Aucun billet à imprimer ni à retirer.</b> La place est rattachée à votre numéro de passeport : à la gare, vous présentez le passeport, c'est lui qui prouve la réservation.</li>
@@ -853,12 +860,6 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
         <li>Trois choses n'existent qu'à cette période : <b>rizières de Yuanyang en eau</b>, <b>mouettes de Sibérie à Kunming</b>, <b>feuillage du delta</b>.</li>
         <li>Le <b>Yunnan est la meilleure région</b> du pays sur cette fenêtre.</li></ul></section>
     </div>
-  </div>
-
-  <div class="panel" id="p-vols">
-    <div class="bh"><span class="lbl">Vols internationaux</span><h2>Le prix au jour le jour</h2>
-      <p>Un relevé automatique chaque matin, sur les quatre combinaisons qui nous intéressent. Le graphe ne dit pas quoi faire : il dit si le prix monte, descend, ou ne bouge pas.</p></div>
-    <div id="volsbox"></div>
   </div>
 
   <div>
@@ -2300,7 +2301,7 @@ function drawCal(){
     if(i === 0){
       var arr = el("div", "calvol");
       arr.appendChild(el("span", "ic", "✈"));
-      arr.appendChild(el("span", null, "Arrivée à Shanghai, 19 h 05. Vol parti de Paris la veille à 23 h 30."));
+      arr.appendChild(el("span", null, "AF116 · arrivée à Shanghai Pudong T1 à 19 h 00. Parti de Roissy 2E la veille à 23 h 20, 12 h 40 de vol."));
       slot.appendChild(arr);
     }
 
@@ -2324,7 +2325,7 @@ function drawCal(){
     if(i === lignes - 1){
       var ret = el("div", "calvol");
       ret.appendChild(el("span", "ic", "✈"));
-      ret.appendChild(el("span", null, "Vol retour à 22 h 15, la journée est entière. Paris le lendemain à 6 h."));
+      ret.appendChild(el("span", null, "AF111 · départ de Pudong T1 à 22 h 15, la journée est entière. Roissy 2E le lendemain à 5 h 50."));
       slot.appendChild(ret);
     }
 
@@ -2539,7 +2540,7 @@ function drawPalette(){
 function render(){
   document.getElementById("cnt").textContent=sel.length;
   document.getElementById("nn").textContent=target;
-  document.getElementById("nnote").textContent="Départ de Paris le 12 novembre à 23h30, arrivée à Shanghai le 13 à 19h05. Dernière nuit le "+fmt(addD(START,target))+". Le visa autorise 30 nuits, soit une sortie le 14 décembre au plus tard.";
+  document.getElementById("nnote").textContent="Billets achetés. Départ le 12 novembre à 23 h 20, retour le 8 décembre à 22 h 15. 25 nuits sur place, 6 jours de marge avant la butée visa du 14 décembre.";
   document.getElementById("pnote").textContent="Change les nuits attribuées quand vous ajoutez une destination. Vous pouvez toujours ajuster étape par étape.";
   var im=img("pekin",0,1920);   /* la Grande Muraille, fixe */
   var h=document.getElementById("heroimg");
@@ -2875,6 +2876,4 @@ render();
 })();
 </script>
 
-<script src="vols.js"></script>
-<script>VOLS.mount("volsbox");</script>
 </body></html>
