@@ -600,11 +600,15 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .par.fixe{opacity:1}
 .fige .lbl{color:var(--zhu)}
 
-/* le programme du jour */
-.calacts{display:flex;flex-direction:column;gap:2px}
-.calact{display:flex;align-items:flex-start;gap:7px;padding:2px 4px;border-radius:6px;font-size:12.5px;line-height:1.3}
+/* le programme du jour, par créneau */
+.calacts{display:flex;flex-direction:column;gap:3px}
+.calcr{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:start}
+.calcrt{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--tx2);padding-top:3px;border-right:1px solid var(--line);min-height:16px}
+.calcrl{display:flex;flex-direction:column;gap:1px;align-items:flex-start}
+.calact{display:flex;align-items:flex-start;gap:6px;padding:2px 5px;border-radius:6px;font-size:12.5px;line-height:1.3;width:100%}
 .calact:hover{background:var(--pap)}
-.cak{color:var(--c,var(--zhu));font-weight:800;flex:none;line-height:1.3}
+.calpttl{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--tx2);padding:2px 6px 5px}
 .cat{flex:1;min-width:0}
 .calact .cesup{opacity:0;width:18px;height:18px;font-size:11px}
 .calact:hover .cesup{opacity:1}
@@ -1015,7 +1019,7 @@ var D={
   mn:["Certains sentiers d'altitude ferment l'hiver par verglas : vérifier l'état des accès la veille","Les téléphériques ferment un mois chacun en maintenance entre novembre et janvier","Il gèle au sommet"]},
  zhangjiajie:{fr:"Zhangjiajie",han:"张家界",reg:"Centre",lat:29.35,lon:110.48,alt:400,n:3,mx:10.2,tmin:4.2,rain:7,sun:6.4,vd:"no",
   why:"Les pitons de grès qui ont inspiré les montagnes flottantes d'Avatar.",
-  ok:["Parc national de Wulingyuan","Tianmen Shan, téléphérique et route aux 99 virages","La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
+  ok:["Parc national de Wulingyuan, les montagnes d'Avatar","Tianmen Shan, téléphérique et route aux 99 virages","La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
   pl:["Le paysage le plus spectaculaire de tout le pays","Wulingyuan reste ouvert quoi qu'il arrive","On peut louer des exosquelettes pour les escaliers"],
   mn:["Par brouillard givrant, les téléphériques et la passerelle de verre ferment","Le premier givre est tombé le 17 novembre en 2025","La gare TGV est à une heure de route du parc","C'est une loterie météo"]},
  fenghuang:{fr:"Fenghuang",han:"凤凰",reg:"Centre",lat:27.95,lon:109.60,alt:300,n:2,mx:16.4,tmin:9.4,rain:6,sun:8.7,vd:"ok",
@@ -2005,7 +2009,7 @@ function appliquerEtat(e){
     CAL[k] = CAL[k] || {};
     CAL[k].tags = Array.from(e.g[k]);   /* Array.from découpe correctement les emoji */
   });
-  if(e.a) CAL.act     = e.a;
+  if(e.a){ CAL.act = e.a; migrerActivites(); }
   if(e.x) CAL.exc     = e.x;
   if(e.j) CAL.trajets = e.j;
   return true;
@@ -2027,16 +2031,16 @@ var PLAN_DEFAUT = {
   g:{},
   x:{ "2026-11-26":["leshan"], "2026-12-03":["tigerleaping"], "2026-12-07":["suzhou"] },
   a:{
-    "2026-11-15":["Cité Interdite, puis la colline de Jingshan au couchant"],
-    "2026-11-16":["Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"],
-    "2026-11-17":["Temple du Ciel au petit matin, à l'heure du tai-chi","Les hutongs de Dongcheng, à pied"],
-    "2026-11-20":["Tianmen Shan, téléphérique et route aux 99 virages"],
-    "2026-11-21":["Parc national de Wulingyuan"],
-    "2026-11-22":["La passerelle de verre","Le spectacle sur la minorité Tujia, en salle"],
-    "2026-11-25":["Base de recherche sur le panda géant, tôt le matin"],
-    "2026-11-27":["Opéra du Sichuan et changement de masques"],
-    "2026-12-02":["Montagne du Dragon de Jade, téléphérique à 4 506 mètres"],
-    "2026-12-04":["Monastère de Songzanlin"]
+    "2026-11-15":{m:["Cité Interdite, puis la colline de Jingshan au couchant"],a:[],s:[]},
+    "2026-11-16":{m:["Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"],a:[],s:[]},
+    "2026-11-17":{m:["Temple du Ciel au petit matin, à l'heure du tai-chi"],a:["Les hutongs de Dongcheng, à pied"],s:[]},
+    "2026-11-20":{m:["Parc national de Wulingyuan, les montagnes d'Avatar"],a:[],s:[]},
+    "2026-11-21":{m:["Tianmen Shan, téléphérique et route aux 99 virages"],a:["La passerelle de verre"],s:[]},
+    "2026-11-22":{m:[],a:[],s:["Le spectacle sur la minorité Tujia, en salle"]},
+    "2026-11-25":{m:["Base de recherche sur le panda géant, tôt le matin"],a:["Le quartier de Kuanzhai"],s:[]},
+    "2026-11-27":{m:["Maisons de thé du parc du Peuple"],a:[],s:["Opéra du Sichuan et changement de masques"]},
+    "2026-12-02":{m:["Montagne du Dragon de Jade, téléphérique à 4 506 mètres"],a:["La vieille ville de Dayan, classée"],s:[]},
+    "2026-12-04":{m:["Monastère de Songzanlin"],a:["Le lac Napa et ses grues à cou noir"],s:[]}
   },
   j:{}
 };
@@ -2285,81 +2289,115 @@ function totalExcursions(){
   return n;
 }
 
-/* ══ Le programme du jour ══
-   Le calendrier disait où l'on dort, pas ce qu'on y fait. Chaque destination porte
-   déjà sa liste « sur place » : on peut désormais poser ces activités sur un jour
-   précis, comme les excursions. Ça ne consomme aucune nuit, ça remplit la journée. */
+/* ══ Le programme du jour, par créneau ══
+   Le calendrier disait où l'on dort, pas ce qu'on y fait. Chaque journée se découpe
+   maintenant en matin, après-midi et soir, et chaque destination porte déjà sa liste
+   « sur place ». Rien de tout ça ne consomme de nuit. */
+
+var CRENEAUX = [
+  { k:"m", t:"Matin"       },
+  { k:"a", t:"Après-midi"  },
+  { k:"s", t:"Soir"        }
+];
+
+/* Les premières versions stockaient un simple tableau par jour.
+   On le convertit en créneaux, sinon les plans déjà partagés se perdent. */
+function migrerActivites(){
+  if(!CAL.act) return;
+  Object.keys(CAL.act).forEach(function(k){
+    if(Array.isArray(CAL.act[k])) CAL.act[k] = { m:CAL.act[k], a:[], s:[] };
+  });
+}
 
 function activitesPossibles(base){
   var d = D[base];
   return (d && d.ok) ? d.ok.slice() : [];
 }
-function activitesDuJour(cle){
-  return (CAL.act && CAL.act[cle]) || [];
+function activitesDuJour(cle, cr){
+  var j = CAL.act && CAL.act[cle];
+  return (j && j[cr]) || [];
 }
-/* une activité déjà posée ailleurs dans le même séjour ne doit plus être proposée */
-function activitesDejaPosees(base, plan){
+/* une activité posée n'importe où ne doit plus être reproposée */
+function activitesDejaPosees(){
   var vues = [];
   Object.keys(CAL.act || {}).forEach(function(k){
-    (CAL.act[k] || []).forEach(function(a){ if(vues.indexOf(a) < 0) vues.push(a); });
+    CRENEAUX.forEach(function(c){
+      (CAL.act[k][c.k] || []).forEach(function(a){ if(vues.indexOf(a) < 0) vues.push(a); });
+    });
   });
   return vues;
 }
-function poserActivite(cle, txt){
+function poserActivite(cle, cr, txt){
   CAL.act = CAL.act || {};
-  var l = CAL.act[cle] || [];
+  CAL.act[cle] = CAL.act[cle] || { m:[], a:[], s:[] };
+  var l = CAL.act[cle][cr] || [];
   if(l.indexOf(txt) < 0) l.push(txt);
-  CAL.act[cle] = l; calSave(); drawCal();
+  CAL.act[cle][cr] = l; calSave(); drawCal();
 }
-function retirerActivite(cle, txt){
-  if(!CAL.act || !CAL.act[cle]) return;
-  CAL.act[cle] = CAL.act[cle].filter(function(x){ return x !== txt; });
-  if(!CAL.act[cle].length) delete CAL.act[cle];
+function retirerActivite(cle, cr, txt){
+  var j = CAL.act && CAL.act[cle];
+  if(!j || !j[cr]) return;
+  j[cr] = j[cr].filter(function(x){ return x !== txt; });
+  if(!j.m.length && !j.a.length && !j.s.length) delete CAL.act[cle];
   calSave(); drawCal();
 }
 
 function drawAct(cle, base, slot){
-  var box  = el("div", "calacts");
-  var pose = activitesDuJour(cle);
-
-  pose.forEach(function(txt){
-    var a = el("div", "calact");
-    a.appendChild(el("span", "cak", "•"));
-    a.appendChild(el("span", "cat", txt));
-    var x = el("button", "cesup", "×"); x.title = "Retirer";
-    x.addEventListener("click", function(e){ e.stopPropagation(); retirerActivite(cle, txt); });
-    a.appendChild(x);
-    box.appendChild(a);
-  });
-
-  var deja  = activitesDejaPosees(base);
+  var box   = el("div", "calacts");
+  var deja  = activitesDejaPosees();
   var dispo = activitesPossibles(base).filter(function(t){ return deja.indexOf(t) < 0; });
-  if(dispo.length){
-    var plus = el("button", "calplus", "+ à faire");
-    plus.addEventListener("click", function(e){
-      e.stopPropagation();
-      var ouvert = slot.querySelector(".calpicker");
-      if(ouvert){ ouvert.remove(); return; }
-      var p = el("div", "calpicker calpexc");
-      dispo.forEach(function(t){
-        var b = el("button", "cepick", t);
-        b.addEventListener("click", function(){ poserActivite(cle, t); });
-        p.appendChild(b);
-      });
-      slot.appendChild(p);
+
+  CRENEAUX.forEach(function(c){
+    var pose = activitesDuJour(cle, c.k);
+    if(!pose.length && !dispo.length) return;      /* créneau muet si rien à y mettre */
+
+    var l = el("div", "calcr");
+    l.appendChild(el("span", "calcrt", c.t));
+
+    var liste = el("div", "calcrl");
+    pose.forEach(function(txt){
+      var a = el("div", "calact");
+      a.appendChild(el("span", "cat", txt));
+      var x = el("button", "cesup", "×"); x.title = "Retirer";
+      x.addEventListener("click", function(e){ e.stopPropagation(); retirerActivite(cle, c.k, txt); });
+      a.appendChild(x);
+      liste.appendChild(a);
     });
-    box.appendChild(plus);
-  }
+
+    if(dispo.length){
+      var plus = el("button", "calplus", pose.length ? "+" : "+ à faire");
+      plus.title = "Ajouter au " + c.t.toLowerCase();
+      plus.addEventListener("click", function(e){
+        e.stopPropagation();
+        var ouvert = slot.querySelector(".calpicker");
+        if(ouvert){ ouvert.remove(); return; }
+        var p = el("div", "calpicker calpexc");
+        p.appendChild(el("div", "calpttl", c.t));
+        dispo.forEach(function(t){
+          var b = el("button", "cepick", t);
+          b.addEventListener("click", function(){ poserActivite(cle, c.k, t); });
+          p.appendChild(b);
+        });
+        slot.appendChild(p);
+      });
+      liste.appendChild(plus);
+    }
+    l.appendChild(liste);
+    box.appendChild(l);
+  });
   return box;
 }
 
 function totalActivites(){
   var n = 0;
-  Object.keys(CAL.act || {}).forEach(function(k){ n += CAL.act[k].length; });
+  Object.keys(CAL.act || {}).forEach(function(k){
+    CRENEAUX.forEach(function(c){ n += (CAL.act[k][c.k] || []).length; });
+  });
   return n;
 }
 
 function drawCal(){
+  migrerActivites();
   var grille = document.getElementById("calgrid");
   if(!grille) return;
   grille.innerHTML = "";
