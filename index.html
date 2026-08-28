@@ -2064,38 +2064,50 @@ function appliquerEtat(e){
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
   /* Chaque durée a une raison, aucune n'est un réglage par défaut :
-       Shanghai 1  · on atterrit à 19 h, la nuit ne sert qu'à dormir
+       Shanghai 2  · on atterrit à 19 h après 12 h 40 de vol. Enchaîner 4 h 18 de
+                     train le lendemain serait brutal. Deux nuits, une vraie journée.
        Pékin 3     · trois sites d'une journée chacun
        Xi'an 2     · l'Armée de terre cuite, puis remparts et quartier musulman
-       Zhangjiajie 3 · MÉTÉO : les téléphériques ferment par givre, il faut une marge
+       Zhangjiajie 2 · deux sites, deux journées. Pas de marge météo : les montagnes
+                     se voient dans la brume, et la passerelle est un bonus.
        Chongqing 1 · tout s'y fait le soir, une soirée suffit, Chengdu est à 1 h 30
        Chengdu 3   · pandas le matin, Leshan mange une journée, opéra le soir
        Dali 2      · les Trois Pagodes, puis le tour du lac Erhai
        Shaxi 2     · un village : une journée pleine entre deux demi-journées
        Lijiang 3   · Dragon de Jade et Saut du Tigre sont deux journées entières
        Shangri-La 3 · ALTITUDE : 3 200 m, le troisième jour est le premier confortable
-       Shanghai 2  · retour du Yunnan, Suzhou, et la journée du 8 avant le vol      */
-  s:["shanghai:1","pekin:3","xian:2","zhangjiajie:3","chongqing:1","chengdu:3",
+       Shanghai 2  · le retour du Yunnan, l'excursion à Suzhou, et le 8 laissé
+                     volontairement libre avant le vol de 22 h 15.                 */
+  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
      "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:2"],
   n:{},
   g:{},
-  x:{ "2026-11-24":["leshan"], "2026-12-02":["tigerleaping"], "2026-12-07":["suzhou"] },
+  x:{ "2026-11-24":["leshan"], "2026-12-01":["tigerleaping"], "2026-12-07":["suzhou"] },
   a:{
     "2026-11-14": {
+      "m": [],
+      "a": [
+        "L'ancienne concession française à pied"
+      ],
+      "s": [
+        "Le Bund et la skyline de Pudong"
+      ]
+    },
+    "2026-11-15": {
       "m": [
         "Cité Interdite, puis la colline de Jingshan au couchant"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-15": {
+    "2026-11-16": {
       "m": [
         "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-16": {
+    "2026-11-17": {
       "m": [
         "Temple du Ciel au petit matin, à l'heure du tai-chi"
       ],
@@ -2104,7 +2116,7 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-17": {
+    "2026-11-18": {
       "m": [
         "Armée de terre cuite"
       ],
@@ -2113,7 +2125,7 @@ var PLAN_DEFAUT = {
         "Le quartier musulman le soir"
       ]
     },
-    "2026-11-18": {
+    "2026-11-19": {
       "m": [
         "Les remparts à vélo"
       ],
@@ -2122,25 +2134,20 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-19": {
+    "2026-11-20": {
       "m": [
         "Parc national de Wulingyuan, les montagnes d'Avatar"
       ],
       "a": [],
       "s": []
     },
-    "2026-11-20": {
+    "2026-11-21": {
       "m": [
         "Tianmen Shan, téléphérique et route aux 99 virages"
       ],
       "a": [
         "La passerelle de verre"
       ],
-      "s": []
-    },
-    "2026-11-21": {
-      "m": [],
-      "a": [],
       "s": [
         "Le spectacle sur la minorité Tujia, en salle"
       ]
@@ -2212,7 +2219,7 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-01": {
+    "2026-12-02": {
       "m": [
         "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
       ],
@@ -2243,17 +2250,8 @@ var PLAN_DEFAUT = {
         "Yu Garden et la vieille ville"
       ],
       "s": [
-        "Le Bund et la skyline de Pudong"
-      ]
-    },
-    "2026-12-08": {
-      "m": [
-        "L'ancienne concession française à pied"
-      ],
-      "a": [
         "Nanjing Road de nuit"
-      ],
-      "s": []
+      ]
     }
   },
   j:{}
