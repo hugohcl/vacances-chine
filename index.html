@@ -2687,25 +2687,35 @@ function bilanEtape(i){
   }
   var pleines = Math.max(0, n - mange);
 
-  /* ce qu'il y a à voir, et ce qui est déjà calé sur ces jours */
-  var aVoir = (d && d.ok) ? d.ok.length : 0;
-  var debut = jourDeDepart(i), cales = 0, exc = 0;
-  for(var x = 0; x < n; x++){
-    var cle = cleJour(addD(START, debut + x));
-    CRENEAUX.forEach(function(c){ cales += activitesDuJour(cle, c.k).length; });
-    exc += excursionsDuJour(cle).length;
-  }
+  /* Une ville visitée deux fois se compte UNE fois : on agrège tous ses séjours,
+     sinon le second croit que rien n'y est calé. */
+  var nuitsVille = 0, cales = 0, exc = 0, premier = -1;
+  sel.forEach(function(kk, j){
+    if(bid(kk) !== b) return;
+    if(premier < 0) premier = j;
+    var nn = Math.max(1, nights[kk] || 1);
+    nuitsVille += nn;
+    var deb = jourDeDepart(j);
+    for(var x = 0; x < nn; x++){
+      var cle = cleJour(addD(START, deb + x));
+      CRENEAUX.forEach(function(c){ cales += activitesDuJour(cle, c.k).length; });
+      exc += excursionsDuJour(cle).length;
+    }
+  });
 
-  /* une journée pleine porte raisonnablement 2 choses, une demi-journée 1 */
-  var capacite = pleines * 2 + (mange ? 1 : 0) - exc * 2;
-  var reste = Math.max(0, aVoir - cales);
+  var aVoir = (d && d.ok) ? d.ok.length : 0;
+  var reco  = (d && d.n) || nuitsVille;
+  /* le manque et le reste ne sont portés que par le PREMIER séjour de la ville */
+  var seul  = (i === premier);
 
   return {
-    n:n, pleines:pleines, mange:mange, aVoir:aVoir, cales:cales, exc:exc,
-    reste:reste,
-    reco:(d && d.n) || n,
-    manque:Math.max(0, ((d && d.n) || n) - n),
-    sature:reste > 0 && capacite <= cales
+    n:n, pleines:pleines, mange:mange,
+    aVoir:aVoir, cales:cales, exc:exc,
+    reste: seul ? Math.max(0, aVoir - cales) : 0,
+    reco: reco,
+    nuitsVille: nuitsVille,
+    manque: seul ? Math.max(0, reco - nuitsVille) : 0,
+    multiple: nuitsVille !== n
   };
 }
 
@@ -2748,7 +2758,8 @@ function drawResume(){
     tx.appendChild(el("div", "resbil",
       bi.pleines + (bi.pleines > 1 ? " journées pleines" : " journée pleine")
       + (bi.mange ? ", arrivée mangée par le trajet" : "")
-      + "  ·  " + bi.cales + " sur " + bi.aVoir + " calé" + (bi.cales > 1 ? "s" : "")));
+      + "  ·  " + bi.cales + " sur " + bi.aVoir + " calé" + (bi.cales > 1 ? "s" : "")
+      + (bi.multiple ? " (ville vue en plusieurs fois, " + bi.nuitsVille + " nuits au total)" : "")));
     if(bi.reste) it.appendChild(el("span", "restrop", "−" + bi.reste));
 
     it.addEventListener("click", function(){
