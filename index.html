@@ -667,6 +667,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .caltd{font-size:12px;font-weight:700;color:var(--zhu)}
 .caltp{font-size:12px;font-weight:800;background:var(--zhu);color:#fff;border-radius:100px;padding:1px 8px}
 .caltn{font-size:11.5px;color:var(--tx2)}
+.caltpp{font-size:11.5px;font-weight:700;color:var(--tx2);border-left:1px solid var(--line);padding-left:9px;cursor:help}
+.caltmange{font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;
+  background:#C4761F;color:#fff;border-radius:100px;padding:2px 8px}
 .calts{font-size:10.5px;color:var(--tx2);opacity:.75;font-style:italic}
 .caltform{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;padding:8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
 .caltin{padding:6px 9px;border:1px solid var(--line);border-radius:7px;font-family:inherit;font-size:12.5px;
@@ -2063,29 +2066,31 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* Chaque durée a une raison, aucune n'est un réglage par défaut :
-       Shanghai 2  · on atterrit à 19 h après 12 h 40 de vol. Enchaîner 4 h 18 de
-                     train le lendemain serait brutal. Deux nuits, une vraie journée.
-       Pékin 3     · trois sites d'une journée chacun
-       Xi'an 2     · l'Armée de terre cuite, puis remparts et quartier musulman
-       Zhangjiajie 2 · deux sites, deux journées. Pas de marge météo : les montagnes
-                     se voient dans la brume, et la passerelle est un bonus.
-       Chongqing 1 · tout s'y fait le soir, une soirée suffit, Chengdu est à 1 h 30
-       Chengdu 3   · pandas le matin, Leshan mange une journée, opéra le soir
-       Dali 2      · les Trois Pagodes, puis le tour du lac Erhai
-       Shaxi 2     · un village : une journée pleine entre deux demi-journées
-       Lijiang 3   · Dragon de Jade et Saut du Tigre sont deux journées entières
-       Shangri-La 3 · ALTITUDE : 3 200 m, le troisième jour est le premier confortable
-       Shanghai 2  · le retour du Yunnan, l'excursion à Suzhou, et le 8 laissé
-                     volontairement libre avant le vol de 22 h 15.                 */
-  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
-     "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:2"],
+  /* Xi'an est gardé, à la demande. Conséquence : avec les temps porte à porte,
+     11 étapes demandent 28 nuits et on n'en a que 25. Trois étapes sont donc
+     servies au minimum, et trois visites tombent :
+       Pékin 3      · le Temple du Ciel saute
+       Xi'an 2      · une seule journée pleine, l'Armée de terre cuite
+       Zhangjiajie 2 · Tianmen Shan et la passerelle sautent, on garde Wulingyuan
+     Le reste tient compte du transport réel :
+       Shanghai 3   · deux journées pleines avant 7 h de train
+       Chongqing 1  · une soirée, tout y est nocturne
+       Chengdu 3    · arrivée légère, puis Leshan et les pandas
+       Dali 2       · arrivée mangée par le vol, puis le lac Erhai
+       Shaxi 2      · trajet court, une journée au village
+       Lijiang 3    · Saut du Tigre et Dragon de Jade
+       Shangri-La 3 · altitude 3 200 m
+       Shanghai 1   · le retour du Yunnan prend 9 h, le 8 est une journée pleine */
+  s:["shanghai:3","pekin:3","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
+     "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:1"],
   n:{},
   g:{},
-  x:{ "2026-11-24":["leshan"], "2026-12-01":["tigerleaping"], "2026-12-07":["suzhou"] },
+  x:{ "2026-11-25":["leshan"], "2026-12-02":["tigerleaping"] },
   a:{
     "2026-11-14": {
-      "m": [],
+      "m": [
+        "Le marché aux célibataires de People's Park le week-end"
+      ],
       "a": [
         "L'ancienne concession française à pied"
       ],
@@ -2095,21 +2100,16 @@ var PLAN_DEFAUT = {
     },
     "2026-11-15": {
       "m": [
-        "Cité Interdite, puis la colline de Jingshan au couchant"
+        "Yu Garden et la vieille ville"
       ],
       "a": [],
-      "s": []
-    },
-    "2026-11-16": {
-      "m": [
-        "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
-      ],
-      "a": [],
-      "s": []
+      "s": [
+        "Nanjing Road de nuit"
+      ]
     },
     "2026-11-17": {
       "m": [
-        "Temple du Ciel au petit matin, à l'heure du tai-chi"
+        "Cité Interdite, puis la colline de Jingshan au couchant"
       ],
       "a": [
         "Les hutongs de Dongcheng, à pied"
@@ -2118,41 +2118,37 @@ var PLAN_DEFAUT = {
     },
     "2026-11-18": {
       "m": [
-        "Armée de terre cuite"
+        "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
       ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-19": {
+      "m": [],
       "a": [],
       "s": [
         "Le quartier musulman le soir"
       ]
     },
-    "2026-11-19": {
+    "2026-11-20": {
       "m": [
-        "Les remparts à vélo"
+        "Armée de terre cuite"
       ],
       "a": [
-        "La Grande Pagode de l'oie sauvage"
+        "Les remparts à vélo"
       ],
       "s": []
     },
-    "2026-11-20": {
+    "2026-11-22": {
       "m": [
         "Parc national de Wulingyuan, les montagnes d'Avatar"
       ],
       "a": [],
-      "s": []
-    },
-    "2026-11-21": {
-      "m": [
-        "Tianmen Shan, téléphérique et route aux 99 virages"
-      ],
-      "a": [
-        "La passerelle de verre"
-      ],
       "s": [
         "Le spectacle sur la minorité Tujia, en salle"
       ]
     },
-    "2026-11-22": {
+    "2026-11-23": {
       "m": [],
       "a": [
         "Le métro de Liziba qui traverse un immeuble d'habitation"
@@ -2162,7 +2158,7 @@ var PLAN_DEFAUT = {
         "Hotpot à marmite compartimentée"
       ]
     },
-    "2026-11-23": {
+    "2026-11-24": {
       "m": [],
       "a": [
         "Le quartier de Kuanzhai"
@@ -2171,7 +2167,7 @@ var PLAN_DEFAUT = {
         "Opéra du Sichuan et changement de masques"
       ]
     },
-    "2026-11-25": {
+    "2026-11-26": {
       "m": [
         "Base de recherche sur le panda géant, tôt le matin"
       ],
@@ -2180,14 +2176,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-26": {
+    "2026-11-27": {
       "m": [],
       "a": [
         "Les Trois Pagodes du temple Chongsheng"
       ],
       "s": []
     },
-    "2026-11-27": {
+    "2026-11-28": {
       "m": [
         "Le tour du lac Erhai à vélo ou en scooter"
       ],
@@ -2196,14 +2192,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-28": {
+    "2026-11-29": {
       "m": [],
       "a": [
         "La place de Sideng et son théâtre"
       ],
       "s": []
     },
-    "2026-11-29": {
+    "2026-11-30": {
       "m": [
         "Les temples de Shibaoshan à flanc de montagne"
       ],
@@ -2212,21 +2208,21 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-30": {
+    "2026-12-01": {
       "m": [],
       "a": [
         "La vieille ville de Dayan, classée"
       ],
       "s": []
     },
-    "2026-12-02": {
+    "2026-12-03": {
       "m": [
         "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
       ],
       "a": [],
       "s": []
     },
-    "2026-12-04": {
+    "2026-12-05": {
       "m": [
         "Monastère de Songzanlin"
       ],
@@ -2235,23 +2231,12 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-05": {
+    "2026-12-06": {
       "m": [
         "La vieille ville reconstruite"
       ],
       "a": [],
       "s": []
-    },
-    "2026-12-06": {
-      "m": [
-        "Le marché aux célibataires de People's Park le week-end"
-      ],
-      "a": [
-        "Yu Garden et la vieille ville"
-      ],
-      "s": [
-        "Nanjing Road de nuit"
-      ]
     }
   },
   j:{}
@@ -2337,6 +2322,51 @@ var TRAJETS_CONNUS = {
   "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" }
 };
 
+/* ══ Le temps réel d'un trajet ══
+   4 h 18 de train, ce n'est pas 4 h 18 de journée. Il faut rejoindre la gare,
+   arriver en avance, puis rallier l'hôtel à l'arrivée. On chiffre ces marges
+   au lieu de les passer sous silence.                                         */
+
+var MARGES = {
+  train:  { avant:105, apres:60,  d:"1 h pour la gare, 45 min d'avance, 1 h pour l'hôtel" },
+  vol:    { avant:180, apres:105, d:"1 h 30 pour l'aéroport, 1 h 30 d'avance, 1 h 45 au retrait des bagages et jusqu'à l'hôtel" },
+  route:  { avant:20,  apres:20,  d:"20 min de battement de chaque côté" },
+  bus:    { avant:45,  apres:30,  d:"45 min avant, 30 min après" },
+  bateau: { avant:45,  apres:30,  d:"45 min avant, 30 min après" }
+};
+
+/* "4 h 18", "1 h 30", "2 h", "25 min" → minutes. Rend null si on ne sait pas lire. */
+function enMinutes(txt){
+  if(!txt) return null;
+  var t = String(txt).toLowerCase().replace(/ /g, " ");
+  var h = t.match(/(\d+)\s*h/);
+  var m = t.match(/h\s*(\d+)/) || t.match(/(\d+)\s*min/);
+  if(!h && !m) return null;
+  return (h ? parseInt(h[1], 10) * 60 : 0) + (m ? parseInt(m[1], 10) : 0);
+}
+function enTexte(min){
+  var h = Math.floor(min / 60), r = min % 60;
+  if(!h) return r + " min";
+  return h + " h" + (r ? " " + (r < 10 ? "0" : "") + r : "");
+}
+
+/* renvoie {vehicule, total, texte, mange} ou null si la durée n'est pas chiffrée */
+function porteAPorte(mode, duree){
+  var v = enMinutes(duree);
+  var g = MARGES[mode];
+  if(v === null || !g) return null;
+  var tot = g.avant + v + g.apres;
+  return {
+    vehicule: v,
+    total: tot,
+    texte: enTexte(tot),
+    detail: g.d,
+    /* au-delà de 5 h porte à porte, la demi-journée est perdue ;
+       au-delà de 8 h, c'est la journée entière */
+    mange: tot >= 480 ? "journée" : (tot >= 300 ? "demi-journée" : null)
+  };
+}
+
 function cleTrajet(a, b){ return bid(a) + ">" + bid(b); }
 
 function trajetDe(a, b){
@@ -2365,6 +2395,13 @@ function drawTrajet(a, b){
   if(t){
     corps.appendChild(el("span", "caltm", MODES[t.m] || "—"));
     if(t.d) corps.appendChild(el("span", "caltd", t.d));
+    var pp = porteAPorte(t.m, t.d);
+    if(pp){
+      var pe = el("span", "caltpp", "≈ " + pp.texte + " porte à porte");
+      pe.title = pp.detail;
+      corps.appendChild(pe);
+      if(pp.mange) corps.appendChild(el("span", "caltmange", pp.mange + " mangée"));
+    }
     if(t.p) corps.appendChild(el("span", "caltp", t.p));
     if(t.n) corps.appendChild(el("span", "caltn", t.n));
     if(t.s && !t.p && !t.n) corps.appendChild(el("span", "calts", t.s));
