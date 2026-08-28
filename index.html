@@ -2007,8 +2007,11 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
+  /* Lijiang une seule fois, 4 nuits d'affilée. Le 6 décembre est une journée de
+     transfert : train Shangri-La → Lijiang (1 h 20) puis vol Lijiang → Shanghai.
+     Pas besoin d'y dormir : 7 vols par jour et 2 nuits de battement à Shanghai. */
   s:["shanghai:2","pekin:3","xian:3","chongqing:2","chengdu:3",
-     "dali:2","shaxi:2","lijiang:3","shangrila:2","lijiang#2:1","shanghai#2:2"],
+     "dali:2","shaxi:2","lijiang:4","shangrila:2","shanghai#2:2"],
   n:{},
   g:{},
   x:{ "2026-11-24":["leshan"], "2026-12-01":["tigerleaping"], "2026-12-07":["suzhou"] },
@@ -2082,6 +2085,7 @@ var TRAJETS_CONNUS = {
   "chengdu>chongqing":  { m:"train", d:"1 h 30",  s:"corpus" },
   "lijiang>shangrila":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
   "shangrila>lijiang":  { m:"train", d:"1 h 20",  s:"ligne ouverte le 26 nov. 2023" },
+  "shangrila>shanghai": { m:"train", d:"journée",  s:"train 1 h 20 jusqu'à Lijiang, puis vol. Aucun direct depuis Shangri-La" },
   "dali>kunming":       { m:"train", d:"2 h",     s:"corpus" },
   "kunming>dali":       { m:"train", d:"2 h",     s:"corpus" },
   "kunming>shanghai":   { m:"vol",   d:"2 h 55",  s:"sans escale, vérifié" },
