@@ -1917,12 +1917,22 @@ function drawLeaflet(){
     if(lg.air) o.dashArray="4 8";
     L.polyline([pts[i],pts[i+1]],o).addTo(LLAYER);
   }
+  var vus={};
   sel.forEach(function(id,i){
-    var d=D[id],n=nights[id]||1;
-    var ic=L.divIcon({className:"",html:'<div class="pin-n">'+(i+1)+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
+    var b=bid(id);
+    /* passages multiples : on additionne les nuits et on garde le premier numéro */
+    var rangs=[], tot=0;
+    sel.forEach(function(k,j){ if(bid(k)===b){ rangs.push(j+1); tot+=nights[k]||1; } });
+    if(vus[b]) return;
+    vus[b]=1;
+    var d=D[id],n=tot;
+    var num=rangs[0];
+    var ic=L.divIcon({className:"",html:'<div class="pin-n">'+num+'</div>',iconSize:[26,26],iconAnchor:[13,13]});
     var m=L.marker([d.lat,d.lon],{icon:ic,title:d.fr}).addTo(LLAYER);
     var html='<b>'+d.fr+'</b><span class="h">'+d.reg+'</span>'
-            +'<div class="m">'+n+' nuit'+(n>1?'s':'')+' · '+temp(d)+' · '+d.alt+' m</div>';
+            +'<div class="m">'+n+' nuit'+(n>1?'s':'')
+            +(rangs.length>1?' en '+rangs.length+' fois, étapes '+rangs.join(' et '):'')
+            +' · '+temp(d)+' · '+d.alt+' m</div>';
     m.bindTooltip(d.fr,{permanent:true,direction:"right",offset:[11,0],className:"lbl-fr"});
     m.bindPopup(html);
     m.on("click",function(){ openSheet(id); });
@@ -2059,17 +2069,184 @@ var PLAN_DEFAUT = {
   n:{},
   g:{},
   x:{ "2026-11-26":["leshan"], "2026-12-03":["tigerleaping"], "2026-12-07":["suzhou"] },
+  /* Les journées vides le sont exprès : arrivée, excursions, marges météo, temps libre. */
   a:{
-    "2026-11-15":{m:["Cité Interdite, puis la colline de Jingshan au couchant"],a:[],s:[]},
-    "2026-11-16":{m:["Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"],a:[],s:[]},
-    "2026-11-17":{m:["Temple du Ciel au petit matin, à l'heure du tai-chi"],a:["Les hutongs de Dongcheng, à pied"],s:[]},
-    "2026-11-20":{m:["Parc national de Wulingyuan, les montagnes d'Avatar"],a:[],s:[]},
-    "2026-11-21":{m:["Tianmen Shan, téléphérique et route aux 99 virages"],a:["La passerelle de verre"],s:[]},
-    "2026-11-22":{m:[],a:[],s:["Le spectacle sur la minorité Tujia, en salle"]},
-    "2026-11-25":{m:["Base de recherche sur le panda géant, tôt le matin"],a:["Le quartier de Kuanzhai"],s:[]},
-    "2026-11-27":{m:["Maisons de thé du parc du Peuple"],a:[],s:["Opéra du Sichuan et changement de masques"]},
-    "2026-12-02":{m:["Montagne du Dragon de Jade, téléphérique à 4 506 mètres"],a:["La vieille ville de Dayan, classée"],s:[]},
-    "2026-12-04":{m:["Monastère de Songzanlin"],a:["Le lac Napa et ses grues à cou noir"],s:[]}
+    "2026-11-14": {
+      "m": [
+        "Le marché aux célibataires de People's Park le week-end"
+      ],
+      "a": [],
+      "s": [
+        "Le Bund et la skyline de Pudong"
+      ]
+    },
+    "2026-11-15": {
+      "m": [
+        "Cité Interdite, puis la colline de Jingshan au couchant"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-16": {
+      "m": [
+        "Grande Muraille à Mutianyu, restaurée et bien moins fréquentée que Badaling"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-17": {
+      "m": [
+        "Temple du Ciel au petit matin, à l'heure du tai-chi"
+      ],
+      "a": [
+        "Les hutongs de Dongcheng, à pied"
+      ],
+      "s": []
+    },
+    "2026-11-18": {
+      "m": [
+        "Armée de terre cuite"
+      ],
+      "a": [],
+      "s": [
+        "Le quartier musulman le soir"
+      ]
+    },
+    "2026-11-19": {
+      "m": [
+        "Les remparts à vélo"
+      ],
+      "a": [
+        "La Grande Pagode de l'oie sauvage"
+      ],
+      "s": []
+    },
+    "2026-11-20": {
+      "m": [
+        "Parc national de Wulingyuan, les montagnes d'Avatar"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-21": {
+      "m": [
+        "Tianmen Shan, téléphérique et route aux 99 virages"
+      ],
+      "a": [
+        "La passerelle de verre"
+      ],
+      "s": []
+    },
+    "2026-11-22": {
+      "m": [],
+      "a": [],
+      "s": [
+        "Le spectacle sur la minorité Tujia, en salle"
+      ]
+    },
+    "2026-11-23": {
+      "m": [],
+      "a": [
+        "Le métro de Liziba qui traverse un immeuble d'habitation"
+      ],
+      "s": [
+        "Hongyadong et Jiefangbei de nuit"
+      ]
+    },
+    "2026-11-24": {
+      "m": [
+        "Les abris anti-aériens reconvertis"
+      ],
+      "a": [],
+      "s": [
+        "Téléphérique du Yangtsé et croisière de nuit",
+        "Hotpot à marmite compartimentée"
+      ]
+    },
+    "2026-11-25": {
+      "m": [
+        "Base de recherche sur le panda géant, tôt le matin"
+      ],
+      "a": [
+        "Le quartier de Kuanzhai"
+      ],
+      "s": []
+    },
+    "2026-11-27": {
+      "m": [
+        "Maisons de thé du parc du Peuple"
+      ],
+      "a": [],
+      "s": [
+        "Opéra du Sichuan et changement de masques"
+      ]
+    },
+    "2026-11-28": {
+      "m": [
+        "Les Trois Pagodes du temple Chongsheng"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-29": {
+      "m": [
+        "Le tour du lac Erhai à vélo ou en scooter"
+      ],
+      "a": [
+        "Les villages de Xizhou et Shuanglang"
+      ],
+      "s": []
+    },
+    "2026-11-30": {
+      "m": [],
+      "a": [
+        "La place de Sideng et son théâtre"
+      ],
+      "s": []
+    },
+    "2026-12-01": {
+      "m": [
+        "Les temples de Shibaoshan à flanc de montagne"
+      ],
+      "a": [
+        "Marche ou vélo dans la vallée"
+      ],
+      "s": []
+    },
+    "2026-12-02": {
+      "m": [
+        "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
+      ],
+      "a": [
+        "La vieille ville de Dayan, classée"
+      ],
+      "s": []
+    },
+    "2026-12-04": {
+      "m": [
+        "Monastère de Songzanlin"
+      ],
+      "a": [
+        "Le lac Napa et ses grues à cou noir"
+      ],
+      "s": []
+    },
+    "2026-12-05": {
+      "m": [
+        "La vieille ville reconstruite"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-12-06": {
+      "m": [],
+      "a": [
+        "Yu Garden et la vieille ville"
+      ],
+      "s": [
+        "Nanjing Road de nuit"
+      ]
+    }
   },
   j:{}
 };
@@ -2555,8 +2732,11 @@ function drawCal(){
       slot.appendChild(ret);
     }
 
-    if(c) slot.appendChild(drawAct(cle, c.id, slot));
-    if(c) slot.appendChild(drawExc(cle, c.id, slot));
+    /* le dernier jour n'a pas de nuit, mais c'est une vraie journée : on lui
+       rattache la dernière étape pour pouvoir y caler quelque chose */
+    var base = c ? c.id : (i === lignes - 1 && sel.length ? sel[sel.length - 1] : null);
+    if(base) slot.appendChild(drawAct(cle, base, slot));
+    if(c)    slot.appendChild(drawExc(cle, c.id, slot));
     slot.appendChild(calTags(cle, slot));
     slot.appendChild(calNote(cle));
 
