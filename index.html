@@ -554,8 +554,26 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .resit:hover .respt{border-color:var(--c,var(--zhu))}
 .restropfin{margin-top:6px;padding:8px 9px;border-radius:8px;background:#C4761F1a;
   border-left:3px solid #C4761F;font-size:11px;line-height:1.4;color:var(--tx)}
-.resfin{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);
-  font-size:11.5px;color:var(--tx2);text-align:center}
+/* le trajet, entre deux étapes du résumé */
+.restraj{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 18px;min-height:22px;
+  position:relative}
+.restrait{position:absolute;left:17px;top:0;bottom:0;width:2px;background:var(--line);
+  border-radius:2px}
+.resmode{font-size:11px;line-height:1;flex:none}
+.resdur{font-size:10.5px;font-weight:800;color:var(--tx2);font-variant-numeric:tabular-nums}
+.resdur.vide{font-weight:600;font-style:italic;opacity:.7}
+.resmange{font-size:8.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  color:#C4761F;border:1px solid #C4761F55;border-radius:100px;padding:1px 6px}
+.restraj.lourd .resdur{color:#C4761F}
+.restraj.lourd .resmange{background:#C4761F;color:#fff;border-color:#C4761F}
+
+/* le bilan chiffré */
+.resfin{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:9px;padding-top:9px;
+  border-top:1px solid var(--line)}
+.reschf{display:flex;align-items:baseline;gap:4px;font-size:10.5px;color:var(--tx2)}
+.reschf b{font-size:13px;font-weight:800;color:var(--tx);letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.reshint{font-size:10px;color:#C4761F;margin-top:5px;line-height:1.3}
 
 /* le tiroir d'ajout */
 .calajout{margin-top:2px;border-top:1px solid var(--line);padding-top:8px}
@@ -1331,6 +1349,7 @@ var LINKS=[
  {b:"chengdu",x:"emeishan",t:"jour",d:"1 h 30 de train",p:"Faisable à la journée, mais une nuit au sommet pour le lever du jour vaut nettement mieux."},
  {b:"shanghai",x:"suzhou",t:"jour",d:"25 min de train",p:"Les jardins se visitent en une journée. Dormir à Suzhou n'a de sens que si vous voulez la ville le soir."},
  {b:"shanghai",x:"hangzhou",t:"jour",d:"45 min de train",p:"Le lac de l'Ouest tient dans une journée bien remplie. Une nuit sur place est plus reposante."},
+ {b:"dali",x:"shaxi",t:"jour",d:"2 h 30 de bus",p:"Bus direct depuis la gare routière de Dali, 8 départs de 9 h à 17 h, ~30 CNY. Compter 5 h de bus pour 5 h sur place : la vieille ville et la place de Sideng, pas Shibaoshan."},
  {b:"lijiang",x:"tigerleaping",t:"jour",d:"2 h de route",p:"Le belvédère se voit à la journée. La haute randonnée, elle, demande une nuit en auberge dans les gorges."},
  {b:"guilin",x:"longsheng",t:"jour",d:"2 h de route",p:"Les terrasses de Longji se font à la journée depuis Guilin ou Yangshuo."},
  {b:"yangshuo",x:"longsheng",t:"jour",d:"2 h 30 de route",p:"Même chose depuis Yangshuo, un peu plus long."},
@@ -2131,27 +2150,29 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* Le jour de trajet appartient à la ville d'ARRIVÉE. On part le matin, on arrive
-     en début d'après-midi, et la fin de journée se passe déjà sur place.
-     Shanghai 2 · le décalage de +7 h s'absorbe ici, pas à Pékin.
-     Pékin 3 · D12. Temple du Ciel à l'aube puis Cité Interdite le 16, Mutianyu
-       le 17 qui prend la journée entière.
-     Xi'an 2 · arrivée le 18 en fin de journée, une journée pleine le 19.
-     Zhangjiajie 3 · D12. Wulingyuan et Tianmen sont deux journées distinctes, et
-       la brume de fin novembre peut en gaspiller une.
-     Chongqing 2 · D13. Une nuit ne laissait qu'une soirée pour cinq choses à voir.
-     Chengdu 3 · Leshan à la journée et les pandas au petit matin.
-     Dali 2, Shaxi 2 · le cœur rural du Yunnan.
-     Shangri-La 2 · D13. On y monte depuis Shaxi en traversant Lijiang sans s'y
-       arrêter, au lieu d'y dormir à l'aller ET au retour.
-     Lijiang 3 · D13. Toutes ses nuits d'un bloc, à la fin, et la dernière à côté
-       de l'aéroport d'où part le vol du 7.
+  /* SCÉNARIO S2. Neuf étapes au lieu de onze, 8 trajets au lieu de dix, 52 h 48 de
+     transport au lieu de 58 h 05. Chongqing et Shaxi ne sont plus des étapes :
+     Zhangjiajie rejoint Chengdu en 3 h 58 de train direct, et Shaxi se fait à la
+     journée depuis Dali. Les 4 nuits libérées vont aux étapes qui manquaient d'air.
+     Le jour de trajet appartient à la ville d'ARRIVÉE : on part le matin, et la
+     fin de journée se passe déjà sur place.
+     Shanghai 2 · le décalage de +7 h s'absorbe ici.
+     Pékin 3 · Temple du Ciel à l'aube puis Cité Interdite, Mutianyu la journée.
+     Xi'an 3 · les sources demandent 2 à 3 jours sur place pour les trois grands.
+       À 2 nuits il ne restait qu'une journée pleine.
+     Zhangjiajie 4 · les sources demandent 3 à 4 jours hors arrivée. Wulingyuan et
+       Tianmen sont deux journées, et la brume de fin novembre peut en gaspiller une.
+     Chengdu 3 · le plancher pour avoir les pandas au petit matin ET Leshan.
+     Dali 3 · dont la journée d'excursion à Shaxi.
+     Shangri-La 3 · arrivée le 1er en début d'après-midi, deux journées pleines.
+     Lijiang 3 · les gorges du Saut du Tigre à la journée, et la dernière nuit à
+       côté de l'aéroport d'où part le vol du 7.
      Shanghai 1 · le 7 au soir, à pied d'œuvre pour l'AF111 du 8. */
-  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:2","chengdu:3",
-     "dali:2","shaxi:2","shangrila:2","lijiang:3","shanghai#2:1"],
+  s:["shanghai:2","pekin:3","xian:3","zhangjiajie:4","chengdu:3",
+     "dali:3","shangrila:3","lijiang:3","shanghai#2:1"],
   n:{},
   g:{},
-  x:{"2026-11-26":["leshan"],"2026-12-05":["tigerleaping"]},
+  x:{"2026-11-26":["leshan"],"2026-11-30":["shaxi"],"2026-12-05":["tigerleaping"]},
   a:{
     "2026-11-14": {
       "m": [
@@ -2203,7 +2224,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-21": {
+    "2026-11-20": {
+      "m": [
+        "La Grande Pagode de l'oie sauvage"
+      ],
+      "a": [],
+      "s": []
+    },
+    "2026-11-22": {
       "m": [
         "Parc national de Wulingyuan, les montagnes d'Avatar"
       ],
@@ -2212,7 +2240,7 @@ var PLAN_DEFAUT = {
         "Le spectacle sur la minorité Tujia, en salle"
       ]
     },
-    "2026-11-22": {
+    "2026-11-23": {
       "m": [
         "Tianmen Shan, téléphérique et route aux 99 virages"
       ],
@@ -2220,25 +2248,6 @@ var PLAN_DEFAUT = {
         "La passerelle de verre"
       ],
       "s": []
-    },
-    "2026-11-23": {
-      "m": [],
-      "a": [
-        "Le métro de Liziba qui traverse un immeuble d'habitation"
-      ],
-      "s": [
-        "Hongyadong et Jiefangbei de nuit",
-        "Hotpot à marmite compartimentée"
-      ]
-    },
-    "2026-11-24": {
-      "m": [
-        "Les abris anti-aériens reconvertis"
-      ],
-      "a": [],
-      "s": [
-        "Téléphérique du Yangtsé et croisière de nuit"
-      ]
     },
     "2026-11-25": {
       "m": [],
@@ -2274,30 +2283,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-30": {
-      "m": [],
-      "a": [
-        "La place de Sideng et son théâtre"
-      ],
-      "s": []
-    },
     "2026-12-01": {
-      "m": [
-        "Les temples de Shibaoshan à flanc de montagne"
-      ],
-      "a": [
-        "Marche ou vélo dans la vallée"
-      ],
-      "s": []
-    },
-    "2026-12-02": {
       "m": [],
       "a": [
         "La vieille ville reconstruite"
       ],
       "s": []
     },
-    "2026-12-03": {
+    "2026-12-02": {
       "m": [
         "Monastère de Songzanlin"
       ],
@@ -2406,6 +2399,13 @@ var TRAJETS_CONNUS = {
   "kunming>yuanyang":   { m:"route", d:"4 h 30",  s:"corpus" },
   "lijiang>shanghai":   { m:"vol",   d:"3 h 20",  s:"vol direct Lijiang Sanyi → Shanghai Pudong, 28 vols/semaine, 4 compagnies. Vérifié." },
   "shanghai>lijiang":   { m:"vol",   d:"3 h 20",  s:"vol direct Shanghai Pudong → Lijiang Sanyi, 28 vols/semaine. Vérifié." },
+  "zhangjiajie>chengdu": { m:"train", d:"3 h 58",  s:"Direct, 7 trains/jour depuis le 27 juin 2025, départs de 8 h à 17 h 13. Vérifié." },
+  "chengdu>zhangjiajie": { m:"train", d:"3 h 58",  s:"Direct, 7 trains/jour depuis le 27 juin 2025. Vérifié." },
+  "dali>shangrila":     { m:"train", d:"3 h 37",  s:"Sans changement, le train s'arrête à Lijiang mais on reste à bord. Attention : 2 trains par jour seulement, 7 h 45 et 11 h 47. Vérifié." },
+  "shangrila>dali":     { m:"train", d:"3 h 37",  s:"Sans changement via Lijiang. 2 trains par jour. Vérifié." },
+  "chengdu>kunming":    { m:"train", d:"5 h 38",  s:"Le plus rapide, G2883. 5 trains/jour de 8 h 51 à 16 h 04. Vérifié." },
+  "dali>lijiang":       { m:"train", d:"1 h 36",  s:"8 trains/jour de 6 h à 21 h, 72 CNY en seconde. Vérifié." },
+  "lijiang>dali":       { m:"train", d:"1 h 36",  s:"8 trains/jour, 72 CNY en seconde. Vérifié." },
   "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" },
   /* Estimations, pas des horaires relevés. À corriger sur 12306 ou Trip.com
      avant de réserver : le calendrier s'y adapte automatiquement. */
@@ -3146,10 +3146,116 @@ function totalActivites(){
 }
 
 /* ══ Le résumé de la route ══
-   La colonne de gauche montrait 45 destinations à poser. Une fois la route
-   décidée, ce qui manque c'est la vue d'ensemble : les étapes, leurs dates,
-   leurs nuits, et un clic pour sauter au bon jour. */
+   Ce n'est pas une liste d'étapes, c'est le voyage vu d'en haut : combien de
+   temps à chaque endroit, et combien de temps pour aller d'un endroit à l'autre.
+   Les deux comptent, et le second se lit rarement quelque part. */
 
+function drawResume(){
+  var box = document.getElementById("calresume");
+  if(!box) return;
+  box.innerHTML = "";
+
+  if(!sel.length){
+    box.appendChild(el("div", "hint", "Rien de pos\u00e9. Ouvrez \u00ab Ajouter une destination \u00bb ci-dessous."));
+    return;
+  }
+
+  var jour = 0, total = totalNights();
+  var minTrajet = 0, vols = 0, perdues = 0, inconnus = 0;
+
+  sel.forEach(function(k, i){
+    /* ---- le trajet qui mène à cette étape ---- */
+    if(i > 0){
+      var t  = trajetDe(sel[i - 1], k);
+      var pj = t ? porteAPorte(t.m, t.d) : null;
+      var lg = el("div", "restraj" + (pj && pj.total >= 480 ? " lourd" : ""));
+      lg.appendChild(el("span", "restrait"));
+      if(pj){
+        minTrajet += pj.total;
+        if(t.m === "vol") vols++;
+        perdues += pj.total >= 480 ? 1 : (pj.total >= 300 ? 0.5 : 0);
+        lg.appendChild(el("span", "resmode", (MODES[t.m] || "").split(" ")[0]));
+        lg.appendChild(el("span", "resdur", pj.texte));
+        if(pj.mange) lg.appendChild(el("span", "resmange",
+          pj.mange === "journ\u00e9e" ? "journ\u00e9e prise" : "demi-journ\u00e9e"));
+        lg.title = D[sel[i-1]].fr + " \u2192 " + D[k].fr + " : " + (t.d || "?") + " en v\u00e9hicule, "
+          + pj.texte + " porte \u00e0 porte. " + pj.detail;
+      } else {
+        inconnus++;
+        lg.appendChild(el("span", "resdur vide", "trajet \u00e0 renseigner"));
+      }
+      box.appendChild(lg);
+    }
+
+    /* ---- l'étape ---- */
+    var d = D[k], n = Math.max(1, nights[k] || 1);
+    var deb = addD(START, jour), fin = addD(START, jour + n - 1);
+
+    var it = el("button", "resit");
+    it.style.setProperty("--c", teinte(i));
+    it.appendChild(el("span", "resnum", String(i + 1)));
+
+    var tx = el("div", "restx");
+    tx.appendChild(el("div", "resnom", d.fr));
+    tx.appendChild(el("div", "resdt",
+      ((n === 1) ? fmtCourt(deb) : fmtCourt(deb) + " au " + fmtCourt(fin))
+      + "  \u00b7  " + n + (n > 1 ? " nuits" : " nuit")));
+
+    var bi = bilanEtape(i);
+    tx.appendChild(el("div", "resbil",
+      bi.pleines + (bi.pleines > 1 ? " journ\u00e9es pleines" : " journ\u00e9e pleine")
+      + (bi.mange ? ", arriv\u00e9e mang\u00e9e" : "")
+      + "  \u00b7  " + bi.cales + " sur " + bi.aVoir + " cal\u00e9" + (bi.cales > 1 ? "s" : "")
+      + (bi.multiple ? " (" + bi.nuitsVille + " nuits en tout)" : "")));
+    it.appendChild(tx);
+    if(bi.reste) it.appendChild(el("span", "restrop", "\u2212" + bi.reste));
+
+    it.addEventListener("click", function(){
+      var lignes = document.querySelectorAll(".calday");
+      var cible = lignes[jourDeDepart(i)];
+      if(!cible) return;
+      cible.scrollIntoView({ behavior:"smooth", block:"center" });
+      var b = cible.querySelector(".calbloc");
+      if(b){ b.classList.add("atterri"); setTimeout(function(){ b.classList.remove("atterri"); }, 1400); }
+    });
+
+    box.appendChild(it);
+    jour += n;
+  });
+
+  /* ---- le bilan ---- */
+  var trop = 0, manque = 0;
+  sel.forEach(function(k, i){ var b = bilanEtape(i); trop += b.reste; manque += b.manque; });
+
+  var pied = el("div", "resfin");
+  function chiffre(v, lib, aide){
+    var c = el("div", "reschf");
+    c.appendChild(el("b", null, v));
+    c.appendChild(el("span", null, lib));
+    if(aide) c.title = aide;
+    pied.appendChild(c);
+  }
+  chiffre(String(total), total > 1 ? "nuits" : "nuit");
+  chiffre(String(sel.length), sel.length > 1 ? "\u00e9tapes" : "\u00e9tape");
+  chiffre(enTexte(minTrajet), "de transport",
+    "Somme des trajets porte \u00e0 porte : v\u00e9hicule, plus le temps d'aller \u00e0 la gare ou \u00e0 l'a\u00e9roport, l'avance \u00e0 pr\u00e9voir, et le trajet jusqu'\u00e0 l'h\u00f4tel.");
+  chiffre(String(vols), vols > 1 ? "vols" : "vol");
+  chiffre(String(perdues).replace(".", ","), "j perdues",
+    "Une demi-journ\u00e9e par trajet de 5 \u00e0 8 h porte \u00e0 porte, une journ\u00e9e enti\u00e8re au-del\u00e0. Sur une base de d\u00e9part \u00e0 8 h.");
+  box.appendChild(pied);
+
+  if(inconnus){
+    box.appendChild(el("div", "reshint",
+      inconnus + (inconnus > 1 ? " trajets ne sont pas chiffr\u00e9s" : " trajet n'est pas chiffr\u00e9")
+      + ", le total est donc sous-\u00e9valu\u00e9."));
+  }
+  if(trop || manque){
+    var al = el("div", "restropfin");
+    al.innerHTML = (manque ? "<b>" + manque + " nuits</b> manquent par rapport \u00e0 ce que l'outil recommande pour ces \u00e9tapes.<br>" : "")
+      + (trop ? "<b>" + trop + " choses</b> \u00e0 voir ne sont cal\u00e9es nulle part." : "");
+    box.appendChild(al);
+  }
+}
 /* ══ Le trop-plein ══
    Pour chaque étape : combien de journées vraiment exploitables, combien de choses
    à y voir, et combien ne rentrent pas. Le but est de rendre l'arbitrage visible
@@ -3206,69 +3312,6 @@ function nonCases(i){
   if(!d || !d.ok) return [];
   var vues = activitesDejaPosees();
   return d.ok.filter(function(t){ return vues.indexOf(t) < 0; });
-}
-
-function drawResume(){
-  var box = document.getElementById("calresume");
-  if(!box) return;
-  box.innerHTML = "";
-
-  if(!sel.length){
-    box.appendChild(el("div", "hint", "Rien de posé. Ouvrez « Ajouter une destination » ci-dessous."));
-    return;
-  }
-
-  var jour = 0, total = totalNights();
-  sel.forEach(function(k, i){
-    var d = D[k], n = Math.max(1, nights[k] || 1);
-    var deb = addD(START, jour), fin = addD(START, jour + n - 1);
-
-    var it = el("button", "resit");
-    it.style.setProperty("--c", teinte(i));
-    it.appendChild(el("span", "resnum", String(i + 1)));
-
-    var tx = el("div", "restx");
-    tx.appendChild(el("div", "resnom", d.fr));
-    var dates = (n === 1)
-      ? fmtCourt(deb)
-      : fmtCourt(deb) + " au " + fmtCourt(fin);
-    tx.appendChild(el("div", "resdt", dates + "  ·  " + n + (n > 1 ? " nuits" : " nuit")));
-    it.appendChild(tx);
-
-    var bi = bilanEtape(i);
-    tx.appendChild(el("div", "resbil",
-      bi.pleines + (bi.pleines > 1 ? " journées pleines" : " journée pleine")
-      + (bi.mange ? ", arrivée mangée par le trajet" : "")
-      + "  ·  " + bi.cales + " sur " + bi.aVoir + " calé" + (bi.cales > 1 ? "s" : "")
-      + (bi.multiple ? " (ville vue en plusieurs fois, " + bi.nuitsVille + " nuits au total)" : "")));
-    if(bi.reste) it.appendChild(el("span", "restrop", "−" + bi.reste));
-
-    it.addEventListener("click", function(){
-      var lignes = document.querySelectorAll(".calday");
-      var cible = lignes[jourDeDepart(i)];
-      if(!cible) return;
-      cible.scrollIntoView({ behavior:"smooth", block:"center" });
-      var b = cible.querySelector(".calbloc");
-      if(b){ b.classList.add("atterri"); setTimeout(function(){ b.classList.remove("atterri"); }, 1400); }
-    });
-
-    box.appendChild(it);
-    jour += n;
-  });
-
-  var trop = 0, manque = 0;
-  sel.forEach(function(k, i){ var b = bilanEtape(i); trop += b.reste; manque += b.manque; });
-
-  var pied = el("div", "resfin");
-  pied.innerHTML = "<b>" + total + "</b> nuits · <b>" + sel.length + "</b> étapes";
-  box.appendChild(pied);
-
-  if(trop || manque){
-    var al = el("div", "restropfin");
-    al.innerHTML = (manque ? "<b>" + manque + " nuits</b> manquent par rapport à ce que l'outil recommande pour ces étapes.<br>" : "")
-      + (trop ? "<b>" + trop + " choses</b> à voir ne sont calées nulle part." : "");
-    box.appendChild(al);
-  }
 }
 
 /* le n° de ligne où commence l'étape i */
