@@ -582,8 +582,8 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .calstat{font-size:13px;color:var(--tx2)}
 .calstat b{color:var(--tx)}
 .calstat.trop b{color:var(--rouge)}
-.calgrid{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
-.calday{display:grid;grid-template-columns:74px 1fr;border-top:1px solid var(--line);min-height:52px}
+.calgrid{border:1px solid var(--line);border-radius:var(--r);overflow:clip;background:var(--card)}
+.calday{display:grid;grid-template-columns:74px minmax(0,1fr);border-top:1px solid var(--line);min-height:52px}
 .calday:first-child{border-top:0}
 .calday.wknd .cdj{color:var(--zhu);opacity:.75}
 .calday.survol .calslot{background:#3C63820f}
@@ -592,22 +592,18 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
 .cdj{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--tx2);font-weight:700}
 .cdn{font-size:19px;font-weight:800;letter-spacing:-.03em}
 .cdm{font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em}
-.calslot{padding:6px 8px;display:flex;flex-direction:column;gap:5px;justify-content:center;
+.calslot{min-width:0;padding:6px 8px;display:flex;flex-direction:column;gap:5px;justify-content:center;
   transition:background .14s;position:relative}
-/* la couleur du séjour teinte le jour, et une barre marque le changement de ville */
+/* Le code couleur, une règle et une seule : la couleur dit où l'on dort.
+   Un séjour = un rail continu à gauche, du premier au dernier jour, sans coupure.
+   Le jour de trajet appartient déjà à la ville d'arrivée, donc il porte sa
+   couleur entière. Ce qui le distingue, c'est le pictogramme du mode, pas une
+   bande coupée en deux. */
 .calday.sej{background:color-mix(in srgb,var(--c) 7%,transparent)}
-.calday.sej .caldate{box-shadow:inset 3px 0 0 var(--c)}
+.calday.sej .caldate{box-shadow:inset 4px 0 0 var(--c)}
+.calday.sej .cdn{color:var(--c)}
 .calday.debut{border-top:2px solid var(--c)}
-.calday.debut .cdn{color:var(--c)}
-.calday.transit .caldate{box-shadow:none;
-  background:linear-gradient(180deg,
-    color-mix(in srgb,var(--cd) 22%,transparent) 0%,
-    color-mix(in srgb,var(--cd) 22%,transparent) 45%,
-    transparent 45%);
-  border-left:3px solid var(--c)}
-.calday.transit .caldate:before{content:"";position:absolute;left:0;top:0;width:3px;height:45%;
-  background:var(--cd)}
-.calday.transit .caldate{position:relative}
+.cdmode{margin-top:6px;font-size:13px;line-height:1;filter:saturate(.85)}
 
 /* un séjour */
 .calbloc{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:grab;
@@ -679,54 +675,79 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   background:var(--pap);color:var(--tx);min-width:120px;flex:1}
 .caltin:focus{outline:2px solid var(--zhu);outline-offset:-1px}
 .caltform .btn{flex:none;padding:6px 13px;font-size:12.5px}
+/* ── la journée à l'échelle ── */
+/* la règle reste visible sous l'en-tête réduit et la barre d'onglets */
+.calhrs{display:grid;grid-template-columns:74px minmax(0,1fr);border-bottom:1px solid var(--line);
+  background:var(--pap);position:sticky;top:calc(var(--hmini) + var(--tabsh) + 9px);z-index:3}
+.calhrsd{padding:5px 10px;font-size:9.5px;font-weight:800;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--tx2);border-right:1px solid var(--line)}
+.calhrsp{position:relative;height:22px}
+.calhrsm{position:absolute;top:5px;transform:translateX(-50%);font-size:9.5px;font-weight:700;
+  color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.calhrsm.midi{color:var(--tx);font-weight:800}
+
+.ruban{position:relative;height:46px;border-radius:9px;background:var(--pap);
+  border:1px solid var(--line);overflow:hidden}
+.rbh{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:.55}
+.rbh.midi{opacity:1;background:color-mix(in srgb,var(--tx2) 45%,transparent)}
+
+.rb{position:absolute;top:4px;bottom:4px;border-radius:7px;padding:0 8px;
+  display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;
+  font-size:11.5px;font-weight:700;text-align:left;line-height:1.15;
+  transition:filter .14s,border-color .14s}
+.rbi{flex:none;font-size:12px;line-height:1}
+.rbt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* le trajet est hachuré : on n'est nulle part, on se déplace */
+.rb.trajet{color:#fff;border:0;
+  background-image:repeating-linear-gradient(135deg,
+    var(--deep) 0 7px, color-mix(in srgb,var(--deep) 82%,#fff) 7px 14px)}
+.rb.trajet:hover{filter:brightness(1.12)}
+.rb.trajet{cursor:grab}
+.rb.trajet.flou{opacity:.82}
+body.glisse,body.glisse *{cursor:grabbing !important;user-select:none}
 
 
-/* ── un trajet, présenté comme un segment de billet ── */
-.voy{margin:7px 0 2px}
-.voycorps{display:block;width:100%;text-align:left;padding:12px 14px 9px;border-radius:12px;
-  border:1px solid var(--line);background:var(--card);position:relative;
-  transition:border-color .16s,box-shadow .16s}
-.voycorps:hover{border-color:var(--zhu)}
-.voycorps:hover .voymod{opacity:1}
-.voy.vide .voycorps{border-style:dashed;background:var(--pap)}
+.rb.act{background:color-mix(in srgb,var(--c) 20%,var(--card));color:var(--tx);
+  border:1px solid color-mix(in srgb,var(--c) 42%,transparent)}
+.rb.act:hover{border-color:var(--rouge)}
+.rb.exc{background:color-mix(in srgb,var(--c) 40%,var(--card));color:var(--tx);
+  border:1px dashed color-mix(in srgb,var(--c) 62%,transparent)}
+.rb.exc:hover{filter:brightness(1.05)}
 
-.voyseg{display:grid;grid-template-columns:minmax(62px,auto) minmax(120px,1fr) minmax(62px,auto);
-  align-items:center;gap:14px}
-.voypt.vers{text-align:right}
-.voyh{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--tx);
-  font-variant-numeric:tabular-nums}
-.voyv{font-size:11.5px;font-weight:700;color:var(--tx2);margin-top:2px;line-height:1.25}
+.rb.libre{background:transparent;border:1px dashed var(--line);color:var(--tx2);
+  opacity:.55;font-weight:700}
+.rb.libre:hover{opacity:1;border-color:var(--zhu);color:var(--zhu)}
+.rb.act{cursor:grab}
+.rb.act.porte{opacity:.35}
+.rb.vise{outline:2px solid var(--zhu);outline-offset:-1px;opacity:1}
+.rb.libre.vise{border-style:solid;border-color:var(--zhu);color:var(--zhu)}
 
-.voytrait{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
-.voymode{font-size:11.5px;font-weight:800;color:var(--tx);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.voyrail{position:relative;display:block;width:100%;height:9px}
-.voyrail:before{content:"";position:absolute;top:4px;left:5px;right:5px;height:1px;
-  background:var(--line)}
-.voyrail i{position:absolute;top:1px;width:7px;height:7px;border-radius:50%;box-sizing:border-box;
-  border:1.5px solid var(--zhu);background:var(--card)}
-.voyrail i.a{left:0}
-.voyrail i.b{right:0;background:var(--zhu)}
-.voydur{font-size:11px;font-weight:700;color:var(--tx2);white-space:nowrap;
-  font-variant-numeric:tabular-nums}
 
-.voypied{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:9px;
-  padding-top:8px;border-top:1px solid var(--line)}
+/* la ligne de faits sous le ruban */
+.voyl{margin-top:1px}
+.voylc{display:flex;align-items:center;flex-wrap:wrap;gap:8px;width:100%;text-align:left;
+  padding:4px 8px;border-radius:7px;transition:background .14s}
+.voylc:hover{background:var(--pap)}
+.voylc:hover .voymod{opacity:1}
+.voylm{font-size:11.5px;font-weight:800;flex:none}
+.voyld{font-size:11.5px;font-weight:800;color:var(--zhu);flex:none;font-variant-numeric:tabular-nums}
+.voylh{font-size:11.5px;font-weight:700;color:var(--tx);flex:none;font-variant-numeric:tabular-nums;
+  cursor:help}
+.voylp{font-size:11px;font-weight:700;color:var(--tx2);flex:none;cursor:help;
+  border-left:1px solid var(--line);padding-left:8px}
 .voytag{font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   border-radius:100px;padding:2px 8px;flex:none}
-.voytag.mange{background:#C4761F;color:#fff}
 .voytag.est{color:#C4761F;border:1px solid #C4761F66}
-.voyprix{font-size:11.5px;font-weight:800;background:var(--zhu);color:#fff;
+.voyprix{font-size:11px;font-weight:800;background:var(--zhu);color:#fff;
   border-radius:100px;padding:2px 9px;flex:none}
 .voysrc{font-size:10.5px;color:var(--tx2);opacity:.8;font-style:italic;min-width:0;flex:1}
-.voymod{font-size:10.5px;font-weight:800;color:var(--zhu);flex:none;opacity:0;
-  transition:opacity .16s}
+.voymod{font-size:10.5px;font-weight:800;color:var(--zhu);flex:none;opacity:0;transition:opacity .16s}
 
 @media (max-width:640px){
-  .voyseg{gap:9px;grid-template-columns:minmax(54px,auto) minmax(70px,1fr) minmax(54px,auto)}
-  .voyh{font-size:14px}
-  .voymode{white-space:normal;text-align:center}
-  .voydur{white-space:normal;text-align:center}
+  .calhrsm{font-size:8.5px}
+  .rb{font-size:10.5px;padding:0 5px;gap:4px}
+  .ruban{height:42px}
 }
 
 /* jours particuliers */
@@ -740,6 +761,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   resize:none;padding:2px 0;line-height:1.35;overflow:hidden}
 .calnote::placeholder{color:var(--tx2);opacity:.5}
 .calnote:focus{outline:0;border-bottom:1px dashed var(--zhu)}
+.calpied{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.calpied .caltags{flex:none}
+.calpied .calnote{flex:1;min-width:0}
 .caltags{display:flex;gap:3px;flex-wrap:wrap}
 .caltag{font-size:13px;line-height:1;padding:2px 4px;border-radius:6px;background:var(--pap);cursor:pointer}
 .caltag:hover{background:var(--line)}
@@ -2437,10 +2461,9 @@ function poserTrajet(k, v){
   calSave();
 }
 
-/* ══ Un trajet, présenté comme un segment de billet ══
-   Trois blocs redondants disaient la même chose : la barre de trajet, la phrase
-   « départ le matin », et le créneau barré. Un seul segment les remplace :
-   heure et ville de départ, le trait, heure et ville d'arrivée. */
+/* ══ Les faits du trajet, sur une ligne ══
+   Le ruban dit combien la journée y passe. Cette ligne dit le reste : le mode,
+   la durée, la source. Le gros encadré précédent en faisait deux fois trop. */
 
 function drawTrajet(a, b){
   var k  = cleTrajet(a, b);
@@ -2448,53 +2471,37 @@ function drawTrajet(a, b){
   var pp = t ? porteAPorte(t.m, t.d) : null;
   var h  = pp ? horaires(t, pp) : null;
 
-  var bloc  = el("div", "voy" + (t ? "" : " vide"));
-  var corps = el("button", "voycorps");
-  corps.title = "Modifier ce trajet";
+  var l = el("div", "voyl" + (t ? "" : " vide"));
+  var c = el("button", "voylc");
+  c.title = "Modifier ce trajet";
 
-  /* le segment */
-  var seg = el("div", "voyseg");
-  function point(ville, heure, cls){
-    var p = el("div", "voypt " + cls);
-    var e = el("div", "voyh", heure || "—");
-    if(h) e.title = h.sur ? "Horaire saisi."
-      : "Estimé sur un départ à 8 h. Cliquez pour saisir l'horaire réel du billet.";
-    p.appendChild(e);
-    p.appendChild(el("div", "voyv", D[ville].fr));
-    return p;
+  if(t){
+    c.appendChild(el("span", "voylm", MODES[t.m] || "—"));
+    if(t.d) c.appendChild(el("span", "voyld", t.d));
+    if(h){
+      var til = h.sur ? "" : "~";
+      var e = el("span", "voylh", til + h.depart + " → " + til + h.arrivee);
+      e.title = h.sur ? "Horaire saisi."
+        : "Estimé sur un départ à 8 h. Cliquez pour saisir l'horaire réel du billet.";
+      c.appendChild(e);
+    }
+    if(pp){
+      var q = el("span", "voylp", pp.texte + " porte à porte");
+      q.title = pp.detail;
+      c.appendChild(q);
+    }
+    if(t.p) c.appendChild(el("span", "voyprix", t.p));
+    if(/ESTIMATION/.test(t.s || "")) c.appendChild(el("span", "voytag est", "Estimé"));
+    c.appendChild(el("span", "voysrc", t.n || t.s || ""));
+  } else {
+    c.appendChild(el("span", "voylm", "Trajet à renseigner"));
+    c.appendChild(el("span", "voysrc", D[a].fr + " → " + D[b].fr));
   }
-  var tilde = (h && !h.sur) ? "~" : "";
-  seg.appendChild(point(a, h ? tilde + h.depart : null, "de"));
+  c.appendChild(el("span", "voymod", "Modifier"));
 
-  var trait = el("div", "voytrait");
-  trait.appendChild(el("span", "voymode",
-    (MODES[t ? t.m : "train"] || "Trajet") + (t && t.d ? " · " + t.d : "")));
-  var rail = el("span", "voyrail");
-  rail.appendChild(el("i", "a")); rail.appendChild(el("i", "b"));
-  trait.appendChild(rail);
-  trait.appendChild(el("span", "voydur",
-    pp ? pp.texte + " porte à porte" : "durée à renseigner"));
-  if(pp) trait.title = pp.detail;
-  seg.appendChild(trait);
-
-  seg.appendChild(point(b, h ? tilde + h.arrivee : null, "vers"));
-  corps.appendChild(seg);
-
-  /* le pied : ce qu'il faut savoir, et rien de plus */
-  var pied = el("div", "voypied");
-  if(pp && pp.mange) pied.appendChild(el("span", "voytag mange",
-    pp.mange === "journée" ? "Journée prise" : "Demi-journée prise"));
-  if(t && t.s && /ESTIMATION/.test(t.s)) pied.appendChild(el("span", "voytag est", "Durée estimée"));
-  if(t && t.p) pied.appendChild(el("span", "voyprix", t.p));
-  if(t && t.n) pied.appendChild(el("span", "voysrc", t.n));
-  else if(t && t.s) pied.appendChild(el("span", "voysrc", t.s));
-  if(!t) pied.appendChild(el("span", "voysrc", "Aucun trajet renseigné. Cliquez pour l'ajouter."));
-  pied.appendChild(el("span", "voymod", "Modifier"));
-  corps.appendChild(pied);
-
-  corps.addEventListener("click", function(){ editerTrajet(bloc, k, a, b); });
-  bloc.appendChild(corps);
-  return bloc;
+  c.addEventListener("click", function(){ editerTrajet(l, k, a, b); });
+  l.appendChild(c);
+  return l;
 }
 function editerTrajet(ligne, k, a, b){
   if(ligne.querySelector(".caltform")) return;
@@ -2681,6 +2688,7 @@ function retirerActivite(cle, cr, txt){
    l'est pas, on modelise un depart a 8 h et on prefixe l'heure d'un tilde. */
 var DEPART_DEFAUT = 480;
 function enHeure(min){
+  if(min === 1440) return "24:00";
   var j = Math.floor(min / 1440), h = Math.floor((min % 1440) / 60), m = min % 60;
   return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m + (j ? " J+" + j : "");
 }
@@ -2694,6 +2702,231 @@ function creneauxTrajet(pp){
   if(!pp) return [];
   if(pp.total >= 480) return ["m", "a"];      /* la journée entière y passe */
   return ["m"];                                /* le matin est en route */
+}
+
+/* ══ La journée à l'échelle ══
+   Un trajet d'une heure et un trajet de neuf heures ne peuvent pas occuper la
+   même place. La journée devient donc une règle horizontale de 6 h à minuit, et
+   tout s'y pose à sa vraie largeur : le trajet d'abord, puisqu'il est le seul
+   dont on connaisse la durée, puis ce qui reste de matin, d'après-midi et de
+   soirée se partage entre les activités. */
+
+var JOUR_DEB = 360, JOUR_FIN = 1440;
+var ZONES = { m:[480, 720], a:[720, 1080], s:[1080, 1320] };
+function pct(min){
+  return Math.max(0, Math.min(100, (min - JOUR_DEB) / (JOUR_FIN - JOUR_DEB) * 100));
+}
+function departDe(t){
+  var h = enMinutes(t && t.h);
+  return h === null ? DEPART_DEFAUT : h;
+}
+
+/* ══ Déplacer un trajet dans la journée ══
+   Rien n'oblige à partir le matin. On attrape le bloc et on le pose à l'heure
+   voulue, au quart d'heure. Tant qu'on n'y a pas touché, 8 h n'est qu'un
+   défaut, signalé par le tilde et par un bloc légèrement estompé. */
+
+function glisserTrajet(bloc, ruban, transit, depart){
+  var duree = transit.pp.total;
+  var k = cleTrajet(transit.de, transit.vers);
+  var pris = false, x0 = 0, m0 = depart;
+
+  function minutesParPixel(){
+    var l = ruban.getBoundingClientRect().width;
+    return l ? (JOUR_FIN - JOUR_DEB) / l : 1;
+  }
+  function bouge(e){
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    if(!pris && Math.abs(x - x0) < 4) return;
+    pris = true;
+    if(e.cancelable) e.preventDefault();
+    var m = m0 + (x - x0) * minutesParPixel();
+    m = Math.round(m / 15) * 15;
+    /* l'arrivée doit rester dans la journée : le modèle veut qu'on dorme
+       le soir même dans la ville d'arrivée */
+    var tard = Math.max(JOUR_DEB, JOUR_FIN - duree);
+    m = Math.max(JOUR_DEB, Math.min(tard, m));
+    bloc.style.left  = pct(m) + "%";
+    bloc.style.width = (pct(Math.min(JOUR_FIN, m + duree)) - pct(m)) + "%";
+    bloc.dataset.m = m;
+  }
+  function lache(){
+    document.removeEventListener("mousemove", bouge);
+    document.removeEventListener("mouseup", lache);
+    document.removeEventListener("touchmove", bouge);
+    document.removeEventListener("touchend", lache);
+    document.body.classList.remove("glisse");
+    if(!pris) return;
+    var m = +bloc.dataset.m;
+    var t = trajetDe(transit.de, transit.vers) || {};
+    poserTrajet(k, { m:t.m, d:t.d, h:enTexte(m), p:t.p, n:t.n });
+    drawCal();
+  }
+  function prend(e){
+    if(e.button) return;
+    x0 = (e.touches ? e.touches[0].clientX : e.clientX);
+    m0 = +bloc.dataset.m || depart;
+    pris = false;
+    document.body.classList.add("glisse");
+    document.addEventListener("mousemove", bouge);
+    document.addEventListener("mouseup", lache);
+    document.addEventListener("touchmove", bouge, { passive:false });
+    document.addEventListener("touchend", lache);
+  }
+  bloc.dataset.m = depart;
+  bloc.addEventListener("mousedown", prend);
+  bloc.addEventListener("touchstart", prend, { passive:true });
+  /* un clic qui suit un glissement ne doit pas ouvrir l'éditeur */
+  bloc.addEventListener("click", function(e){ if(pris){ e.stopPropagation(); pris = false; } }, true);
+}
+
+/* Le trajet peut tomber n'importe quand. On ne rogne donc pas le créneau par la
+   gauche : on cherche le plus grand morceau qui reste réellement libre. */
+function plusGrandCreux(zone, occupe){
+  var bornes = [zone[0]];
+  occupe.forEach(function(o){
+    if(o[1] > zone[0] && o[0] < zone[1]){
+      bornes.push(Math.max(zone[0], o[0]), Math.min(zone[1], o[1]));
+    }
+  });
+  bornes.push(zone[1]);
+  bornes.sort(function(a, b){ return a - b; });
+  var best = null;
+  for(var i = 0; i < bornes.length - 1; i += 2){
+    var d = bornes[i], f = bornes[i + 1];
+    var chevauche = occupe.some(function(o){ return o[0] < f && o[1] > d; });
+    if(chevauche || f - d < 20) continue;
+    if(!best || (f - d) > (best[1] - best[0])) best = [d, f];
+  }
+  return best;
+}
+
+/* Le calendrier est une zone de travail : un bloc déjà posé se reprend et se
+   repose ailleurs, dans un autre créneau ou un autre jour. */
+function accepteBloc(cible, cle, cr){
+  cible.addEventListener("dragover", function(e){
+    var d = e.dataTransfer;
+    if(d && (d.types || []).indexOf("text/plain") < 0) return;
+    e.preventDefault(); e.stopPropagation();
+    d.dropEffect = "move";
+    cible.classList.add("vise");
+  });
+  cible.addEventListener("dragleave", function(){ cible.classList.remove("vise"); });
+  cible.addEventListener("drop", function(e){
+    cible.classList.remove("vise");
+    var ch = e.dataTransfer.getData("text/plain") || "";
+    if(ch.indexOf("act|") !== 0) return;
+    e.preventDefault(); e.stopPropagation();
+    var p = ch.split("|");
+    var srcCle = p[1], srcCr = p[2], txt = p.slice(3).join("|");
+    if(srcCle === cle && srcCr === cr) return;
+    retirerActivite(srcCle, srcCr, txt);
+    poserActivite(cle, cr, txt);
+  });
+}
+
+function drawRuban(cle, base, transit, slot){
+  var rb = el("div", "ruban");
+  var occupe = [];
+
+  for(var hh = 8; hh <= 22; hh += 2){
+    var g = el("span", "rbh" + (hh === 12 ? " midi" : ""));
+    g.style.left = pct(hh * 60) + "%";
+    rb.appendChild(g);
+  }
+
+  function poser(deb, fin, cls, glyphe, texte, infobulle, clic){
+    if(fin - deb < 12) return null;
+    var b = el(clic ? "button" : "div", "rb " + cls);
+    b.style.left  = pct(deb) + "%";
+    b.style.width = (pct(fin) - pct(deb)) + "%";
+    if(glyphe) b.appendChild(el("span", "rbi", glyphe));
+    if(texte)  b.appendChild(el("span", "rbt", texte));
+    if(infobulle) b.title = infobulle;
+    if(clic) b.addEventListener("click", function(e){ e.stopPropagation(); clic(b); });
+    rb.appendChild(b);
+    return b;
+  }
+
+  /* 1. le trajet, seul élément dont la durée est chiffrée */
+  if(transit){
+    var t   = trajetDe(transit.de, transit.vers);
+    var dep = departDe(t);
+    var fin = Math.min(JOUR_FIN, dep + transit.pp.total);
+    var hh2 = horaires(t, transit.pp);
+    var til = hh2.sur ? "" : "~";
+    var bt = poser(dep, fin, "trajet" + (hh2.sur ? "" : " flou"),
+      (MODES[t.m] || "").split(" ")[0],
+      D[transit.de].fr + " → " + D[transit.vers].fr,
+      til + hh2.depart + " – " + til + hh2.arrivee + ", " + transit.pp.texte
+        + " porte à porte. " + transit.pp.detail
+        + (hh2.sur ? "" : " Heure supposée : faites glisser le bloc, ou cliquez pour la saisir.")
+        + " Glisser pour changer l'heure, cliquer pour le reste.",
+      function(){ editerTrajet(slot, cleTrajet(transit.de, transit.vers), transit.de, transit.vers); });
+    if(bt) glisserTrajet(bt, rb, transit, dep);
+    occupe.push([dep, fin]);
+  }
+
+  /* 2. une excursion prend le gros de la journée */
+  excursionsDuJour(cle).forEach(function(id){
+    if(!D[id]) return;
+    var deb = 480;
+    occupe.forEach(function(o){ if(o[1] > deb && o[0] < 1080) deb = Math.max(deb, o[1]); });
+    poser(deb, 1080, "exc", "↱", D[id].fr,
+      "Excursion à la journée, on rentre dormir au même endroit. Cliquez pour ouvrir la fiche.",
+      function(){ openSheet(id); });
+    occupe.push([deb, 1080]);
+  });
+
+  /* 3. ce qui reste de chaque créneau se partage entre ses activités */
+  CRENEAUX.forEach(function(c){
+    var libre = plusGrandCreux(ZONES[c.k], occupe);
+    if(!libre) return;
+    var deb = libre[0], fin = libre[1];
+
+    var liste = activitesDuJour(cle, c.k);
+    if(!liste.length){
+      var vide = poser(deb, fin, "libre", null, "+ " + c.t.toLowerCase(),
+        "Ajouter quelque chose au " + c.t.toLowerCase() + ", ou y déposer un bloc.",
+        function(){ ouvrirChoix(cle, base, c, slot); });
+      if(vide) accepteBloc(vide, cle, c.k);
+      return;
+    }
+    var pas = (fin - deb) / liste.length;
+    liste.forEach(function(txt, k){
+      var b = poser(deb + k * pas, deb + (k + 1) * pas, "act", null, txt,
+        c.t + " · " + txt + ". À faire glisser pour déplacer, à cliquer pour retirer.",
+        function(){ retirerActivite(cle, c.k, txt); });
+      if(!b) return;
+      b.draggable = true;
+      b.addEventListener("dragstart", function(e){
+        e.dataTransfer.setData("text/plain", "act|" + cle + "|" + c.k + "|" + txt);
+        e.dataTransfer.effectAllowed = "move";
+        b.classList.add("porte");
+      });
+      b.addEventListener("dragend", function(){ b.classList.remove("porte"); });
+      accepteBloc(b, cle, c.k);
+    });
+  });
+
+  return rb;
+}
+
+/* le choix d'une activité, appelé depuis le ruban */
+function ouvrirChoix(cle, base, cr, slot){
+  var ouvert = slot.querySelector(".calpicker");
+  if(ouvert){ ouvert.remove(); return; }
+  var deja  = activitesDejaPosees();
+  var dispo = activitesPossibles(base).filter(function(x){ return deja.indexOf(x) < 0; });
+  var p = el("div", "calpicker calpexc");
+  p.appendChild(el("div", "calpttl", cr.t));
+  if(!dispo.length) p.appendChild(el("div", "hint", "Tout est déjà posé ailleurs."));
+  dispo.forEach(function(x){
+    var b = el("button", "cepick", x);
+    b.addEventListener("click", function(){ poserActivite(cle, cr.k, x); });
+    p.appendChild(b);
+  });
+  slot.appendChild(p);
 }
 
 function drawAct(cle, base, slot, transit){
@@ -2911,6 +3144,19 @@ function drawCal(){
   if(!grille) return;
   grille.innerHTML = "";
 
+  /* la règle des heures, posée une fois : c'est elle qui donne l'échelle */
+  var regle = el("div", "calhrs");
+  regle.appendChild(el("div", "calhrsd", "Heure"));
+  var piste = el("div", "calhrsp");
+  for(var hg = 8; hg <= 22; hg += 2){
+    var m = el("span", "calhrsm" + (hg === 12 ? " midi" : ""));
+    m.style.left = pct(hg * 60) + "%";
+    m.textContent = hg + " h";
+    piste.appendChild(m);
+  }
+  regle.appendChild(piste);
+  grille.appendChild(regle);
+
   var plan   = calPlan();
   var total  = totalNights();
   var lignes = Math.max(target, total) + 1;   /* +1 : le jour du vol retour */
@@ -2951,14 +3197,12 @@ function drawCal(){
                ? plan[i - 1].id : null;
     if(venant){
       jour.classList.add("transit");
-      jour.style.setProperty("--cd", teinte(cc.etape - 1));
     }
 
     /* La ville d'abord, elle nomme la journée. Le segment de trajet ensuite,
        à sa place chronologique : il ouvre la journée, avant les créneaux. */
     if(c && c.premiere){
       slot.appendChild(calBloc(c));
-      if(venant) slot.appendChild(drawTrajet(venant, c.id));
     } else if(c){
       var suite = el("div", "calsuite");
       suite.appendChild(el("div", "calrail"));
@@ -2986,10 +3230,13 @@ function drawCal(){
       var pt = tt ? porteAPorte(tt.m, tt.d) : null;
       if(pt) infoTransit = { de:venant, vers:c.id, pp:pt };
     }
-    if(base) slot.appendChild(drawAct(cle, base, slot, infoTransit));
+    if(base) slot.appendChild(drawRuban(cle, base, infoTransit, slot));
+    if(venant) slot.appendChild(drawTrajet(venant, c.id));
     if(c)    slot.appendChild(drawExc(cle, c.id, slot));
-    slot.appendChild(calTags(cle, slot));
-    slot.appendChild(calNote(cle));
+    var pied = el("div", "calpied");
+    pied.appendChild(calTags(cle, slot));
+    pied.appendChild(calNote(cle));
+    slot.appendChild(pied);
 
     /* dépose */
     jour.addEventListener("dragover", function(e){
@@ -3091,7 +3338,7 @@ function calBloc(c){
    déjà occupé insère avant ce séjour, sauf si on vise sa seconde moitié, auquel cas
    on insère après. Déposer au-delà du dernier jour occupé ajoute à la suite.        */
 function calDepose(charge, jour){
-  if(!charge) return;
+  if(!charge || charge.indexOf("act|") === 0) return;   /* géré par le ruban */
   var plan = calPlan();
   var c    = plan[jour];
   var pos;
