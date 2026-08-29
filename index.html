@@ -2133,26 +2133,25 @@ var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
   /* Le jour de trajet appartient à la ville d'ARRIVÉE. On part le matin, on arrive
      en début d'après-midi, et la fin de journée se passe déjà sur place.
-     Shanghai 2 · on dort le 13 et le 14, on part le 15 au matin. Le décalage de
-       +7 h s'absorbe ici, pas à Pékin.
-     Pékin 3 · D12. Arrivée le 15 en début d'après-midi pour les hutongs, le 16
-       Temple du Ciel à l'aube puis Cité Interdite, le 17 la Muraille à Mutianyu
-       qui prend la journée entière. Serré, assumé.
+     Shanghai 2 · le décalage de +7 h s'absorbe ici, pas à Pékin.
+     Pékin 3 · D12. Temple du Ciel à l'aube puis Cité Interdite le 16, Mutianyu
+       le 17 qui prend la journée entière.
      Xi'an 2 · arrivée le 18 en fin de journée, une journée pleine le 19.
-     Zhangjiajie 3 · D12. La nuit prise à Pékin vient ici : Wulingyuan et Tianmen
-       sont deux journées distinctes, et fin novembre la brume peut en gaspiller une.
-     Chongqing 1 · arrivée le 23 vers midi, une soirée.
-     Chengdu 3 · arrivée légère, Leshan et les pandas.
-     Dali 2, Shaxi 2, Lijiang 3 · voir le détail dans le calendrier.
-     Shangri-La 2 · arrivée le 4 vers midi, une journée pleine le 5.
-     Lijiang 1 · D11 option B. On redescend le 6 au matin pour dormir près de
-       l'aéroport : le vol part le 7, et il ne reste qu'une nuit avant l'AF111.
-     Shanghai 1 · le 7 au soir, à pied d'œuvre pour le retour. */
-  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:1","chengdu:3",
-     "dali:2","shaxi:2","lijiang:3","shangrila:2","lijiang#2:1","shanghai#2:1"],
+     Zhangjiajie 3 · D12. Wulingyuan et Tianmen sont deux journées distinctes, et
+       la brume de fin novembre peut en gaspiller une.
+     Chongqing 2 · D13. Une nuit ne laissait qu'une soirée pour cinq choses à voir.
+     Chengdu 3 · Leshan à la journée et les pandas au petit matin.
+     Dali 2, Shaxi 2 · le cœur rural du Yunnan.
+     Shangri-La 2 · D13. On y monte depuis Shaxi en traversant Lijiang sans s'y
+       arrêter, au lieu d'y dormir à l'aller ET au retour.
+     Lijiang 3 · D13. Toutes ses nuits d'un bloc, à la fin, et la dernière à côté
+       de l'aéroport d'où part le vol du 7.
+     Shanghai 1 · le 7 au soir, à pied d'œuvre pour l'AF111 du 8. */
+  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:2","chengdu:3",
+     "dali:2","shaxi:2","shangrila:2","lijiang:3","shanghai#2:1"],
   n:{},
   g:{},
-  x:{ "2026-11-25":["leshan"], "2026-12-02":["tigerleaping"] },
+  x:{"2026-11-26":["leshan"],"2026-12-05":["tigerleaping"]},
   a:{
     "2026-11-14": {
       "m": [
@@ -2233,6 +2232,15 @@ var PLAN_DEFAUT = {
       ]
     },
     "2026-11-24": {
+      "m": [
+        "Les abris anti-aériens reconvertis"
+      ],
+      "a": [],
+      "s": [
+        "Téléphérique du Yangtsé et croisière de nuit"
+      ]
+    },
+    "2026-11-25": {
       "m": [],
       "a": [
         "Le quartier de Kuanzhai"
@@ -2241,7 +2249,7 @@ var PLAN_DEFAUT = {
         "Opéra du Sichuan et changement de masques"
       ]
     },
-    "2026-11-26": {
+    "2026-11-27": {
       "m": [
         "Base de recherche sur le panda géant, tôt le matin"
       ],
@@ -2250,14 +2258,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-27": {
+    "2026-11-28": {
       "m": [],
       "a": [
         "Les Trois Pagodes du temple Chongsheng"
       ],
       "s": []
     },
-    "2026-11-28": {
+    "2026-11-29": {
       "m": [
         "Le tour du lac Erhai à vélo ou en scooter"
       ],
@@ -2266,14 +2274,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-29": {
+    "2026-11-30": {
       "m": [],
       "a": [
         "La place de Sideng et son théâtre"
       ],
       "s": []
     },
-    "2026-11-30": {
+    "2026-12-01": {
       "m": [
         "Les temples de Shibaoshan à flanc de montagne"
       ],
@@ -2282,28 +2290,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-01": {
-      "m": [],
-      "a": [
-        "La vieille ville de Dayan, classée"
-      ],
-      "s": []
-    },
-    "2026-12-03": {
-      "m": [
-        "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
-      ],
-      "a": [],
-      "s": []
-    },
-    "2026-12-04": {
+    "2026-12-02": {
       "m": [],
       "a": [
         "La vieille ville reconstruite"
       ],
       "s": []
     },
-    "2026-12-05": {
+    "2026-12-03": {
       "m": [
         "Monastère de Songzanlin"
       ],
@@ -2312,8 +2306,17 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-06": {
+    "2026-12-04": {
       "m": [],
+      "a": [
+        "La vieille ville de Dayan, classée"
+      ],
+      "s": []
+    },
+    "2026-12-06": {
+      "m": [
+        "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
+      ],
       "a": [
         "Le Palais Mu et le parc de l'Étang du Dragon noir"
       ],
@@ -2396,6 +2399,8 @@ var TRAJETS_CONNUS = {
   "shanghai>kunming":   { m:"vol",   d:"2 h 55",  s:"sans escale, vérifié" },
   "dali>shaxi":         { m:"bus",   d:"2 h 30",  s:"Bus direct depuis la gare routière de Dali, 8 départs de 9 h à 17 h, ~30 CNY. Sinon Dali > Jianchuan puis minibus 45 min. Aucune gare ni aéroport à Shaxi." },
   "shaxi>dali":         { m:"bus",   d:"2 h 30",  s:"Minibus Shaxi > Jianchuan 45 min, puis bus Jianchuan > Dali" },
+  "shaxi>shangrila":    { m:"bus",   d:"4 h 20",  s:"On traverse Lijiang sans s'y arrêter : minibus jusqu'à Jianchuan 45 min, bus jusqu'à Lijiang 1 h, puis train Lijiang > Shangri-La 1 h 20. ESTIMATION du chaînage, les correspondances restent à caler." },
+  "shangrila>shaxi":    { m:"bus",   d:"4 h 20",  s:"Train Shangri-La > Lijiang 1 h 20, puis bus jusqu'à Jianchuan et minibus. ESTIMATION du chaînage." },
   "lijiang>shaxi":      { m:"bus",   d:"2 h 15",  s:"Bus Lijiang > Jianchuan 1 h, ~25 CNY, puis minibus 45 min" },
   "shaxi>lijiang":      { m:"bus",   d:"2 h 15",  s:"Minibus Shaxi > Jianchuan 45 min, ~10 CNY, puis bus Jianchuan > Lijiang 1 h" },
   "kunming>yuanyang":   { m:"route", d:"4 h 30",  s:"corpus" },
