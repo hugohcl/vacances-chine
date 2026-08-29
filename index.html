@@ -1286,7 +1286,7 @@ var LINKS=[
  {b:"guilin",x:"yangshuo",t:"paire",d:"30 min de train",p:"Même paysage, mais on dort bien mieux à Yangshuo. Beaucoup ne font que passer par Guilin."},
  {b:"datong",x:"pingyao",t:"paire",d:"2 à 3 h de train",p:"Les deux grands arrêts du Shanxi, sur la même ligne."},
  {b:"zhangjiajie",x:"fenghuang",t:"paire",d:"4 h de route",p:"La suite naturelle de Zhangjiajie, dans la même province."},
- {b:"lijiang",x:"shangrila",t:"paire",d:"1 à 2 h de train",p:"Ligne ouverte en 2023. Attention à la montée d'altitude, 2 400 puis 3 200 mètres."},
+ {b:"lijiang",x:"shangrila",t:"paire",d:"1 à 2 h de train",p:"Ligne ouverte en 2023."},
  {b:"lijiang",x:"shaxi",t:"route",d:"2 h",p:"Shaxi est entre Lijiang et Dali : l'ajouter ne coûte quasiment aucun transport."},
  {b:"dali",x:"shaxi",t:"route",d:"2 h",p:"Même chose dans l'autre sens."},
  {b:"kunming",x:"yuanyang",t:"route",d:"4 h 30",p:"Cul-de-sac au sud de Kunming : il faut redescendre puis remonter."},
@@ -1593,14 +1593,6 @@ function order(){
     cur=rest[best]; out.push(cur); rest.splice(best,1);
   }
   sel=out;
-  altitudeOrder();
-}
-/* Dali puis Lijiang puis Shangri-La : contrainte physiologique, pas de confort */
-function altitudeOrder(){
-  var chain=["dali","lijiang","shangrila"].filter(function(x){return sel.indexOf(x)>=0;});
-  if(chain.length<2) return;
-  var slots=chain.map(function(x){return sel.indexOf(x);}).sort(function(a,b){return a-b;});
-  chain.forEach(function(id,k){ sel[slots[k]]=id; });
 }
 
 /* ══ route ══ */
@@ -1669,18 +1661,8 @@ function hardRules(alert){
       ", posez une alarme au "+fmt(ouv)+". Une réservation par passeport, donc deux à faire. Tarif basse saison 40 ¥, environ 5 €.");
   }
 
-  /* 2. Altitude : Shangri-La à 3 200 m impose un ordre et un plancher */
-  if(pos.shangrila!==undefined){
-    var av=[];
-    if(pos.dali!==undefined&&pos.dali<pos.shangrila) av.push("Dali");
-    if(pos.lijiang!==undefined&&pos.lijiang<pos.shangrila) av.push("Lijiang");
-    if(av.length<2) alert("bad","Shangri-La est à 3 200 mètres, soit 72 % d'oxygène. Il est déconseillé d'y monter depuis une ville basse. "+
-      "L'ordre recommandé est Dali, puis Lijiang, puis Shangri-La"+(av.length?" ; vous n'avez que "+av.join(" et ")+" avant.":", or aucune de ces deux étapes ne la précède."));
-    if((nights.shangrila||0)<3) alert("warn","Shangri-La : "+(nights.shangrila||0)+" nuit"+((nights.shangrila||0)>1?"s":"")+" seulement. "+
-      "L'acclimatation prend deux jours pleins, le troisième est le premier vraiment confortable. Trois nuits minimum, sinon la moitié du séjour passe à s'adapter.");
-  }
 
-  /* 3. Yuanyang : terrasses en eau à partir de fin novembre */
+  /* 2. Yuanyang : terrasses en eau à partir de fin novembre */
   if(pos.yuanyang!==undefined){
     var jour=addD(START,nightsBefore("yuanyang"));
     var tot=totalNights();
@@ -1691,29 +1673,29 @@ function hardRules(alert){
       alert("warn","Yuanyang vaut pour ses levers de soleil, et il y pleut cinq jours sur vingt-sept. Prévoyez au moins deux matins, donc trois nuits.");
   }
 
-  /* 4. Hong Kong et Macao : sorties du territoire */
+  /* 3. Hong Kong et Macao : sorties du territoire */
   ["hongkong","macao"].forEach(function(x){
     if(pos[x]!==undefined) alert("warn",D[x].fr+" est une juridiction distincte : y aller est une sortie de Chine continentale. "+
       "Le retour relance un compteur de 30 jours d'exemption. Ce n'est pas une étape ordinaire dans le calcul de durée, et il y a des formalités à chaque passage.");
   });
 
-  /* 5. Tibet : permis et circuit obligatoires */
+  /* 4. Tibet : permis et circuit obligatoires */
   if(pos.lhassa!==undefined) alert("bad","Lhassa : les étrangers ne peuvent pas circuler librement au Tibet. "+
     "Permis obligatoire ET circuit organisé avec guide, délai de plusieurs semaines. Le voyage indépendant est exclu. "+
     "La météo y est pourtant la meilleure du catalogue, 10,3 h de soleil et un jour de pluie : c'est l'administratif qui ferme, pas la saison.");
 
-  /* 6. Hébergement : licence pour accueillir des étrangers */
+  /* 5. Hébergement : licence pour accueillir des étrangers */
   var ruraux=sel.filter(function(id){return ["shaxi","yuanyang","zhaoxing","tulou","hongcun","xijiang","tigerleaping"].indexOf(id)>=0;});
   if(ruraux.length) alert("warn","Hébergement : seule une minorité d'hôtels a la licence pour accueillir des étrangers, et le problème se concentre "+
     "sur les petites structures rurales. Concerné ici : "+ruraux.map(function(i){return D[i].fr;}).join(", ")+
     ". Réservez via Trip.com avec le filtre « accepte les étrangers », étape par étape.");
 
-  /* 7. Météo : lieux déconseillés à cette saison */
+  /* 6. Météo : lieux déconseillés à cette saison */
   var mauvais=sel.filter(function(id){return D[id].vd==="no";});
   if(mauvais.length) alert("bad","À cette saison, les données déconseillent : "+
     mauvais.map(function(i){return D[i].fr+" ("+D[i].rain+" j de pluie, "+nb(D[i].sun)+" h de soleil)";}).join(" · ")+".");
 
-  /* 8. Coût fixe d'un changement de base */
+  /* 7. Coût fixe d'un changement de base */
   if(sel.length>1){
     var ch=sel.length-1, perdu=ch/2;
     alert(ch>=6?"warn":"good",ch+" changements de base, soit environ "+nb(perdu)+" journée"+(perdu>1?"s":"")+
@@ -2101,10 +2083,14 @@ var PLAN_DEFAUT = {
      Zhangjiajie 2 · arrivée le 21, une journée pleine le 22 pour Wulingyuan.
      Chongqing 1 · arrivée le 23 en début d'après-midi, une soirée.
      Chengdu 3  · arrivée légère, Leshan et les pandas.
-     Dali 2, Shaxi 2, Lijiang 3, Shangri-La 3 · voir le détail dans le calendrier.
-     Shanghai 1 · le retour du Yunnan prend 9 h, le 8 est une journée pleine. */
+     Dali 2, Shaxi 2, Lijiang 3 · voir le détail dans le calendrier.
+     Shangri-La 2 · arrivée le 4 en début d'après-midi, une journée pleine le 5.
+     Lijiang 1 · D11 option B. On redescend le 6 au matin pour dormir près de l'aéroport :
+       le vol Lijiang-Shanghai part le 7, et il ne reste qu'une nuit avant l'AF111 du 8.
+       Faire descente + vol le même jour, c'était 10 h 05 sans aucune marge.
+     Shanghai 1 · le 7 au soir, à pied d'œuvre pour le retour. */
   s:["shanghai:2","pekin:4","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
-     "dali:2","shaxi:2","lijiang:3","shangrila:3","shanghai#2:1"],
+     "dali:2","shaxi:2","lijiang:3","shangrila:2","lijiang#2:1","shanghai#2:1"],
   n:{},
   g:{},
   x:{ "2026-11-25":["leshan"], "2026-12-02":["tigerleaping"] },
@@ -2247,6 +2233,13 @@ var PLAN_DEFAUT = {
       "a": [],
       "s": []
     },
+    "2026-12-04": {
+      "m": [],
+      "a": [
+        "La vieille ville reconstruite"
+      ],
+      "s": []
+    },
     "2026-12-05": {
       "m": [
         "Monastère de Songzanlin"
@@ -2257,10 +2250,10 @@ var PLAN_DEFAUT = {
       "s": []
     },
     "2026-12-06": {
-      "m": [
-        "La vieille ville reconstruite"
+      "m": [],
+      "a": [
+        "Le Palais Mu et le parc de l'Étang du Dragon noir"
       ],
-      "a": [],
       "s": []
     }
   },
@@ -2343,6 +2336,8 @@ var TRAJETS_CONNUS = {
   "lijiang>shaxi":      { m:"route", d:"2 h",     s:"corpus" },
   "shaxi>lijiang":      { m:"route", d:"2 h",     s:"corpus" },
   "kunming>yuanyang":   { m:"route", d:"4 h 30",  s:"corpus" },
+  "lijiang>shanghai":   { m:"vol",   d:"3 h 20",  s:"vol direct Lijiang Sanyi → Shanghai Pudong, 28 vols/semaine, 4 compagnies. Vérifié." },
+  "shanghai>lijiang":   { m:"vol",   d:"3 h 20",  s:"vol direct Shanghai Pudong → Lijiang Sanyi, 28 vols/semaine. Vérifié." },
   "xian>chengdu":       { m:"train", d:"3 h",     s:"corpus" },
   /* Estimations, pas des horaires relevés. À corriger sur 12306 ou Trip.com
      avant de réserver : le calendrier s'y adapte automatiquement. */
@@ -2904,7 +2899,8 @@ function drawCal(){
         q.appendChild(el("span", "ic", "→"));
         q.appendChild(el("span", null,
           "Départ de " + D[venant].fr + " le matin, arrivée à " + D[c.id].fr
-          + (ppj.total >= 480 ? " en soirée." : ppj.total >= 300 ? " en début d'après-midi." : " dans la matinée.")
+          + (ppj.total >= 480 ? " en soirée." : ppj.total >= 300 ? " en début d'après-midi."
+            : ppj.total >= 210 ? " vers midi." : " dans la matinée.")
           + (ppj.total >= 480 ? " La journée est prise." : " L'après-midi et la soirée sont à vous.")));
         slot.appendChild(q);
       }
