@@ -2155,29 +2155,28 @@ function appliquerEtat(e){
    Pour le faire évoluer : modifier cet objet, et rien d'autre.               */
 var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
-  /* SCÉNARIO S2. Neuf étapes au lieu de onze, 8 trajets au lieu de dix, 52 h 48 de
-     transport au lieu de 58 h 05. Chongqing et Shaxi ne sont plus des étapes :
-     Zhangjiajie rejoint Chengdu en 3 h 58 de train direct, et Shaxi se fait à la
-     journée depuis Dali. Les 4 nuits libérées vont aux étapes qui manquaient d'air.
-     Le jour de trajet appartient à la ville d'ARRIVÉE : on part le matin, et la
-     fin de journée se passe déjà sur place.
-     Shanghai 2 · le décalage de +7 h s'absorbe ici.
+  /* SCÉNARIO S2. Neuf étapes, 8 trajets, 52 h 48 de transport, 3 vols. Chongqing
+     et Shaxi ne sont plus des étapes : Zhangjiajie rejoint Chengdu en 3 h 58 de
+     train direct, et Shaxi se fait à la journée depuis Dali.
+     Le jour de trajet appartient à la ville d'ARRIVÉE : on part le matin, et la fin
+     de journée se passe déjà sur place.
+     Shanghai 2 · le décalage de +7 h s'absorbe ici, pas à Pékin.
      Pékin 3 · Temple du Ciel à l'aube puis Cité Interdite, Mutianyu la journée.
      Xi'an 3 · les sources demandent 2 à 3 jours sur place pour les trois grands.
-       À 2 nuits il ne restait qu'une journée pleine.
-     Zhangjiajie 4 · les sources demandent 3 à 4 jours hors arrivée. Wulingyuan et
-       Tianmen sont deux journées, et la brume de fin novembre peut en gaspiller une.
+     Zhangjiajie 3 · Wulingyuan le 22, Tianmen et la passerelle le 23. Pas de marge
+       si la brume tombe : c'est le prix de la nuit rendue à Shanghai.
      Chengdu 3 · le plancher pour avoir les pandas au petit matin ET Leshan.
-     Dali 3 · dont la journée d'excursion à Shaxi.
-     Shangri-La 3 · arrivée le 1er en début d'après-midi, deux journées pleines.
-     Lijiang 3 · les gorges du Saut du Tigre à la journée, et la dernière nuit à
-       côté de l'aéroport d'où part le vol du 7.
-     Shanghai 1 · le 7 au soir, à pied d'œuvre pour l'AF111 du 8. */
-  s:["shanghai:2","pekin:3","xian:3","zhangjiajie:4","chengdu:3",
-     "dali:3","shangrila:3","lijiang:3","shanghai#2:1"],
+     Dali 3 · dont la journée d'excursion à Shaxi le 29.
+     Shangri-La 3 · arrivée le 30 vers midi, deux journées pleines.
+     Lijiang 3 · les gorges du Saut du Tigre à la journée le 4.
+     Shanghai 2 · D14. Le vol du 6 prend la journée, on arrive en fin d'après-midi.
+       Le 7 est une journée pleine, et le 8 l'est aussi jusqu'à l'AF111 de 22 h 15.
+       Deux journées pleines de marge avant le vol international au lieu d'une. */
+  s:["shanghai:2","pekin:3","xian:3","zhangjiajie:3","chengdu:3",
+     "dali:3","shangrila:3","lijiang:3","shanghai#2:2"],
   n:{},
   g:{},
-  x:{"2026-11-26":["leshan"],"2026-11-30":["shaxi"],"2026-12-05":["tigerleaping"]},
+  x:{"2026-11-25":["leshan"],"2026-11-29":["shaxi"],"2026-12-04":["tigerleaping"]},
   a:{
     "2026-11-14": {
       "m": [
@@ -2254,7 +2253,7 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-25": {
+    "2026-11-24": {
       "m": [],
       "a": [
         "Le quartier de Kuanzhai"
@@ -2263,7 +2262,7 @@ var PLAN_DEFAUT = {
         "Opéra du Sichuan et changement de masques"
       ]
     },
-    "2026-11-27": {
+    "2026-11-26": {
       "m": [
         "Base de recherche sur le panda géant, tôt le matin"
       ],
@@ -2272,14 +2271,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-28": {
+    "2026-11-27": {
       "m": [],
       "a": [
         "Les Trois Pagodes du temple Chongsheng"
       ],
       "s": []
     },
-    "2026-11-29": {
+    "2026-11-28": {
       "m": [
         "Le tour du lac Erhai à vélo ou en scooter"
       ],
@@ -2288,14 +2287,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-01": {
+    "2026-11-30": {
       "m": [],
       "a": [
         "La vieille ville reconstruite"
       ],
       "s": []
     },
-    "2026-12-02": {
+    "2026-12-01": {
       "m": [
         "Monastère de Songzanlin"
       ],
@@ -2304,14 +2303,14 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-12-04": {
+    "2026-12-03": {
       "m": [],
       "a": [
         "La vieille ville de Dayan, classée"
       ],
       "s": []
     },
-    "2026-12-06": {
+    "2026-12-05": {
       "m": [
         "Montagne du Dragon de Jade, téléphérique à 4 506 mètres"
       ],
@@ -2319,6 +2318,15 @@ var PLAN_DEFAUT = {
         "Le Palais Mu et le parc de l'Étang du Dragon noir"
       ],
       "s": []
+    },
+    "2026-12-07": {
+      "m": [
+        "Yu Garden et la vieille ville"
+      ],
+      "a": [],
+      "s": [
+        "Nanjing Road de nuit"
+      ]
     }
   },
   j:{}
