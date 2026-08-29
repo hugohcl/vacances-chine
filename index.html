@@ -2133,19 +2133,22 @@ var PLAN_DEFAUT = {
   v:1, t:25, p:"med",
   /* Le jour de trajet appartient à la ville d'ARRIVÉE. On part le matin, on arrive
      en début d'après-midi, et la fin de journée se passe déjà sur place.
-     Shanghai 2 · on dort le 13 et le 14, on part le dimanche 15 au matin.
-     Pékin 4    · dont le dimanche 15 en fin de journée, puis 3 journées pleines.
-     Xi'an 2    · arrivée le 19 en soirée, une journée pleine le 20.
-     Zhangjiajie 2 · arrivée le 21, une journée pleine le 22 pour Wulingyuan.
-     Chongqing 1 · arrivée le 23 en début d'après-midi, une soirée.
-     Chengdu 3  · arrivée légère, Leshan et les pandas.
+     Shanghai 2 · on dort le 13 et le 14, on part le 15 au matin. Le décalage de
+       +7 h s'absorbe ici, pas à Pékin.
+     Pékin 3 · D12. Arrivée le 15 en début d'après-midi pour les hutongs, le 16
+       Temple du Ciel à l'aube puis Cité Interdite, le 17 la Muraille à Mutianyu
+       qui prend la journée entière. Serré, assumé.
+     Xi'an 2 · arrivée le 18 en fin de journée, une journée pleine le 19.
+     Zhangjiajie 3 · D12. La nuit prise à Pékin vient ici : Wulingyuan et Tianmen
+       sont deux journées distinctes, et fin novembre la brume peut en gaspiller une.
+     Chongqing 1 · arrivée le 23 vers midi, une soirée.
+     Chengdu 3 · arrivée légère, Leshan et les pandas.
      Dali 2, Shaxi 2, Lijiang 3 · voir le détail dans le calendrier.
-     Shangri-La 2 · arrivée le 4 en début d'après-midi, une journée pleine le 5.
-     Lijiang 1 · D11 option B. On redescend le 6 au matin pour dormir près de l'aéroport :
-       le vol Lijiang-Shanghai part le 7, et il ne reste qu'une nuit avant l'AF111 du 8.
-       Faire descente + vol le même jour, c'était 10 h 05 sans aucune marge.
+     Shangri-La 2 · arrivée le 4 vers midi, une journée pleine le 5.
+     Lijiang 1 · D11 option B. On redescend le 6 au matin pour dormir près de
+       l'aéroport : le vol part le 7, et il ne reste qu'une nuit avant l'AF111.
      Shanghai 1 · le 7 au soir, à pied d'œuvre pour le retour. */
-  s:["shanghai:2","pekin:4","xian:2","zhangjiajie:2","chongqing:1","chengdu:3",
+  s:["shanghai:2","pekin:3","xian:2","zhangjiajie:3","chongqing:1","chengdu:3",
      "dali:2","shaxi:2","lijiang:3","shangrila:2","lijiang#2:1","shanghai#2:1"],
   n:{},
   g:{},
@@ -2171,9 +2174,11 @@ var PLAN_DEFAUT = {
     },
     "2026-11-16": {
       "m": [
+        "Temple du Ciel au petit matin, à l'heure du tai-chi"
+      ],
+      "a": [
         "Cité Interdite, puis la colline de Jingshan au couchant"
       ],
-      "a": [],
       "s": []
     },
     "2026-11-17": {
@@ -2184,20 +2189,13 @@ var PLAN_DEFAUT = {
       "s": []
     },
     "2026-11-18": {
-      "m": [
-        "Temple du Ciel au petit matin, à l'heure du tai-chi"
-      ],
-      "a": [],
-      "s": []
-    },
-    "2026-11-19": {
       "m": [],
       "a": [],
       "s": [
         "Le quartier musulman le soir"
       ]
     },
-    "2026-11-20": {
+    "2026-11-19": {
       "m": [
         "Armée de terre cuite"
       ],
@@ -2206,7 +2204,7 @@ var PLAN_DEFAUT = {
       ],
       "s": []
     },
-    "2026-11-22": {
+    "2026-11-21": {
       "m": [
         "Parc national de Wulingyuan, les montagnes d'Avatar"
       ],
@@ -2214,6 +2212,15 @@ var PLAN_DEFAUT = {
       "s": [
         "Le spectacle sur la minorité Tujia, en salle"
       ]
+    },
+    "2026-11-22": {
+      "m": [
+        "Tianmen Shan, téléphérique et route aux 99 virages"
+      ],
+      "a": [
+        "La passerelle de verre"
+      ],
+      "s": []
     },
     "2026-11-23": {
       "m": [],
