@@ -675,54 +675,48 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   background:var(--pap);color:var(--tx);min-width:120px;flex:1}
 .caltin:focus{outline:2px solid var(--zhu);outline-offset:-1px}
 .caltform .btn{flex:none;padding:6px 13px;font-size:12.5px}
-/* ── la journée à l'échelle ── */
-/* la règle reste visible sous l'en-tête réduit et la barre d'onglets */
-.calhrs{display:grid;grid-template-columns:74px minmax(0,1fr);border-bottom:1px solid var(--line);
-  background:var(--pap);position:sticky;top:calc(var(--hmini) + var(--tabsh) + 9px);z-index:3}
-.calhrsd{padding:5px 10px;font-size:9.5px;font-weight:800;letter-spacing:.07em;
-  text-transform:uppercase;color:var(--tx2);border-right:1px solid var(--line)}
-.calhrsp{position:relative;height:22px}
-.calhrsm{position:absolute;top:5px;transform:translateX(-50%);font-size:9.5px;font-weight:700;
-  color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.calhrsm.midi{color:var(--tx);font-weight:800}
-
-.ruban{position:relative;height:46px;border-radius:9px;background:var(--pap);
+/* ── la journée à l'échelle, axe du temps vertical ──
+   Comme un calendrier de téléphone : les heures descendent à gauche, matin en
+   haut, soirée en bas, et chaque bloc a la hauteur de sa durée réelle. */
+.ruban{--ph:13px;display:grid;grid-template-columns:34px minmax(0,1fr);
+  height:calc(18 * var(--ph));border-radius:9px;background:var(--pap);
   border:1px solid var(--line);overflow:hidden}
-.rbh{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:.55}
-.rbh.midi{opacity:1;background:color-mix(in srgb,var(--tx2) 45%,transparent)}
+.rbg{position:relative;border-right:1px solid var(--line)}
+.rbgh{position:absolute;right:6px;transform:translateY(-50%);font-size:9px;font-weight:700;
+  color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1}
+.rbgh.midi{color:var(--tx);font-weight:800}
+.rbp{position:relative}
+.rbl{position:absolute;left:0;right:0;height:1px;background:var(--line);opacity:.45}
+.rbl.midi{opacity:1;background:color-mix(in srgb,var(--tx2) 40%,transparent)}
 
-.rb{position:absolute;top:4px;bottom:4px;border-radius:7px;padding:0 8px;
-  display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;
-  font-size:11.5px;font-weight:700;text-align:left;line-height:1.15;
+.rb{position:absolute;left:4px;right:4px;border-radius:7px;padding:2px 8px;overflow:hidden;
+  font-size:11.5px;font-weight:700;text-align:left;line-height:1.2;min-height:16px;
   transition:filter .14s,border-color .14s}
+.rbtete{display:flex;align-items:center;gap:6px;min-width:0}
 .rbi{flex:none;font-size:12px;line-height:1}
 .rbt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* le trajet est hachuré : on n'est nulle part, on se déplace */
-.rb.trajet{color:#fff;border:0;
+.rb.trajet{color:#fff;border:0;cursor:grab;
   background-image:repeating-linear-gradient(135deg,
     var(--deep) 0 7px, color-mix(in srgb,var(--deep) 82%,#fff) 7px 14px)}
 .rb.trajet:hover{filter:brightness(1.12)}
-.rb.trajet{cursor:grab}
 .rb.trajet.flou{opacity:.82}
 body.glisse,body.glisse *{cursor:grabbing !important;user-select:none}
 
-
 .rb.act{background:color-mix(in srgb,var(--c) 20%,var(--card));color:var(--tx);
-  border:1px solid color-mix(in srgb,var(--c) 42%,transparent)}
+  border:1px solid color-mix(in srgb,var(--c) 42%,transparent);cursor:grab}
 .rb.act:hover{border-color:var(--rouge)}
+.rb.act.porte{opacity:.35}
 .rb.exc{background:color-mix(in srgb,var(--c) 40%,var(--card));color:var(--tx);
   border:1px dashed color-mix(in srgb,var(--c) 62%,transparent)}
 .rb.exc:hover{filter:brightness(1.05)}
 
 .rb.libre{background:transparent;border:1px dashed var(--line);color:var(--tx2);
-  opacity:.55;font-weight:700}
+  opacity:.5;font-weight:700}
 .rb.libre:hover{opacity:1;border-color:var(--zhu);color:var(--zhu)}
-.rb.act{cursor:grab}
-.rb.act.porte{opacity:.35}
 .rb.vise{outline:2px solid var(--zhu);outline-offset:-1px;opacity:1}
 .rb.libre.vise{border-style:solid;border-color:var(--zhu);color:var(--zhu)}
-
 
 /* la ligne de faits sous le ruban */
 .voyl{margin-top:1px}
@@ -745,9 +739,8 @@ body.glisse,body.glisse *{cursor:grabbing !important;user-select:none}
 .voymod{font-size:10.5px;font-weight:800;color:var(--zhu);flex:none;opacity:0;transition:opacity .16s}
 
 @media (max-width:640px){
-  .calhrsm{font-size:8.5px}
-  .rb{font-size:10.5px;padding:0 5px;gap:4px}
-  .ruban{height:42px}
+  .ruban{--ph:12px;grid-template-columns:28px minmax(0,1fr)}
+  .rb{font-size:10.5px;padding:2px 6px}
 }
 
 /* jours particuliers */
@@ -2732,11 +2725,11 @@ function glisserTrajet(bloc, ruban, transit, depart){
   var pris = false, x0 = 0, m0 = depart;
 
   function minutesParPixel(){
-    var l = ruban.getBoundingClientRect().width;
+    var l = ruban.getBoundingClientRect().height;
     return l ? (JOUR_FIN - JOUR_DEB) / l : 1;
   }
   function bouge(e){
-    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    var x = (e.touches ? e.touches[0].clientY : e.clientY);
     if(!pris && Math.abs(x - x0) < 4) return;
     pris = true;
     if(e.cancelable) e.preventDefault();
@@ -2746,8 +2739,8 @@ function glisserTrajet(bloc, ruban, transit, depart){
        le soir même dans la ville d'arrivée */
     var tard = Math.max(JOUR_DEB, JOUR_FIN - duree);
     m = Math.max(JOUR_DEB, Math.min(tard, m));
-    bloc.style.left  = pct(m) + "%";
-    bloc.style.width = (pct(Math.min(JOUR_FIN, m + duree)) - pct(m)) + "%";
+    bloc.style.top    = pct(m) + "%";
+    bloc.style.height = (pct(Math.min(JOUR_FIN, m + duree)) - pct(m)) + "%";
     bloc.dataset.m = m;
   }
   function lache(){
@@ -2764,7 +2757,7 @@ function glisserTrajet(bloc, ruban, transit, depart){
   }
   function prend(e){
     if(e.button) return;
-    x0 = (e.touches ? e.touches[0].clientX : e.clientX);
+    x0 = (e.touches ? e.touches[0].clientY : e.clientY);
     m0 = +bloc.dataset.m || depart;
     pris = false;
     document.body.classList.add("glisse");
@@ -2826,25 +2819,37 @@ function accepteBloc(cible, cle, cr){
 }
 
 function drawRuban(cle, base, transit, slot){
-  var rb = el("div", "ruban");
+  var rb    = el("div", "ruban");
+  var jauge = el("div", "rbg");
+  var piste = el("div", "rbp");
   var occupe = [];
 
-  for(var hh = 8; hh <= 22; hh += 2){
-    var g = el("span", "rbh" + (hh === 12 ? " midi" : ""));
-    g.style.left = pct(hh * 60) + "%";
-    rb.appendChild(g);
+  /* la gouttiere des heures, à gauche, et les filets à droite */
+  for(var hh = 7; hh <= 23; hh++){
+    var y = pct(hh * 60);
+    var fil = el("span", "rbl" + (hh === 12 ? " midi" : ""));
+    fil.style.top = y + "%";
+    piste.appendChild(fil);
+    if(hh % 2 === 1) continue;
+    var g = el("span", "rbgh" + (hh === 12 ? " midi" : ""), hh + " h");
+    g.style.top = y + "%";
+    jauge.appendChild(g);
   }
+  rb.appendChild(jauge);
+  rb.appendChild(piste);
 
   function poser(deb, fin, cls, glyphe, texte, infobulle, clic){
     if(fin - deb < 12) return null;
     var b = el(clic ? "button" : "div", "rb " + cls);
-    b.style.left  = pct(deb) + "%";
-    b.style.width = (pct(fin) - pct(deb)) + "%";
-    if(glyphe) b.appendChild(el("span", "rbi", glyphe));
-    if(texte)  b.appendChild(el("span", "rbt", texte));
+    b.style.top    = pct(deb) + "%";
+    b.style.height = (pct(fin) - pct(deb)) + "%";
+    var tete = el("span", "rbtete");
+    if(glyphe) tete.appendChild(el("span", "rbi", glyphe));
+    if(texte)  tete.appendChild(el("span", "rbt", texte));
+    b.appendChild(tete);
     if(infobulle) b.title = infobulle;
     if(clic) b.addEventListener("click", function(e){ e.stopPropagation(); clic(b); });
-    rb.appendChild(b);
+    piste.appendChild(b);
     return b;
   }
 
@@ -2863,7 +2868,7 @@ function drawRuban(cle, base, transit, slot){
         + (hh2.sur ? "" : " Heure supposée : faites glisser le bloc, ou cliquez pour la saisir.")
         + " Glisser pour changer l'heure, cliquer pour le reste.",
       function(){ editerTrajet(slot, cleTrajet(transit.de, transit.vers), transit.de, transit.vers); });
-    if(bt) glisserTrajet(bt, rb, transit, dep);
+    if(bt) glisserTrajet(bt, piste, transit, dep);
     occupe.push([dep, fin]);
   }
 
@@ -3144,18 +3149,6 @@ function drawCal(){
   if(!grille) return;
   grille.innerHTML = "";
 
-  /* la règle des heures, posée une fois : c'est elle qui donne l'échelle */
-  var regle = el("div", "calhrs");
-  regle.appendChild(el("div", "calhrsd", "Heure"));
-  var piste = el("div", "calhrsp");
-  for(var hg = 8; hg <= 22; hg += 2){
-    var m = el("span", "calhrsm" + (hg === 12 ? " midi" : ""));
-    m.style.left = pct(hg * 60) + "%";
-    m.textContent = hg + " h";
-    piste.appendChild(m);
-  }
-  regle.appendChild(piste);
-  grille.appendChild(regle);
 
   var plan   = calPlan();
   var total  = totalNights();
