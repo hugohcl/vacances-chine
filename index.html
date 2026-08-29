@@ -566,6 +566,9 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;background:var(--zhu)
   border-radius:2px}
 .resmode{font-size:11px;line-height:1;flex:none}
 .resdur{font-size:10.5px;font-weight:800;color:var(--tx2);font-variant-numeric:tabular-nums}
+.resbrut{font-size:10.5px;font-weight:800;color:var(--tx);font-variant-numeric:tabular-nums}
+.resfl{font-size:9px;color:var(--tx2);opacity:.55}
+.respap{font-size:9px;color:var(--tx2);opacity:.7}
 .resdur.vide{font-weight:600;font-style:italic;opacity:.7}
 .resmange{font-size:8.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
   color:#C4761F;border:1px solid #C4761F55;border-radius:100px;padding:1px 6px}
@@ -2554,8 +2557,8 @@ function drawTrajet(a, b){
   c.title = "Modifier ce trajet";
 
   if(t){
-    c.appendChild(el("span", "voylm", MODES[t.m] || "—"));
-    if(t.d) c.appendChild(el("span", "voyld", t.d));
+    c.appendChild(el("span", "voylm", MODES[t.m] || "\u2014"));
+    if(t.d) c.appendChild(el("span", "voyld", t.d + " de trajet"));
     if(h){
       var til = h.sur ? "" : "~";
       var e = el("span", "voylh", til + h.depart + " → " + til + h.arrivee);
@@ -3053,11 +3056,12 @@ function drawRuban(cle, base, transit, slot){
     var estime = /ESTIMATION/.test(t.s || "");
     var bt = poser(dep, fin, "trajet" + (hh2.sur ? "" : " flou"),
       (MODES[t.m] || "").split(" ")[0],
-      [ D[transit.de].fr + " → " + D[transit.vers].fr,
-        til + hh2.depart + " → " + til + hh2.arrivee + "  ·  "
-          + transit.pp.texte + " porte à porte",
-        (MODES[t.m] || "") + (t.d ? " " + t.d : "") + " en véhicule"
-          + (estime ? ", durée estimée" : "") + (t.p ? "  ·  " + t.p : ""),
+      [ D[transit.de].fr + " \u2192 " + D[transit.vers].fr,
+        (t.d ? t.d + " de trajet, " : "") + transit.pp.texte + " porte \u00e0 porte"
+          + (estime ? "  \u00b7  dur\u00e9e estim\u00e9e" : ""),
+        til + hh2.depart + " \u2192 " + til + hh2.arrivee
+          + "  \u00b7  " + enTexte(transit.pp.avant) + " avant, " + enTexte(transit.pp.apres) + " apr\u00e8s"
+          + (t.p ? "  \u00b7  " + t.p : ""),
         t.n || t.s || "" ],
       D[transit.de].fr + " → " + D[transit.vers].fr + ". "
         + til + hh2.depart + " → " + til + hh2.arrivee + ", " + transit.pp.texte
@@ -3236,7 +3240,12 @@ function drawResume(){
         if(t.m === "vol") vols++;
         perdues += pj.total >= 480 ? 1 : (pj.total >= 300 ? 0.5 : 0);
         lg.appendChild(el("span", "resmode", (MODES[t.m] || "").split(" ")[0]));
+        /* le brut d'abord : c'est le temps dans le v\u00e9hicule. Puis le porte \u00e0 porte,
+           qui ajoute l'acc\u00e8s, l'avance et le trajet jusqu'\u00e0 l'h\u00f4tel. */
+        if(t.d) lg.appendChild(el("span", "resbrut", t.d));
+        lg.appendChild(el("span", "resfl", "\u2192"));
         lg.appendChild(el("span", "resdur", pj.texte));
+        lg.appendChild(el("span", "respap", "porte \u00e0 porte"));
         if(pj.mange) lg.appendChild(el("span", "resmange",
           pj.mange === "journ\u00e9e" ? "journ\u00e9e prise" : "demi-journ\u00e9e"));
         lg.title = D[sel[i-1]].fr + " \u2192 " + D[k].fr + " : " + (t.d || "?") + " en v\u00e9hicule, "
