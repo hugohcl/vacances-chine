@@ -708,6 +708,18 @@ body.glisse,body.glisse *{cursor:grabbing !important;user-select:none}
   border:1px solid color-mix(in srgb,var(--c) 42%,transparent);cursor:grab}
 .rb.act:hover{border-color:var(--rouge)}
 .rb.act.porte{opacity:.35}
+.rbpoig{position:absolute;left:0;right:0;height:7px;cursor:ns-resize;z-index:2}
+.rbpoig.haut{top:0}
+.rbpoig.bas{bottom:0}
+.rb.act:hover .rbpoig:after{content:"";position:absolute;left:50%;transform:translateX(-50%);
+  width:22px;height:2px;border-radius:2px;background:var(--zhu)}
+.rbpoig.haut:after{top:2px}
+.rbpoig.bas:after{bottom:2px}
+.rb.act.cale{box-shadow:inset 2px 0 0 color-mix(in srgb,var(--c) 75%,transparent)}
+.rbsub{display:block;font-size:10px;font-weight:600;color:inherit;opacity:.8;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35;margin-top:1px}
+body.etire,body.etire *{cursor:ns-resize !important;user-select:none}
+
 .rb.exc{background:color-mix(in srgb,var(--c) 40%,var(--card));color:var(--tx);
   border:1px dashed color-mix(in srgb,var(--c) 62%,transparent)}
 .rb.exc:hover{filter:brightness(1.05)}
@@ -2067,6 +2079,7 @@ function etatCompact(){
   if(CAL.act)     e.a = CAL.act;        /* programme du jour */
   if(CAL.exc)     e.x = CAL.exc;        /* excursions */
   if(CAL.trajets) e.j = CAL.trajets;    /* trajets renseignés */
+  if(CAL.hact)    e.h = CAL.hact;        /* tuiles étirées à la main */
   return e;
 }
 
@@ -2107,6 +2120,7 @@ function appliquerEtat(e){
   if(e.a){ CAL.act = e.a; migrerActivites(); }
   if(e.x) CAL.exc     = e.x;
   if(e.j) CAL.trajets = e.j;
+  if(e.h) CAL.hact    = e.h;
   return true;
 }
 
@@ -2818,6 +2832,80 @@ function accepteBloc(cible, cle, cr){
   });
 }
 
+/* ══ Les horaires d'activité ══
+   Par défaut une activité occupe la part de son créneau qui reste libre, partagée
+   à égalité avec les autres. Dès qu'on étire la tuile, ses bornes sont retenues
+   et elle ne bouge plus toute seule. */
+
+function actH(cle, txt){
+  var j = CAL.hact && CAL.hact[cle];
+  var v = j && j[txt];
+  return (v && v.length === 2) ? v.slice() : null;
+}
+function poserActH(cle, txt, deb, fin){
+  CAL.hact = CAL.hact || {};
+  CAL.hact[cle] = CAL.hact[cle] || {};
+  CAL.hact[cle][txt] = [Math.round(deb), Math.round(fin)];
+  calSave();
+}
+function oublierActH(cle, txt){
+  var j = CAL.hact && CAL.hact[cle];
+  if(!j) return;
+  delete j[txt];
+  if(!Object.keys(j).length) delete CAL.hact[cle];
+  calSave();
+}
+
+/* Étirer une tuile par le haut ou par le bas. On travaille au quart d'heure,
+   sans jamais passer sous 30 minutes ni chevaucher un bloc voisin. */
+function etirerBloc(bloc, piste, cle, txt, bornes, obstacles){
+  ["haut", "bas"].forEach(function(bord){
+    var p = el("span", "rbpoig " + bord);
+    p.title = "Étirer";
+    bloc.appendChild(p);
+
+    function prend(e){
+      if(e.button) return;
+      e.stopPropagation(); e.preventDefault();
+      var y0 = e.touches ? e.touches[0].clientY : e.clientY;
+      var d0 = bornes[0], f0 = bornes[1], d = d0, f = f0;
+      var h = piste.getBoundingClientRect().height || 1;
+      var mpp = (JOUR_FIN - JOUR_DEB) / h;
+      document.body.classList.add("etire");
+
+      function bouge(ev){
+        if(ev.cancelable) ev.preventDefault();
+        var y = ev.touches ? ev.touches[0].clientY : ev.clientY;
+        var dm = Math.round((y - y0) * mpp / 15) * 15;
+        if(bord === "haut"){
+          d = Math.max(JOUR_DEB, Math.min(f0 - 30, d0 + dm));
+          obstacles.forEach(function(o){ if(o[1] <= f0 && o[1] > d) d = o[1]; });
+        } else {
+          f = Math.min(JOUR_FIN, Math.max(d0 + 30, f0 + dm));
+          obstacles.forEach(function(o){ if(o[0] >= d0 && o[0] < f) f = o[0]; });
+        }
+        bloc.style.top    = pct(d) + "%";
+        bloc.style.height = (pct(f) - pct(d)) + "%";
+      }
+      function lache(){
+        document.removeEventListener("mousemove", bouge);
+        document.removeEventListener("mouseup", lache);
+        document.removeEventListener("touchmove", bouge);
+        document.removeEventListener("touchend", lache);
+        document.body.classList.remove("etire");
+        poserActH(cle, txt, d, f);
+        drawCal();
+      }
+      document.addEventListener("mousemove", bouge);
+      document.addEventListener("mouseup", lache);
+      document.addEventListener("touchmove", bouge, { passive:false });
+      document.addEventListener("touchend", lache);
+    }
+    p.addEventListener("mousedown", prend);
+    p.addEventListener("touchstart", prend, { passive:false });
+  });
+}
+
 function drawRuban(cle, base, transit, slot){
   var rb    = el("div", "ruban");
   var jauge = el("div", "rbg");
@@ -2838,19 +2926,50 @@ function drawRuban(cle, base, transit, slot){
   rb.appendChild(jauge);
   rb.appendChild(piste);
 
-  function poser(deb, fin, cls, glyphe, texte, infobulle, clic){
+  /* Un bloc court ne peut pas porter quatre lignes. On calcule combien il en
+     tient vraiment et on garde les plus importantes, les autres restant dans
+     l'infobulle. 18 h d'échelle sur 18 × 13 px : une minute vaut 0,217 px. */
+  var PX_PAR_MIN = (18 * 13) / (JOUR_FIN - JOUR_DEB);
+  function poser(deb, fin, cls, glyphe, lignes, infobulle, clic){
     if(fin - deb < 12) return null;
+    if(typeof lignes === "string") lignes = [lignes];
     var b = el(clic ? "button" : "div", "rb " + cls);
     b.style.top    = pct(deb) + "%";
     b.style.height = (pct(fin) - pct(deb)) + "%";
+
+    var tient = Math.max(1, Math.floor(((fin - deb) * PX_PAR_MIN - 4) / 14.5));
     var tete = el("span", "rbtete");
     if(glyphe) tete.appendChild(el("span", "rbi", glyphe));
-    if(texte)  tete.appendChild(el("span", "rbt", texte));
+    tete.appendChild(el("span", "rbt", lignes[0] || ""));
     b.appendChild(tete);
+    (lignes.slice(1, tient) || []).forEach(function(l){
+      if(l) b.appendChild(el("span", "rbsub", l));
+    });
     if(infobulle) b.title = infobulle;
     if(clic) b.addEventListener("click", function(e){ e.stopPropagation(); clic(b); });
     piste.appendChild(b);
     return b;
+  }
+
+  function dessineAct(c, txt, deb, fin, epingle){
+    var b = poser(deb, fin, "act" + (epingle ? " cale" : ""), null,
+      [txt, enHeure(deb) + " → " + enHeure(fin)],
+      c.t + " · " + txt + ". " + enHeure(deb) + " → " + enHeure(fin)
+        + (epingle ? " (horaire fixé à la main)" : " (réparti automatiquement)")
+        + ". Étirez les poignées pour changer la durée, glissez la tuile pour la déplacer,"
+        + " cliquez pour la retirer.",
+      function(){ oublierActH(cle, txt); retirerActivite(cle, c.k, txt); });
+    if(!b) return;
+    b.draggable = true;
+    b.addEventListener("dragstart", function(e){
+      e.dataTransfer.setData("text/plain", "act|" + cle + "|" + c.k + "|" + txt);
+      e.dataTransfer.effectAllowed = "move";
+      b.classList.add("porte");
+    });
+    b.addEventListener("dragend", function(){ b.classList.remove("porte"); });
+    accepteBloc(b, cle, c.k);
+    etirerBloc(b, piste, cle, txt, [deb, fin],
+      occupe.filter(function(o){ return !(o[0] === deb && o[1] === fin); }));
   }
 
   /* 1. le trajet, seul élément dont la durée est chiffrée */
@@ -2860,13 +2979,21 @@ function drawRuban(cle, base, transit, slot){
     var fin = Math.min(JOUR_FIN, dep + transit.pp.total);
     var hh2 = horaires(t, transit.pp);
     var til = hh2.sur ? "" : "~";
+    var estime = /ESTIMATION/.test(t.s || "");
     var bt = poser(dep, fin, "trajet" + (hh2.sur ? "" : " flou"),
       (MODES[t.m] || "").split(" ")[0],
-      D[transit.de].fr + " → " + D[transit.vers].fr,
-      til + hh2.depart + " – " + til + hh2.arrivee + ", " + transit.pp.texte
-        + " porte à porte. " + transit.pp.detail
-        + (hh2.sur ? "" : " Heure supposée : faites glisser le bloc, ou cliquez pour la saisir.")
-        + " Glisser pour changer l'heure, cliquer pour le reste.",
+      [ D[transit.de].fr + " → " + D[transit.vers].fr,
+        til + hh2.depart + " → " + til + hh2.arrivee + "  ·  "
+          + transit.pp.texte + " porte à porte",
+        (MODES[t.m] || "") + (t.d ? " " + t.d : "") + " en véhicule"
+          + (estime ? ", durée estimée" : "") + (t.p ? "  ·  " + t.p : ""),
+        t.n || t.s || "" ],
+      D[transit.de].fr + " → " + D[transit.vers].fr + ". "
+        + til + hh2.depart + " → " + til + hh2.arrivee + ", " + transit.pp.texte
+        + " porte à porte, dont " + transit.pp.detail + ". "
+        + (t.n || t.s || "")
+        + (hh2.sur ? "" : " Heure supposée sur un départ à 8 h.")
+        + " Glisser pour déplacer dans la journée, cliquer pour modifier.",
       function(){ editerTrajet(slot, cleTrajet(transit.de, transit.vers), transit.de, transit.vers); });
     if(bt) glisserTrajet(bt, piste, transit, dep);
     occupe.push([dep, fin]);
@@ -2883,13 +3010,24 @@ function drawRuban(cle, base, transit, slot){
     occupe.push([deb, 1080]);
   });
 
-  /* 3. ce qui reste de chaque créneau se partage entre ses activités */
+  /* 3a. les activités dont on a fixé les bornes à la main sont posées d'abord :
+     elles sont un fait, elles ne se laissent pas repousser par les autres */
+  var epingles = [];
+  CRENEAUX.forEach(function(c){
+    activitesDuJour(cle, c.k).forEach(function(txt){
+      var hp = actH(cle, txt);
+      if(hp){ epingles.push({ cr:c, txt:txt, h:hp }); occupe.push([hp[0], hp[1]]); }
+    });
+  });
+  epingles.forEach(function(x){ dessineAct(x.cr, x.txt, x.h[0], x.h[1], true); });
+
+  /* 3b. le reste se partage ce qui demeure libre dans son créneau */
   CRENEAUX.forEach(function(c){
     var libre = plusGrandCreux(ZONES[c.k], occupe);
     if(!libre) return;
     var deb = libre[0], fin = libre[1];
 
-    var liste = activitesDuJour(cle, c.k);
+    var liste = activitesDuJour(cle, c.k).filter(function(x){ return !actH(cle, x); });
     if(!liste.length){
       var vide = poser(deb, fin, "libre", null, "+ " + c.t.toLowerCase(),
         "Ajouter quelque chose au " + c.t.toLowerCase() + ", ou y déposer un bloc.",
@@ -2899,18 +3037,7 @@ function drawRuban(cle, base, transit, slot){
     }
     var pas = (fin - deb) / liste.length;
     liste.forEach(function(txt, k){
-      var b = poser(deb + k * pas, deb + (k + 1) * pas, "act", null, txt,
-        c.t + " · " + txt + ". À faire glisser pour déplacer, à cliquer pour retirer.",
-        function(){ retirerActivite(cle, c.k, txt); });
-      if(!b) return;
-      b.draggable = true;
-      b.addEventListener("dragstart", function(e){
-        e.dataTransfer.setData("text/plain", "act|" + cle + "|" + c.k + "|" + txt);
-        e.dataTransfer.effectAllowed = "move";
-        b.classList.add("porte");
-      });
-      b.addEventListener("dragend", function(){ b.classList.remove("porte"); });
-      accepteBloc(b, cle, c.k);
+      dessineAct(c, txt, deb + k * pas, deb + (k + 1) * pas, false);
     });
   });
 
@@ -3224,7 +3351,7 @@ function drawCal(){
       if(pt) infoTransit = { de:venant, vers:c.id, pp:pt };
     }
     if(base) slot.appendChild(drawRuban(cle, base, infoTransit, slot));
-    if(venant) slot.appendChild(drawTrajet(venant, c.id));
+    if(venant && !infoTransit) slot.appendChild(drawTrajet(venant, c.id));
     if(c)    slot.appendChild(drawExc(cle, c.id, slot));
     var pied = el("div", "calpied");
     pied.appendChild(calTags(cle, slot));
